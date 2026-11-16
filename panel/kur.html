@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Kurulum — suatilyus</title>
+<style>body{font:18px/1.5 system-ui,sans-serif;max-width:560px;margin:40px auto;padding:0 18px;color:#111}input,button{font:inherit;width:100%;padding:12px;margin:8px 0;border:3px solid #111;border-radius:12px;box-sizing:border-box}button{background:#111;color:#fff;cursor:pointer}#log{white-space:pre-wrap;color:#555;font-size:15px}</style></head>
+<body><h1>Site kurulumu</h1><p>1. GitHub anahtarını yapıştır.<br>2. Claude'dan gelen <b>suatilyus-site.zip</b> dosyasını seç.<br>3. Yükle'ye bas.</p>
+<input id="t" type="password" placeholder="github_pat_…" autocomplete="off"><input id="z" type="file" accept=".zip"><button id="go">YÜKLE</button><p id="log"></p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const A='https://api.github.com/repos/suatilyus/suatilyus.github.io',L=m=>log.textContent+=m+'\n';
+try{t.value=localStorage.getItem('suat-gh')||''}catch(e){}
+async function gh(p,o={}){const r=await fetch(A+p,{...o,headers:{Authorization:'Bearer '+t.value.trim(),Accept:'application/vnd.github+json'}});if(!r.ok)throw new Error(p+' → '+r.status+' '+((await r.json().catch(()=>({}))).message||''));return r.json()}
+go.onclick=async()=>{log.textContent='';go.disabled=true;try{
+ const f=z.files[0];if(!f)throw new Error('Önce zip dosyasını seç.');
+ const zip=await JSZip.loadAsync(f);let ent=Object.values(zip.files).filter(e=>!e.dir&&!/(^|\/)(__MACOSX|\.DS_Store)/.test(e.name));
+ const pre=ent.every(e=>e.name.includes('/'))&&new Set(ent.map(e=>e.name.split('/')[0])).size===1?ent[0].name.split('/')[0]+'/':'';
+ const ref=await gh('/git/ref/heads/main'),base=await gh('/git/commits/'+ref.object.sha),tree=[];
+ for(const [i,e] of ent.entries()){const b=await e.async('base64');const bl=await gh('/git/blobs',{method:'POST',body:JSON.stringify({content:b,encoding:'base64'})});
+  tree.push({path:e.name.slice(pre.length),mode:'100644',type:'blob',sha:bl.sha});L(`${i+1}/${ent.length} ${e.name.slice(pre.length)}`)}
+ const tr=await gh('/git/trees',{method:'POST',body:JSON.stringify({base_tree:base.tree.sha,tree})});
+ const c=await gh('/git/commits',{method:'POST',body:JSON.stringify({message:'Site güncellendi ('+ent.length+' dosya)',tree:tr.sha,parents:[ref.object.sha]})});
+ await gh('/git/refs/heads/main',{method:'PATCH',body:JSON.stringify({sha:c.sha})});
+ try{localStorage.setItem('suat-gh',t.value.trim());localStorage.setItem('suat-mud','1')}catch(e){}
+ L('\nTAMAMDIR. 1-2 dakika sonra site güncellenir. Sonra panele geç: /panel/');
+}catch(e){L('HATA: '+e.message)}go.disabled=false}
+</script></body></html>
