@@ -2,31 +2,116 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>suatilyus — Suat Serkan Çelmeli</title>
-<meta name="description" content="Suat Serkan Çelmeli (suatilyus) — illüstrasyon, mural ve tasarım. İzmir.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>suatilyus — şahsi sayfa</title>
+<meta name="description" content="Suatilyus'un şahsi sayfası. Suat Serkan Çelmeli — illüstrasyon, mural ve tasarım, İzmir.">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:title" content="Hoşgeldin moruk — suatilyus">
+<meta property="og:description" content="Suatilyus'un şahsi sayfası: illüstrasyon, uygulamalar, indir-kullan.">
+<meta property="og:image" content="https://suatilyus.com/img/og.png">
+<meta property="og:url" content="https://suatilyus.com/">
+<link rel="icon" href="img/icon-192.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="suatilyus">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ortak.css">
 <style>
+:root{--pink:#fd225a;--ink:#111}
 *{box-sizing:border-box;margin:0;padding:0}
-body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:28px;padding:32px;background:#fff7e8;color:#1b1b1b;font-family:ui-rounded,"SF Pro Rounded",system-ui,sans-serif;overflow:hidden}
-h1{font-size:clamp(48px,12vw,140px);font-weight:900;letter-spacing:-.04em;line-height:.9;text-align:center}
-h1 span{display:inline-block;animation:bob 2.4s ease-in-out infinite}
-h1 span:nth-child(odd){color:#ff4f2e}
-h1 span:nth-child(3n){color:#2e6bff}
-h1 span:nth-child(4n){color:#14a35a}
-@keyframes bob{50%{transform:translateY(-8px) rotate(-4deg)}}
-p{font-size:clamp(16px,2.6vw,22px);text-align:center;max-width:32ch;line-height:1.4}
-.tag{display:inline-block;border:3px solid #1b1b1b;border-radius:999px;padding:8px 18px;font-weight:800;background:#ffd23f;transform:rotate(-3deg)}
-nav{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
-nav a{color:#1b1b1b;font-weight:800;text-decoration:none;border-bottom:3px solid #ff4f2e}
-.blob{position:fixed;border-radius:50%;filter:blur(2px);opacity:.55;z-index:-1}
+html{scroll-behavior:smooth}
+body{background:#fff;color:var(--ink);font-family:"Patrick Hand",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+.page{width:min(100%,520px);margin:0 auto;container-type:inline-size;padding:calc(env(safe-area-inset-top) + 17cqw) 0 18cqw;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+
+/* 1 cqw = 11.7px on the 1170px drawing */
+.header{width:69.6cqw}
+.portrait{width:66.5cqw;margin-top:2.2cqw;animation:float 6s ease-in-out infinite}
+.portrait .bubble{position:absolute;inset:0;z-index:2;transform-origin:83% 40%;animation:talk 4s ease-in-out infinite}
+@keyframes float{50%{transform:translateY(-1.2cqw) rotate(-.6deg)}}
+@keyframes talk{0%,70%,100%{transform:scale(1) rotate(0)}76%{transform:scale(1.08) rotate(3deg)}82%{transform:scale(.97) rotate(-2deg)}88%{transform:scale(1.02)}}
+
+.row{display:flex;justify-content:center;gap:4.6cqw;width:100%}
+.row1{margin-top:15.6cqw}
+.row2{margin-top:4.2cqw}
+.btn{width:23.6cqw;background:none;border:0;cursor:pointer;display:block;text-decoration:none;transition:transform .12s}
+/* color layer: line art sits on top, colour fades in underneath */
+.cz{position:relative}
+.cz>img{position:relative}
+.cz>img.c{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .9s ease}
+.cz:hover>img.c,.cz.on>img.c,.cz:focus-within>img.c,.btn:focus-visible>img.c{opacity:1;transition-duration:.15s}
+.btn .arrows{position:absolute;z-index:3;width:85%;left:-1%;bottom:96%;opacity:0;pointer-events:none;transition:opacity .15s}
+.btn:hover .arrows,.btn:focus-visible .arrows,.btn.on .arrows{opacity:1;transition-duration:.15s;animation:poke .6s ease-in-out infinite alternate}
+.btn:active{transform:scale(.95)}
+@keyframes poke{to{transform:translateY(1cqw)}}
+
+.divider{width:90.8cqw;margin-top:8.5cqw}
+.note-header{width:68.5cqw;margin-top:4.4cqw}
+.note{width:79.3cqw;margin-top:.6cqw}
+.note textarea,.note input{position:absolute;z-index:2;left:11%;right:11%;background:transparent;border:0;outline:0;resize:none;font:inherit;color:var(--ink);font-size:4.2cqw;line-height:5.4cqw;padding:0}
+/* text sits right on the drawn lines (line 1 ≈ 36.5%, line 2 ≈ 74% of the box) */
+.note textarea{top:20.5%;height:16.2%}
+.note input{top:66%;height:8%}
+.note textarea::placeholder,.note input::placeholder{color:#9a9a9a}
+.acts{display:flex;justify-content:center;gap:6cqw;margin-top:3cqw}
+.acts .cz{width:30cqw}
+.divider2{margin-top:14.5cqw}
+.soon{width:39.3cqw;margin-top:2.5cqw;animation:wobble 3s ease-in-out infinite}
+@keyframes wobble{50%{transform:rotate(-2.5deg) scale(1.03)}}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
 </style>
 </head>
 <body>
-<div class="blob" style="width:240px;height:240px;background:#ffd23f;top:-60px;left:-60px"></div>
-<div class="blob" style="width:200px;height:200px;background:#7fd1ff;bottom:-50px;right:-40px"></div>
-<h1><span>s</span><span>u</span><span>a</span><span>t</span><span>i</span><span>l</span><span>y</span><span>u</span><span>s</span></h1>
-<p>İllüstrasyon, mural ve tasarım. İzmir.</p>
-<div class="tag">yakında burada ✏️</div>
-<nav><a href="https://instagram.com/suatilyus">instagram</a></nav>
+<main class="page">
+  <h1 class="sr">Hoşgeldin moruk — Suatilyus'un şahsi sayfası</h1>
+  <div class="header cz"><img class="c" src="img/header-c.png" alt=""><img src="img/header.png" alt="Hoşgeldin moruk · Suatilyus'un şahsi sayfası · V-01" width="814" height="215"></div>
+
+  <div class="portrait cz">
+    <img class="c" src="img/portrait-c.png" alt="">
+    <img src="img/portrait.png" alt="Şapkalı, uzun saçlı ve sakallı karakter" width="778" height="633">
+    <img class="bubble" src="img/bubble.png" alt="N'aber?" width="778" height="633">
+  </div>
+
+  <nav class="row row1" aria-label="Ana menü">
+    <a class="btn cz" href="uygulamalar/index.html"><img class="c" src="img/btn-uygulamalar-c.png" alt=""><img src="img/btn-uygulamalar.png" alt="Uygulamalar" width="272" height="94"><img class="arrows" src="img/arrows.png" alt=""></a>
+    <a class="btn cz" href="illustrasyon/index.html"><img class="c" src="img/btn-illustrasyon-c.png" alt=""><img src="img/btn-illustrasyon.png" alt="İllüstrasyon" width="275" height="95"><img class="arrows" src="img/arrows.png" alt=""></a>
+    <a class="btn cz" href="#" data-soon><img class="c" src="img/btn-indir-kullan-c.png" alt=""><img src="img/btn-indir-kullan.png" alt="İndir - kullan" width="277" height="94"><img class="arrows" src="img/arrows.png" alt=""></a>
+  </nav>
+  <nav class="row row2" aria-label="Teklif">
+    <a class="btn cz" href="https://ig.me/m/suatilyus" target="_blank" rel="noopener"><img class="c" src="img/btn-teklif-al-c.png" alt=""><img src="img/btn-teklif-al.png" alt="Teklif al" width="278" height="93"><img class="arrows" src="img/arrows.png" alt=""></a>
+    <a class="btn cz" href="https://ig.me/m/suatilyus" target="_blank" rel="noopener"><img class="c" src="img/btn-teklif-ver-c.png" alt=""><img src="img/btn-teklif-ver.png" alt="Teklif ver" width="277" height="95"><img class="arrows" src="img/arrows.png" alt=""></a>
+  </nav>
+
+  <div class="divider cz"><img class="c" src="img/divider-c.png" alt=""><img src="img/divider.png" alt="" width="1062" height="54"></div>
+  <div class="note-header cz"><img class="c" src="img/note-header-c.png" alt=""><img src="img/note-header.png" alt="Gitmeden not bırak" width="802" height="152"></div>
+  <form class="note cz" id="note">
+    <img class="c" src="img/note-box-c.png" alt="">
+    <img src="img/note-box.png" alt="" width="928" height="782">
+    <textarea name="not" maxlength="1000" aria-label="Notun" placeholder="yaz bakalım…"></textarea>
+    <input name="kim" maxlength="80" aria-label="Adın ya da Instagram'ın" placeholder="adın / @instagram (istersen)">
+  </form>
+  <div class="acts">
+    <button class="cz" form="note" type="submit"><img class="c" src="img/ui/gonder-c.png" alt=""><img src="img/ui/gonder.png" alt="Gönder" width="372" height="170"></button>
+    <button class="cz" form="note" type="reset"><img class="c" src="img/ui/vazgec-c.png" alt=""><img src="img/ui/vazgec.png" alt="Vazgeç" width="379" height="168"></button>
+  </div>
+
+  <div class="divider divider2 cz" id="uygulamalar"><img class="c" src="img/divider-c.png" alt=""><img src="img/divider.png" alt="" width="1062" height="54"></div>
+  <img class="soon" src="img/cok-yakinda.png" alt="Çok yakında: suatilyus app!" width="460" height="313">
+</main>
+<script src="ortak.js"></script>
+<script>
+const say=(m,ok)=>suat.toast(m,ok);
+document.getElementById('note').addEventListener('reset',()=>say('tamam, sildim',true));
+document.getElementById('note').addEventListener('submit',e=>{
+  e.preventDefault();const f=e.target;
+  if(!f.not.value.trim()){say('önce bi şey yaz moruk');f.not.focus();return}
+  say('not kutusu çok yakında açılıyor',true);
+});
+</script>
 </body>
 </html>

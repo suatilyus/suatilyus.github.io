@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kontrol paneli — suatilyus</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" href="../img/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../ortak.css">
+<style>
+:root{--ink:#111;--mut:#777}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fff;color:var(--ink);font-family:"Patrick Hand",system-ui,sans-serif;font-size:19px;-webkit-tap-highlight-color:transparent}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit}
+.page{width:min(100%,760px);margin:0 auto;padding:calc(env(safe-area-inset-top) + 18px) 18px 80px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.top .home{width:150px}
+.top .out{width:120px}
+h1{font-size:40px;font-weight:400;letter-spacing:.04em;margin:18px 0 2px}
+h2{font-size:28px;font-weight:400;letter-spacing:.04em;margin:34px 0 4px;display:flex;align-items:center;gap:12px}
+.hint{color:var(--mut);font-size:17px;line-height:1.35}
+.divider{width:100%;margin:14px 0}
+
+/* login */
+.login{max-width:520px}
+.login ol{margin:12px 0 0 22px;line-height:1.5}
+.login code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px}
+.field{display:flex;gap:12px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.field input{flex:1;min-width:220px;font:inherit;font-size:16px;border:3px solid var(--ink);border-radius:12px;padding:10px 12px}
+.field .go{width:150px}
+
+/* wallpapers */
+.walls{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px;margin-top:14px}
+.w{display:flex;flex-direction:column;gap:6px}
+.w .ph{aspect-ratio:1290/2796;border:3px solid var(--ink);border-radius:18px;overflow:hidden;background:#f3f3f3}
+.w .ph img{width:100%;height:100%;object-fit:cover}
+.w .name{font-size:19px;letter-spacing:.03em;min-height:24px;word-break:break-word}
+.w .tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.w .tools .cz{width:auto}
+.w .tools .ed{width:86px}.w .tools .rm{width:62px}.w .tools .ar{width:28px}
+.add{border:3px dashed var(--ink);border-radius:18px;aspect-ratio:1290/2796;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;background:none;font:inherit;color:var(--ink)}
+.add .cz{width:44px}
+.add span{font-size:17px;color:var(--mut)}
+
+/* files */
+.files{margin-top:12px;border-top:2px solid var(--ink)}
+.f{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:2px solid #ddd;flex-wrap:wrap}
+.f .n{flex:1;min-width:150px;word-break:break-all}
+.f .s{color:var(--mut);font-size:16px;white-space:nowrap}
+.f .copy{font:inherit;font-size:16px;border:2px solid var(--ink);border-radius:9px;background:#fff;padding:2px 10px;cursor:pointer}
+.f .rm{width:62px}
+.empty{color:var(--mut);padding:14px 2px}
+.addrow{margin-top:14px;width:160px}
+
+/* busy + dialogs */
+.veil{position:fixed;inset:0;background:rgba(255,255,255,.94);display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;z-index:30;padding:24px}
+.veil.show{display:flex}
+.busy .yk{width:min(80vw,380px);animation:wob 1.2s ease-in-out infinite}
+@keyframes wob{50%{transform:rotate(-2deg) translateY(-3px)}}
+.bar{position:relative;width:min(84vw,420px)}
+.bar .fill{position:absolute;left:4%;top:38%;height:22%;width:0;background:#24c158;border-radius:6px;transition:width .3s;max-width:92%}
+.busy .what{font-size:18px;color:var(--mut);text-align:center;max-width:36ch}
+.dlg{position:relative;width:min(90vw,520px)}
+.dlg .msg{position:absolute;left:8%;right:8%;top:47%;text-align:center;font-size:clamp(14px,3.6vw,18px);color:#fff;text-shadow:0 1px 2px #000}
+.dlg .hit{position:absolute;bottom:0;height:30%;width:34%;background:none;border:0;cursor:pointer}
+.dlg .hit.l{left:1%}.dlg .hit.r{right:1%}
+.dlg.emin .msg{color:var(--ink);text-shadow:none;top:56%}
+@media (prefers-reduced-motion:reduce){.busy .yk{animation:none}}
+</style>
+</head>
+<body data-nokose>
+<main class="page">
+  <div class="top">
+    <a class="home cz lit" href="../index.html" aria-label="Siteye dön"><img class="c" src="../img/ui/anasayfa-c.png" alt=""><img src="../img/ui/anasayfa.png" alt="Ana sayfa" width="370" height="105"></a>
+    <button class="out cz" id="logout" hidden aria-label="Panelden çık"><img class="c" src="../img/ui/btn-cikis-c.png" alt=""><img src="../img/ui/btn-cikis.png" alt="Çıkış" width="281" height="103"></button>
+  </div>
+  <h1>KONTROL PANELİ</h1>
+  <p class="hint" id="who">Burayı sadece sen görüyorsun. Yaptığın değişiklik 1–2 dakika içinde sitede görünür.</p>
+  <img class="divider" src="../img/divider.png" alt="" width="1062" height="54">
+
+  <!-- giriş -->
+  <section class="login" id="login" hidden>
+    <h2>GİRİŞ</h2>
+    <div id="pwMode" hidden>
+      <p class="hint">Müdüriyet şifreni gir.</p>
+      <div class="field">
+        <input id="pw" type="password" autocomplete="current-password" placeholder="şifre" aria-label="Şifre">
+        <button class="go cz" id="pwBtn"><img class="c" src="../img/ui/btn-giris-c.png" alt=""><img src="../img/ui/btn-giris.png" alt="Giriş" width="284" height="103"></button>
+      </div>
+      <p class="hint" style="margin-top:14px"><a href="#" id="toTok">Şifremi unuttum / yeni anahtarla kur</a></p>
+    </div>
+    <div id="tokMode" hidden>
+      <p class="hint">İlk kurulum. Panel siteye GitHub üzerinden yazar, bunun için bir kere <b>GitHub anahtarı</b> oluşturman lazım:</p>
+      <ol class="hint">
+        <li>GitHub'da <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">yeni anahtar sayfasını</a> aç.</li>
+        <li><b>Token name:</b> <code>suatilyus panel</code> · <b>Expiration:</b> 1 yıl.</li>
+        <li><b>Repository access:</b> <i>Only select repositories</i> → <code>suatilyus.github.io</code></li>
+        <li><b>Permissions → Repository → Contents:</b> <i>Read and write</i>.</li>
+        <li><b>Generate token</b>'a bas, çıkan <code>github_pat_…</code> yazısını aşağıya yapıştır.</li>
+      </ol>
+      <div class="field"><input id="tok" type="password" autocomplete="off" placeholder="github_pat_…" aria-label="GitHub anahtarı"></div>
+      <p class="hint" style="margin-top:14px">Sonra kendine bir <b>müdüriyet şifresi</b> belirle. Başka cihazlarda sadece bu şifreyle girersin. En az 10 karakter olsun, kolay tahmin edilmesin.</p>
+      <div class="field"><input id="pw1" type="password" autocomplete="new-password" placeholder="yeni şifre" aria-label="Yeni şifre"></div>
+      <div class="field"><input id="pw2" type="password" autocomplete="new-password" placeholder="şifre tekrar" aria-label="Şifre tekrar">
+        <button class="go cz" id="tokBtn"><img class="c" src="../img/ui/kaydet-c.png" alt=""><img src="../img/ui/kaydet.png" alt="Kaydet" width="226" height="96"></button></div>
+      <p class="hint" style="margin-top:10px">Anahtar şifrelenip sitede saklanır; şifren olmadan açılamaz. Şifreyi ve anahtarı kimseyle paylaşma.</p>
+      <p class="hint" style="margin-top:10px" id="toPwWrap" hidden><a href="#" id="toPw">← şifreyle giriş</a></p>
+    </div>
+  </section>
+
+  <!-- içerik -->
+  <section id="app" hidden>
+    <div id="setPw" hidden>
+      <h2>ŞİFRE BELİRLE</h2>
+      <p class="hint">Bu cihazda anahtar kayıtlı ama henüz müdüriyet şifren yok. Bir şifre belirle, başka cihazlarda sadece onunla girersin. En az 10 karakter.</p>
+      <div class="field"><input id="sp1" type="password" autocomplete="new-password" placeholder="yeni şifre" aria-label="Yeni şifre"></div>
+      <div class="field"><input id="sp2" type="password" autocomplete="new-password" placeholder="şifre tekrar" aria-label="Şifre tekrar">
+        <button class="go cz" id="spBtn"><img class="c" src="../img/ui/kaydet-c.png" alt=""><img src="../img/ui/kaydet.png" alt="Kaydet" width="226" height="96"></button></div>
+    </div>
+    <h2>DUVAR KÂĞITLARI</h2>
+    <p class="hint">İllüstrasyon sayfasındaki telefon duvar kâğıtları. En iyisi 1290 × 2796 px dikey görsel. Büyük görselleri ben küçültürüm.</p>
+    <div class="walls" id="walls"></div>
+    <input type="file" id="wallIn" accept="image/*" multiple hidden>
+
+    <h2>DOSYALAR</h2>
+    <p class="hint">İndir-kullan köşesi için fırça, sticker, PDF… Her dosyanın bir linki olur, istediğin yere koyabilirsin. Dosya başına en fazla 25 MB.</p>
+    <div class="files" id="files"></div>
+    <button class="addrow cz" id="fileAdd"><img class="c" src="../img/ui/ekle-c.png" alt=""><img src="../img/ui/ekle.png" alt="Ekle" width="211" height="78"></button>
+    <input type="file" id="fileIn" multiple hidden>
+
+    <h2>SİTE GÜNCELLE</h2>
+    <p class="hint">Claude'dan gelen <b>suatilyus-site.zip</b> dosyasını seç; içindeki her şey tek seferde siteye yüklenir. Panelden eklediğin duvar kâğıtları ve dosyalar korunur.</p>
+    <button class="addrow cz" id="zipAdd"><img class="c" src="../img/ui/ekle-c.png" alt=""><img src="../img/ui/ekle.png" alt="Zip seç" width="211" height="78"></button>
+    <input type="file" id="zipIn" accept=".zip" hidden>
+  </section>
+</main>
+
+<!-- yükleniyor -->
+<div class="veil busy" id="busy" role="status" aria-live="polite">
+  <img class="yk" src="../img/ui/yukleniyor.png" alt="Yükleniyor… bekle morukcum." width="455" height="143">
+  <div class="bar"><div class="fill" id="fill"></div><img src="../img/ui/ilerleme.png" alt="" width="532" height="93" style="position:relative"></div>
+  <p class="what" id="what"></p>
+</div>
+<!-- emin miyiz -->
+<div class="veil" id="ask" role="dialog" aria-modal="true" aria-label="Emin misin?">
+  <div class="dlg emin cz lit"><img class="c" src="../img/ui/dlg-emin-c.png" alt=""><img src="../img/ui/dlg-emin.png" alt="Dur moruk! Emin miyiz?" width="657" height="463">
+    <p class="msg" id="askMsg"></p>
+    <button class="hit l" id="no" aria-label="Hayır"></button><button class="hit r" id="yes" aria-label="Evet"></button></div>
+</div>
+<!-- hata -->
+<div class="veil" id="err" role="alertdialog" aria-modal="true" aria-label="Hata">
+  <div class="dlg hata cz lit"><img class="c" src="../img/ui/dlg-hata-c.png" alt=""><img src="../img/ui/dlg-hata.png" alt="Hata verdi" width="659" height="461">
+    <p class="msg" id="errMsg" style="top:auto;bottom:34%"></p>
+    <button class="hit l" id="errClose" aria-label="Kapat"></button><button class="hit r" id="errReload" aria-label="Yenile"></button></div>
+</div>
+
+<script src="../ortak.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+{
+const OWNER='suatilyus', REPO='suatilyus.github.io', BR='main';
+const API=`https://api.github.com/repos/${OWNER}/${REPO}`;
+const $=id=>document.getElementById(id);
+let TOKEN=null; try{TOKEN=localStorage.getItem('suat-gh')}catch(e){}
+let WALLS=[], FILES=[];
+
+/* ---------- github ---------- */
+async function gh(path,opt={}){
+  const r=await fetch(API+path,{...opt,headers:{Authorization:'Bearer '+TOKEN,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28',...(opt.body?{'Content-Type':'application/json'}:{})}});
+  if(r.status===404&&opt.allow404)return null;
+  if(!r.ok){let m='';try{m=(await r.json()).message}catch(e){}throw new Error(r.status===401?'Anahtar geçersiz ya da süresi dolmuş.':r.status===403?'Anahtarın bu depoya yazma izni yok.':r.status===409?'Aynı anda iki değişiklik çakıştı, tekrar dene.':(m||('GitHub '+r.status)));}
+  return r.status===204?null:r.json();
+}
+const enc=s=>btoa(unescape(encodeURIComponent(s)));
+const dec=b=>decodeURIComponent(escape(atob(b.replace(/\n/g,''))));
+const path=p=>p.split('/').map(encodeURIComponent).join('/');
+async function readJSON(p,fallback){const r=await gh('/contents/'+path(p)+'?ref='+BR+'&t='+Date.now(),{allow404:true});return r?{sha:r.sha,data:JSON.parse(dec(r.content))}:{sha:null,data:fallback};}
+async function writeJSON(p,data,msg){const cur=await gh('/contents/'+path(p)+'?ref='+BR+'&t='+Date.now(),{allow404:true});
+  return gh('/contents/'+path(p),{method:'PUT',body:JSON.stringify({message:msg,branch:BR,content:enc(JSON.stringify(data,null,2)+'\n'),...(cur?{sha:cur.sha}:{})})});}
+async function putFile(p,b64,msg){const cur=await gh('/contents/'+path(p)+'?ref='+BR,{allow404:true});
+  return gh('/contents/'+path(p),{method:'PUT',body:JSON.stringify({message:msg,branch:BR,content:b64,...(cur?{sha:cur.sha}:{})})});}
+async function delFile(p,msg){const cur=await gh('/contents/'+path(p)+'?ref='+BR,{allow404:true});if(!cur)return;
+  return gh('/contents/'+path(p),{method:'DELETE',body:JSON.stringify({message:msg,branch:BR,sha:cur.sha})});}
+
+/* ---------- ui helpers ---------- */
+function busy(on,what='',pct){ $('busy').classList.toggle('show',on); $('what').textContent=what; if(pct!=null)$('fill').style.width=Math.round(pct*92)+'%'; }
+function fail(e){ busy(false); $('errMsg').textContent=e.message||String(e); $('err').classList.add('show'); }
+$('errClose').onclick=()=>$('err').classList.remove('show');
+$('errReload').onclick=()=>{ $('err').classList.remove('show'); load(); };
+function ask(msg){ return new Promise(res=>{ $('askMsg').textContent=msg; $('ask').classList.add('show');
+  const done=v=>{ $('ask').classList.remove('show'); $('yes').onclick=$('no').onclick=null; res(v); };
+  $('yes').onclick=()=>done(true); $('no').onclick=()=>done(false); }); }
+const slug=s=>(s||'dosya').toLowerCase().replace(/ç/g,'c').replace(/ğ/g,'g').replace(/[ıi̇]/g,'i').replace(/ö/g,'o').replace(/ş/g,'s').replace(/ü/g,'u').replace(/[^a-z0-9.]+/g,'-').replace(/^-+|-+$/g,'')||'dosya';
+const kb=n=>n>1048576?(n/1048576).toFixed(1)+' MB':Math.max(1,Math.round(n/1024))+' KB';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const fileB64=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(f);});
+async function wallpaperB64(f){
+  const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error(f.name+' açılamadı.'));i.src=URL.createObjectURL(f);});
+  const k=Math.min(1,2796/img.naturalHeight,1600/img.naturalWidth);
+  const c=document.createElement('canvas');c.width=Math.round(img.naturalWidth*k);c.height=Math.round(img.naturalHeight*k);
+  const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);
+  return c.toDataURL('image/jpeg',.9).split(',')[1];
+}
+
+/* ---------- render ---------- */
+const btn=(cls,name,alt,w,h)=>`<button class="${cls} cz"><img class="c" src="../img/ui/${name}-c.png" alt=""><img src="../img/ui/${name}.png" alt="${alt}" width="${w}" height="${h}"></button>`;
+function renderWalls(){
+  $('walls').innerHTML=WALLS.map((w,i)=>`<div class="w" data-i="${i}">
+    <div class="ph"><img src="https://raw.githubusercontent.com/${OWNER}/${REPO}/${BR}/${esc(w.dosya)}?v=${w.v||0}" alt="" loading="lazy"></div>
+    <div class="name">${esc(w.ad)}</div>
+    <div class="tools">${btn('ed','duzenle','Düzenle',285,101)}${btn('rm','sil','Sil',215,99)}
+      ${i>0?btn('ar up','ok-yukari','Öne al',90,99):''}${i<WALLS.length-1?btn('ar down','ok-asagi','Arkaya al',93,92):''}</div></div>`).join('')
+    +`<button class="add" id="wallAdd"><span class="cz lit"><img class="c" src="../img/ui/arti-c.png" alt=""><img src="../img/ui/arti.png" alt="" width="83" height="74"></span>EKLE<span>bir ya da birkaç görsel</span></button>`;
+  $('wallAdd').onclick=()=>$('wallIn').click();
+}
+function renderFiles(){
+  $('files').innerHTML=FILES.length?FILES.map((f,i)=>`<div class="f" data-i="${i}"><span class="n">${esc(f.name)}</span><span class="s">${kb(f.size)}</span>
+    <button class="copy">linki kopyala</button>${btn('rm','sil','Sil',215,99)}</div>`).join(''):'<p class="empty">Henüz dosya yok.</p>';
+}
+
+/* ---------- load ---------- */
+async function load(){
+  try{
+    busy(true,'Site okunuyor…',.3);
+    const repo=await gh('');
+    if(!repo.permissions||!repo.permissions.push)throw new Error('Anahtarın bu depoya yazma izni yok. Contents: Read and write seçtiğinden emin ol.');
+    WALLS=(await readJSON('veri/duvar.json',{duvar:[]})).data.duvar||[];
+    const dir=await gh('/contents/dosyalar?ref='+BR+'&t='+Date.now(),{allow404:true});
+    FILES=(dir||[]).filter(x=>x.type==='file'&&x.name!=='.gitkeep').map(x=>({name:x.name,size:x.size,path:x.path}));
+    renderWalls();renderFiles(); $('setPw').hidden=!!BOX;
+    $('login').hidden=true;$('app').hidden=false;$('logout').hidden=false;
+    $('who').textContent='Hoşgeldin moruk. Yaptığın değişiklik 1–2 dakika içinde sitede görünür.';
+    busy(false);
+  }catch(e){
+    if(/Anahtar/.test(e.message)){ try{localStorage.removeItem('suat-gh')}catch(_){}; TOKEN=null; showLogin(/geçersiz/.test(e.message)?'tok':undefined); }
+    fail(e);
+  }
+}
+/* ---------- şifre: anahtar şifreli olarak veri/anahtar.json'da durur ---------- */
+const te=new TextEncoder(), td=new TextDecoder();
+const b64=u=>btoa(String.fromCharCode(...new Uint8Array(u))), unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function keyFrom(pw,salt,iter){const base=await crypto.subtle.importKey('raw',te.encode(pw),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);}
+async function lock(token,pw){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),iter=310000;
+  const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},await keyFrom(pw,salt,iter),te.encode(token));
+  return {v:1,iter,salt:b64(salt),iv:b64(iv),ct:b64(ct)};}
+async function unlock(box,pw){const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(box.iv)},await keyFrom(pw,unb64(box.salt),box.iter),unb64(box.ct));return td.decode(pt);}
+let BOX=null;
+function showLogin(mode){ $('login').hidden=false;$('app').hidden=true;$('logout').hidden=true;
+  const pw=(mode||(BOX?'pw':'tok'))==='pw'; $('pwMode').hidden=!pw; $('tokMode').hidden=pw; $('toPwWrap').hidden=!BOX;
+  setTimeout(()=>(pw?$('pw'):$('tok')).focus(),50); }
+$('toTok').onclick=e=>{e.preventDefault();showLogin('tok')};
+$('toPw').onclick=e=>{e.preventDefault();showLogin('pw')};
+function remember(t){ TOKEN=t; try{localStorage.setItem('suat-gh',t);localStorage.setItem('suat-mud','1')}catch(e){} }
+$('pw').addEventListener('keydown',e=>{if(e.key==='Enter')$('pwBtn').click()});
+$('pwBtn').onclick=async()=>{
+  const pw=$('pw').value; if(!pw){suat.toast('şifreyi yaz moruk');return}
+  try{ busy(true,'Kilit açılıyor…',.4); const t=await unlock(BOX,pw); $('pw').value=''; remember(t); load(); }
+  catch(e){ busy(false); suat.toast('şifre yanlış'); }
+};
+$('tokBtn').onclick=async()=>{
+  const t=$('tok').value.trim(), p1=$('pw1').value, p2=$('pw2').value;
+  if(!/^(github_pat_|ghp_)/.test(t)){suat.toast('anahtar github_pat_ ile başlar');return}
+  if(p1.length<10){suat.toast('şifre en az 10 karakter');return}
+  if(p1!==p2){suat.toast('şifreler aynı değil');return}
+  if(!crypto.subtle){fail(new Error('Şifreleme için siteyi https:// ile açman lazım.'));return}
+  remember(t);
+  try{ busy(true,'Anahtar deneniyor…',.3); const repo=await gh('');
+    if(!repo.permissions||!repo.permissions.push)throw new Error('Anahtarın bu depoya yazma izni yok. Contents: Read and write seçtiğinden emin ol.');
+    busy(true,'Şifreli kilit kaydediliyor…',.7); BOX=await lock(t,p1); await writeJSON('veri/anahtar.json',BOX,'Müdüriyet kilidi güncellendi');
+    $('tok').value=$('pw1').value=$('pw2').value=''; busy(false); suat.toast('kurulum tamam',true); load();
+  }catch(e){ try{localStorage.removeItem('suat-gh')}catch(_){}; TOKEN=null; fail(e); }
+};
+$('logout').onclick=async()=>{ if(!await ask('Bu cihazda panelden çıkılsın mı?'))return; try{localStorage.removeItem('suat-gh')}catch(e){} TOKEN=null; showLogin(); suat.toast('çıktın, görüşürüz',true); };
+
+$('spBtn').onclick=async()=>{ const p1=$('sp1').value,p2=$('sp2').value;
+  if(p1.length<10){suat.toast('şifre en az 10 karakter');return} if(p1!==p2){suat.toast('şifreler aynı değil');return}
+  try{ busy(true,'Şifreli kilit kaydediliyor…',.6); BOX=await lock(TOKEN,p1); await writeJSON('veri/anahtar.json',BOX,'Müdüriyet kilidi'); $('sp1').value=$('sp2').value=''; $('setPw').hidden=true; busy(false); suat.toast('şifre kaydedildi',true);}catch(e){fail(e)} };
+
+/* ---------- site update from Claude's zip: one commit ---------- */
+$('zipAdd').onclick=()=>$('zipIn').click();
+$('zipIn').onchange=async e=>{
+  const f=e.target.files[0]; e.target.value=''; if(!f)return;
+  if(!await ask(f.name+' siteye yüklensin mi?'))return;
+  try{
+    busy(true,'Zip açılıyor…',.05);
+    const zip=await JSZip.loadAsync(f);
+    let ent=Object.values(zip.files).filter(x=>!x.dir&&!/(^|\/)(__MACOSX|\.DS_Store)/.test(x.name));
+    const pre=ent.length&&ent.every(x=>x.name.includes('/'))&&new Set(ent.map(x=>x.name.split('/')[0])).size===1?ent[0].name.split('/')[0]+'/':'';
+    /* never overwrite what the panel manages */
+    ent=ent.filter(x=>!/^(veri\/(duvar|dosyalar|anahtar)\.json)$/.test(x.name.slice(pre.length)));
+    const ref=await gh('/git/ref/heads/'+BR), base=await gh('/git/commits/'+ref.object.sha), tree=[];
+    for(const [i,x] of ent.entries()){
+      busy(true,`${i+1}/${ent.length} ${x.name.slice(pre.length)}`,.1+.8*i/ent.length);
+      const bl=await gh('/git/blobs',{method:'POST',body:JSON.stringify({content:await x.async('base64'),encoding:'base64'})});
+      tree.push({path:x.name.slice(pre.length),mode:'100644',type:'blob',sha:bl.sha});
+    }
+    busy(true,'Kaydediliyor…',.95);
+    const tr=await gh('/git/trees',{method:'POST',body:JSON.stringify({base_tree:base.tree.sha,tree})});
+    const c=await gh('/git/commits',{method:'POST',body:JSON.stringify({message:'Site güncellendi ('+ent.length+' dosya)',tree:tr.sha,parents:[ref.object.sha]})});
+    await gh('/git/refs/heads/'+BR,{method:'PATCH',body:JSON.stringify({sha:c.sha})});
+    busy(false); suat.toast('site güncellendi',true);
+  }catch(err){ fail(err); }
+};
+
+/* ---------- wallpapers ---------- */
+async function saveWalls(msg){ await writeJSON('veri/duvar.json',{duvar:WALLS},msg); }
+$('wallIn').onchange=async e=>{
+  const fs=[...e.target.files]; e.target.value=''; if(!fs.length)return;
+  try{
+    for(let k=0;k<fs.length;k++){
+      const f=fs[k], ad=('DUVAR '+String(WALLS.length+1).padStart(2,'0'));
+      busy(true,`${f.name} hazırlanıyor (${k+1}/${fs.length})`,(k+.2)/fs.length);
+      const b64=await wallpaperB64(f);
+      const p='img/duvar/'+Date.now().toString(36)+'-'+slug(f.name.replace(/\.[^.]+$/,''))+'.jpg';
+      busy(true,`${f.name} yükleniyor (${k+1}/${fs.length})`,(k+.6)/fs.length);
+      await putFile(p,b64,'Duvar kâğıdı eklendi: '+f.name);
+      WALLS.push({dosya:p,ad,not:'',v:Date.now()});
+    }
+    busy(true,'Liste kaydediliyor…',1); await saveWalls('Duvar kâğıtları güncellendi');
+    renderWalls(); busy(false); suat.toast('tamamdır, yüklendi',true);
+  }catch(err){ fail(err); }
+};
+$('walls').addEventListener('click',async e=>{
+  const card=e.target.closest('.w'); if(!card)return; const i=+card.dataset.i, w=WALLS[i];
+  try{
+    if(e.target.closest('.ed')){
+      const ad=prompt('Adı ne olsun?',w.ad); if(ad==null)return;
+      const not=prompt('Altına küçük not (boş bırakabilirsin):',w.not||''); if(not==null)return;
+      w.ad=ad.trim()||w.ad; w.not=not.trim();
+      busy(true,'Kaydediliyor…',.6); await saveWalls('Duvar kâğıdı adı: '+w.ad); renderWalls(); busy(false); suat.toast('kaydettim',true);
+    }else if(e.target.closest('.rm')){
+      if(!await ask(`"${w.ad}" silinsin mi?`))return;
+      busy(true,'Siliniyor…',.4); WALLS.splice(i,1); await saveWalls('Duvar kâğıdı silindi: '+w.ad);
+      busy(true,'Siliniyor…',.8); await delFile(w.dosya,'Görsel silindi: '+w.ad); renderWalls(); busy(false); suat.toast('sildim',true);
+    }else if(e.target.closest('.up')||e.target.closest('.down')){
+      const j=e.target.closest('.up')?i-1:i+1; [WALLS[i],WALLS[j]]=[WALLS[j],WALLS[i]];
+      renderWalls(); busy(true,'Sıra kaydediliyor…',.6); await saveWalls('Duvar kâğıdı sırası'); busy(false);
+    }
+  }catch(err){ fail(err); }
+});
+
+/* ---------- files ---------- */
+$('fileAdd').onclick=()=>$('fileIn').click();
+$('fileIn').onchange=async e=>{
+  const fs=[...e.target.files]; e.target.value=''; if(!fs.length)return;
+  const big=fs.find(f=>f.size>25*1048576); if(big){fail(new Error(big.name+' 25 MB\'tan büyük. Daha küçük bir dosya dene.'));return;}
+  try{
+    for(let k=0;k<fs.length;k++){
+      const f=fs[k], ext=(f.name.match(/\.[^.]+$/)||[''])[0].toLowerCase(), p='dosyalar/'+slug(f.name.replace(/\.[^.]+$/,''))+ext;
+      busy(true,`${f.name} yükleniyor (${k+1}/${fs.length})`,(k+.5)/fs.length);
+      await putFile(p,await fileB64(f),'Dosya eklendi: '+f.name);
+      FILES=FILES.filter(x=>x.path!==p); FILES.push({name:p.split('/').pop(),size:f.size,path:p});
+    }
+    renderFiles(); busy(false); suat.toast('tamamdır, yüklendi',true);
+  }catch(err){ fail(err); }
+};
+$('files').addEventListener('click',async e=>{
+  const row=e.target.closest('.f'); if(!row)return; const f=FILES[+row.dataset.i];
+  if(e.target.closest('.copy')){ const url='https://suatilyus.com/'+f.path;
+    try{await navigator.clipboard.writeText(url);suat.toast('link kopyalandı',true)}catch(_){prompt('Link:',url)} return; }
+  if(e.target.closest('.rm')){
+    if(!await ask(`"${f.name}" silinsin mi?`))return;
+    try{ busy(true,'Siliniyor…',.6); await delFile(f.path,'Dosya silindi: '+f.name); FILES.splice(+row.dataset.i,1); renderFiles(); busy(false); suat.toast('sildim',true); }
+    catch(err){ fail(err); }
+  }
+});
+
+fetch('../veri/anahtar.json?'+Date.now()).then(r=>r.ok?r.json():null).catch(()=>null).then(b=>{ BOX=(b&&b.ct)?b:null; if(TOKEN) load(); else showLogin(); });
+}
+</script>
+</body>
+</html>

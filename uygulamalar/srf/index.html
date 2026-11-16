@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SRF — suatilyus Referans Fabrikası</title>
+<meta name="description" content="suatilyus Referans Fabrikası: kâğıda çöp adamdan istediğin pozu çiz, çek, biz üretelim.">
+<link rel="icon" href="../../img/icon-192.png">
+<link rel="apple-touch-icon" href="../../img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../ortak.css">
+<style>
+:root{
+  --bg:#e9ecef; --surface:#f7f8f9; --ink:#1d2126; --muted:#5f6670; --line:#cfd4da;
+  --blue:#3d86c6; --chip:#dde2e7; --chip-on:#1d2126; --chip-on-ink:#f7f8f9;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#14171a; --surface:#1d2125; --ink:#eef1f4; --muted:#9aa3ad; --line:#30363d;
+    --chip:#2a3036; --chip-on:#eef1f4; --chip-on-ink:#14171a; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#14171a; --surface:#1d2125; --ink:#eef1f4; --muted:#9aa3ad; --line:#30363d;
+  --chip:#2a3036; --chip-on:#eef1f4; --chip-on-ink:#14171a; color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.45}
+header{max-width:1240px;margin:0 auto;padding:64px 18px 6px}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
+.nav a{display:block;transition:transform .12s}
+.nav a:hover{transform:rotate(-3deg) scale(1.04)}
+.nav a:active{transform:scale(.94)}
+.nav .home{width:150px}
+.nav .geri{width:130px}
+.title{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.title img{width:min(320px,70vw);height:auto}
+@media (prefers-color-scheme: dark){.nav img,.title img{filter:drop-shadow(0 0 1px #fff)}}
+h1{font-family:"Shantell Sans","Comic Sans MS",system-ui,sans-serif;font-weight:700;font-size:clamp(28px,5vw,42px);line-height:1.05;margin:0;letter-spacing:-.01em}
+header p{margin:6px 0 0;color:var(--muted);max-width:68ch}
+main{max-width:1240px;margin:0 auto;padding:12px 18px 28px;display:grid;gap:14px;grid-template-columns:1fr}
+@media (min-width:860px){main{grid-template-columns:1fr 1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px}
+.bar + .bar{padding-top:0}
+.bar h2{font-family:"Shantell Sans",system-ui,sans-serif;font-size:18px;font-weight:700;margin:0 auto 0 4px}
+.chip{appearance:none;border:0;border-radius:999px;background:var(--chip);color:var(--ink);font:inherit;font-size:14px;padding:7px 12px;cursor:pointer}
+.chip:hover{filter:brightness(.97)}
+.chip:disabled{opacity:.5;cursor:default}
+.chip.on{background:var(--chip-on);color:var(--chip-on-ink)}
+.chip.strong{background:var(--blue);color:#fff}
+.chip:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.stage{position:relative;height:clamp(380px,64vh,700px);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
+#c2{background:#fff;cursor:crosshair}
+.photo{display:none;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:10px 12px;border-top:1px solid var(--line)}
+.photo.show{display:flex}
+.photo label{display:flex;align-items:center;gap:8px;font-size:14px}
+.photo input[type=range]{width:110px;accent-color:var(--blue)}
+.status{font-size:13.5px;color:var(--muted);flex-basis:100%}
+.status.busy::before{content:"";display:inline-block;width:10px;height:10px;margin-right:6px;border-radius:50%;
+  border:2px solid var(--blue);border-right-color:transparent;vertical-align:-1px;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.status.busy::before{animation:none}}
+.hint{padding:10px 14px 12px;color:var(--muted);font-size:13.5px}
+.hint b{color:var(--ink);font-weight:700}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;margin-right:3px}
+.controls{display:grid;grid-template-columns:1fr;gap:4px 18px;padding:12px 14px 14px}
+@media (min-width:520px){.controls{grid-template-columns:1fr 1fr}}
+.controls h3{grid-column:1/-1;margin:6px 0 0;font-size:14px;font-weight:700}
+.ctl{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 8px;font-size:14px}
+.ctl output{color:var(--muted);font-variant-numeric:tabular-nums;font-size:13px}
+.ctl input{grid-column:1/-1;width:100%;accent-color:var(--blue);margin:2px 0 6px}
+.ctl.wide{grid-column:1/-1}
+</style>
+</head>
+<body>
+<header>
+  <nav class="nav">
+    <a class="geri cz" href="../index.html" aria-label="Geri: uygulamalar"><img class="c" src="../../img/ui/geri-c.png" alt=""><img src="../../img/ui/geri.png" alt="Geri" width="466" height="170"></a>
+    <a class="home cz lit" href="../../index.html" aria-label="Ana sayfa"><img class="c" src="../../img/ui/anasayfa-c.png" alt=""><img src="../../img/ui/anasayfa.png" alt="Ana sayfa" width="370" height="105"></a>
+  </nav>
+  <div class="title"><h1 style="position:absolute;left:-9999px">SRF — suatilyus Referans Fabrikası</h1>
+    <img src="../../img/srf-tabela.png" alt="SRF — suatilyus Referans Fabrikası" width="912" height="699"></div>
+  <p><b style="color:var(--ink)">Kâğıda çöp adamdan istediğin pozu çiz, çek, biz üretelim.</b> Fotoğrafını yükle ya da çöp adamı burada sürükle; sağdaki manken aynı pozu ışığıyla gösterir, açıyı çevirip istediğin yerden çiz.</p>
+</header>
+<main>
+  <section class="panel">
+    <div class="bar">
+      <h2>Eskiz</h2>
+      <button class="chip strong" id="upload">Fotoğraf yükle</button>
+      <button class="chip" id="mirror">Aynala</button>
+      <input type="file" id="file" accept="image/*" hidden>
+    </div>
+    <div class="bar">
+      <button class="chip" data-preset="ayakta">Ayakta</button>
+      <button class="chip" data-preset="yuruyus">Yürüyüş</button>
+      <button class="chip" data-preset="kosu">Koşu</button>
+      <button class="chip" data-preset="oturma">Oturma</button>
+      <button class="chip" data-preset="uzanma">Uzanma</button>
+      <button class="chip" data-preset="kambur">Bezgin</button>
+    </div>
+    <div class="stage"><canvas id="c2" aria-label="Çöp adam eskiz alanı"></canvas></div>
+    <div class="photo" id="photoRow">
+      <label><input type="checkbox" id="showPhoto" checked> Çizimi göster</label>
+      <label>Saydamlık <input type="range" id="photoAlpha" min="10" max="100" value="45"></label>
+      <button class="chip" id="detect">Yeniden algıla</button>
+      <button class="chip" id="clearPhoto">Fotoğrafı kaldır</button>
+      <span class="status" id="status"></span>
+    </div>
+    <div class="hint">
+      <b>Sürükle:</b> eklemleri ve güneşi taşı. <b>Eklemeye dokun:</b> o uzuv öne mi arkaya mı gidiyor, değiştirir (dolu nokta öne, boş nokta arkaya, soluk çizgi arkaya giden uzuv).
+      <b>Güneşe dokun:</b> ışık önden / arkadan.
+      <br><span class="dot" style="background:var(--blue)"></span>mavi taraf figürün sol tarafı.
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="bar">
+      <h2>Referans</h2>
+      <button class="chip" data-view="0">Ön</button>
+      <button class="chip" data-view="45">¾</button>
+      <button class="chip" data-view="90">Yan</button>
+      <button class="chip" data-view="180">Arka</button>
+      <button class="chip" id="top">Kuş bakışı</button>
+    </div>
+    <div class="bar">
+      <button class="chip" data-body="kadin">Kadın</button>
+      <button class="chip" data-body="erkek">Erkek</button>
+      <button class="chip" id="myStyle">suatilyus oranı</button>
+      <button class="chip" id="normal">Normal oran</button>
+    </div>
+    <div class="stage"><canvas id="c3" aria-label="3B manken referansı"></canvas></div>
+    <div class="controls">
+      <h3>Görünüm</h3>
+      <label class="ctl wide">Yatay açı <output id="o-yaw">0°</output><input id="yaw" type="range" min="0" max="360" value="0"></label>
+      <label class="ctl">Dikey açı <output id="o-pitch">8°</output><input id="pitch" type="range" min="-35" max="85" value="8"></label>
+      <label class="ctl">Ortam ışığı <output id="o-amb">35</output><input id="amb" type="range" min="0" max="100" value="35"></label>
+      <h3>Beden</h3>
+      <label class="ctl">Kol-bacak uzunluğu <output id="o-limb">1.00×</output><input id="limb" type="range" min="100" max="160" value="100"></label>
+      <label class="ctl">Kalınlık <output id="o-thin">100</output><input id="thin" type="range" min="45" max="130" value="100"></label>
+      <label class="ctl">Kamburluk <output id="o-slouch">0°</output><input id="slouch" type="range" min="0" max="55" value="0"></label>
+      <label class="ctl">Gövde dönüşü <output id="o-twist">0°</output><input id="twist" type="range" min="-90" max="90" value="0"></label>
+      <label class="ctl wide">Baş dönüşü <output id="o-head">0°</output><input id="headturn" type="range" min="-80" max="80" value="0"></label>
+    </div>
+  </section>
+</main>
+<a class="alt-geri cz" href="../index.html" aria-label="Geri dön" style="margin:8px auto 40px"><img class="c" src="../../img/ui/geri-c.png" alt=""><img src="../../img/ui/geri.png" alt="Geri" width="466" height="170"></a>
+
+<script src="../../ortak.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+/* ---------- iskelet ---------- */
+const BASE={neck:.52,head:.20,lElbow:.31,lHand:.27,rElbow:.31,rHand:.27,lKnee:.44,lFoot:.43,rKnee:.44,rFoot:.43};
+const LEN={...BASE};
+const PARENT={neck:'pelvis',head:'neck',lElbow:'neck',lHand:'lElbow',rElbow:'neck',rHand:'rElbow',lKnee:'pelvis',lFoot:'lKnee',rKnee:'pelvis',rFoot:'rKnee'};
+const ORDER=['pelvis','neck','head','lElbow','lHand','rElbow','rHand','lKnee','lFoot','rKnee','rFoot'];
+const KIDS={};ORDER.forEach(j=>KIDS[j]=[]);Object.keys(PARENT).forEach(c=>KIDS[PARENT[c]].push(c));
+const LEFT=new Set(['lElbow','lHand','lKnee','lFoot']);
+
+const PRESETS={
+  ayakta:{pelvis:[0,.95,1],neck:[0,1.47,1],head:[0,1.67,1],lElbow:[.12,1.184,1],lHand:[.18,.921,1],rElbow:[-.12,1.184,1],rHand:[-.18,.921,1],
+          lKnee:[.06,.514,1],lFoot:[.08,.085,1],rKnee:[-.06,.514,1],rFoot:[-.08,.085,1]},
+  yuruyus:{pelvis:[0,.93,1],neck:[0,1.45,1],head:[.01,1.65,1],lElbow:[.13,1.18,-1],lHand:[.14,.95,-1],rElbow:[-.13,1.18,1],rHand:[-.12,.94,1],
+          lKnee:[.05,.55,1],lFoot:[.06,.13,1],rKnee:[-.05,.51,-1],rFoot:[-.07,.12,-1]},
+  kosu:{pelvis:[0,.95,1],neck:[.02,1.45,1],head:[.03,1.64,1],lElbow:[.15,1.23,-1],lHand:[.13,1.0,1],rElbow:[-.14,1.22,1],rHand:[-.10,1.32,1],
+          lKnee:[.05,.75,1],lFoot:[.04,.36,-1],rKnee:[-.05,.55,-1],rFoot:[-.06,.25,-1]},
+  oturma:{pelvis:[0,.52,1],neck:[0,1.04,-1],head:[0,1.24,1],lElbow:[.15,.77,1],lHand:[.13,.57,1],rElbow:[-.15,.77,1],rHand:[-.13,.57,1],
+          lKnee:[.1,.5,1],lFoot:[.11,.08,1],rKnee:[-.1,.5,1],rFoot:[-.11,.08,1]},
+  uzanma:{pelvis:[0,.95,1],neck:[0,1.47,1],head:[0,1.67,1],lElbow:[.29,1.58,1],lHand:[.4,1.83,1],rElbow:[-.3,1.4,1],rHand:[-.57,1.42,1],
+          lKnee:[.12,.53,1],lFoot:[.2,.11,1],rKnee:[-.03,.6,1],rFoot:[-.06,.18,-1]},
+  kambur:{pelvis:[0,.6,1],neck:[.03,1.11,-1],head:[.05,1.28,1],lElbow:[.1,.82,1],lHand:[.08,.6,1],rElbow:[-.09,.83,1],rHand:[-.06,.62,1],
+          lKnee:[.14,.62,1],lFoot:[.16,.2,1],rKnee:[-.13,.6,1],rFoot:[-.15,.18,1]}
+};
+
+const S={p:{},s:{},light:{x:-.55,y:1.85,front:true},yaw:0,pitch:8,twist:0,head:0,amb:35,limb:1,thin:1,slouch:0,body:'kadin'};
+let T=null; // fotoğraf izi
+
+function lenFor(j,f){if(j==='neck')return BASE.neck*(1+(f-1)*.25);if(j==='head')return BASE.head*(1+(f-1)*.45);return BASE[j]*f;}
+const hf=()=>.45+.55*S.limb;
+function setLimb(f){
+  const old={...LEN},P0=JSON.parse(JSON.stringify(S.p));
+  ORDER.forEach(j=>{if(PARENT[j])LEN[j]=lenFor(j,f)});
+  ORDER.slice(1).forEach(j=>{const pp=PARENT[j],r=LEN[j]/old[j];
+    S.p[j]=[S.p[pp][0]+(P0[j][0]-P0[pp][0])*r,S.p[pp][1]+(P0[j][1]-P0[pp][1])*r];});
+  S.limb=f;groundFigure();
+}
+function groundFigure(){
+  let m=Infinity;ORDER.forEach(j=>m=Math.min(m,S.p[j][1]));
+  const dy=.08-m;ORDER.forEach(j=>S.p[j][1]+=dy);if(T&&T.s)T.oy+=dy;
+}
+function applyPreset(name){
+  const P=PRESETS[name],f=S.limb;
+  ORDER.forEach(j=>{if(PARENT[j])LEN[j]=BASE[j]});
+  ORDER.forEach(j=>{S.p[j]=[P[j][0],P[j][1]];S.s[j]=P[j][2];});
+  ORDER.forEach(j=>{if(PARENT[j])S.p[j]=clampTo(j)});
+  S.limb=1;setLimb(f);
+  if(name==='kambur'){S.slouch=35;S.head=0;setSlider('slouch',35);}
+  markPreset(name);redraw();
+}
+function markPreset(n){document.querySelectorAll('[data-preset]').forEach(b=>b.classList.toggle('on',b.dataset.preset===n));}
+function clampTo(j){
+  const pp=S.p[PARENT[j]],p=S.p[j],L=LEN[j];
+  let dx=p[0]-pp[0],dy=p[1]-pp[1],d=Math.hypot(dx,dy);
+  if(d>L){const k=L/d;dx*=k;dy*=k;}
+  return [pp[0]+dx,pp[1]+dy];
+}
+function subtree(j,out=[]){out.push(j);KIDS[j].forEach(k=>subtree(k,out));return out;}
+function moveJoint(j,t){
+  let nx=t[0],ny=t[1];
+  if(PARENT[j]){const pp=S.p[PARENT[j]],L=LEN[j];let dx=nx-pp[0],dy=ny-pp[1],d=Math.hypot(dx,dy);
+    if(d>L){dx*=L/d;dy*=L/d;}nx=pp[0]+dx;ny=pp[1]+dy;}
+  const ddx=nx-S.p[j][0],ddy=ny-S.p[j][1];
+  subtree(j).forEach(k=>{S.p[k]=[S.p[k][0]+ddx,S.p[k][1]+ddy]});
+}
+function depthOf(j){const pp=S.p[PARENT[j]],p=S.p[j],L=LEN[j];const d=Math.hypot(p[0]-pp[0],p[1]-pp[1]);return Math.sqrt(Math.max(0,L*L-d*d));}
+function lift(){
+  const P={pelvis:[S.p.pelvis[0],S.p.pelvis[1],0]};
+  ORDER.slice(1).forEach(j=>{P[j]=[S.p[j][0],S.p[j][1],P[PARENT[j]][2]+S.s[j]*depthOf(j)]});
+  return P;
+}
+
+/* ---------- 2B eskiz ---------- */
+const c2=document.getElementById('c2'),ctx=c2.getContext('2d');
+let W2=0,H2=0,SC=1;
+function size2(){const r=c2.getBoundingClientRect(),dpr=Math.min(window.devicePixelRatio||1,2);
+  W2=r.width;H2=r.height;c2.width=Math.round(W2*dpr);c2.height=Math.round(H2*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);}
+function calcSC(){SC=Math.min(H2/(1.9*hf()+.3),W2/(1.7*hf()));}
+const toPx=(x,y)=>[W2/2+x*SC,H2-(y+.12)*SC];
+const toW=(px,py)=>[(px-W2/2)/SC,(H2-py)/SC-.12];
+
+function draw2D(){
+  calcSC();
+  ctx.globalAlpha=1;ctx.clearRect(0,0,W2,H2);ctx.fillStyle='#fff';ctx.fillRect(0,0,W2,H2);
+  if(T&&T.show&&T.s){const tl=toPx(T.ox,T.oy);ctx.globalAlpha=T.alpha;
+    ctx.drawImage(T.img,tl[0],tl[1],T.img.width*T.s*SC,T.img.height*T.s*SC);ctx.globalAlpha=1;}
+  const g=toPx(0,0);ctx.strokeStyle='#e6e9ec';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,g[1]);ctx.lineTo(W2,g[1]);ctx.stroke();
+
+  const L=toPx(S.light.x,S.light.y),r=15;
+  ctx.save();ctx.strokeStyle='#d8a400';ctx.lineWidth=2;ctx.lineCap='round';
+  for(let i=0;i<8;i++){const a=i*Math.PI/4;ctx.beginPath();ctx.moveTo(L[0]+Math.cos(a)*(r+5),L[1]+Math.sin(a)*(r+5));ctx.lineTo(L[0]+Math.cos(a)*(r+11),L[1]+Math.sin(a)*(r+11));ctx.stroke();}
+  ctx.beginPath();ctx.arc(L[0],L[1],r,0,Math.PI*2);
+  if(S.light.front){ctx.fillStyle='#f2c230';ctx.fill();}else{ctx.fillStyle='#fff';ctx.fill();ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);}
+  ctx.stroke();ctx.fillStyle='#8a6a00';ctx.font='700 12px "Atkinson Hyperlegible",system-ui';ctx.textAlign='center';
+  ctx.fillText(S.light.front?'önden':'arkadan',L[0],L[1]+r+26);ctx.restore();
+
+  const P3=lift();
+  ctx.lineCap='round';ctx.lineJoin='round';
+  const bones=[['pelvis','neck'],['neck','lElbow'],['lElbow','lHand'],['neck','rElbow'],['rElbow','rHand'],['pelvis','lKnee'],['lKnee','lFoot'],['pelvis','rKnee'],['rKnee','rFoot']];
+  bones.sort((a,b)=>(P3[a[0]][2]+P3[a[1]][2])-(P3[b[0]][2]+P3[b[1]][2])).forEach(([a,b])=>{
+    const A=toPx(...S.p[a]),B=toPx(...S.p[b]),back=S.s[b]<0&&depthOf(b)>.03;
+    ctx.strokeStyle=LEFT.has(b)?'#3d86c6':'#1d2126';ctx.globalAlpha=back?.35:1;ctx.lineWidth=back?5:6.5;
+    ctx.beginPath();ctx.moveTo(A[0],A[1]);ctx.lineTo(B[0],B[1]);ctx.stroke();ctx.globalAlpha=1;
+  });
+  const N=toPx(...S.p.neck),Hh=toPx(...S.p.head),hr=.11*SC;
+  const vx=Hh[0]-N[0],vy=Hh[1]-N[1],vl=Math.hypot(vx,vy)||1;
+  ctx.strokeStyle='#1d2126';ctx.lineWidth=6.5;
+  ctx.beginPath();ctx.moveTo(N[0],N[1]);ctx.lineTo(Hh[0]-vx/vl*hr,Hh[1]-vy/vl*hr);ctx.stroke();
+  ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(Hh[0],Hh[1],hr,0,Math.PI*2);ctx.fill();ctx.stroke();
+
+  ORDER.forEach(j=>{
+    const [x,y]=toPx(...S.p[j]),flat=!PARENT[j]||depthOf(j)<.03,col=LEFT.has(j)?'#3d86c6':'#1d2126';
+    ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,j==='head'||flat?5:7,0,Math.PI*2);
+    if(flat||S.s[j]>0){ctx.fillStyle=col;ctx.fill();}else{ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle=col;ctx.stroke();}
+    if(j==='pelvis'){ctx.strokeStyle='#1d2126';ctx.beginPath();ctx.arc(x,y,10,0,Math.PI*2);ctx.stroke();}
+  });
+}
+
+let drag=null;
+function local(e){const r=c2.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];}
+function hit(px,py){
+  const L=toPx(S.light.x,S.light.y);if(Math.hypot(px-L[0],py-L[1])<26)return 'light';
+  let best=null,bd=24;
+  [...ORDER].reverse().forEach(j=>{const p=toPx(...S.p[j]);const d=Math.hypot(px-p[0],py-p[1]);if(d<bd){bd=d;best=j;}});
+  return best;
+}
+c2.addEventListener('pointerdown',e=>{
+  const [x,y]=local(e),h=hit(x,y);if(!h)return;
+  e.preventDefault();c2.setPointerCapture(e.pointerId);
+  const w=toW(x,y),o=h==='light'?[S.light.x,S.light.y]:S.p[h];
+  drag={h,sx:x,sy:y,moved:false,off:[o[0]-w[0],o[1]-w[1]]};
+});
+c2.addEventListener('pointermove',e=>{
+  if(!drag)return;const [x,y]=local(e);
+  if(!drag.moved&&Math.hypot(x-drag.sx,y-drag.sy)>6)drag.moved=true;
+  if(!drag.moved)return;
+  const w=toW(x,y),t=[w[0]+drag.off[0],w[1]+drag.off[1]];
+  if(drag.h==='light'){S.light.x=t[0];S.light.y=t[1];}else moveJoint(drag.h,t);
+  markPreset(null);redraw();
+});
+c2.addEventListener('pointerup',()=>{
+  if(drag&&!drag.moved){if(drag.h==='light')S.light.front=!S.light.front;else if(drag.h!=='pelvis')S.s[drag.h]*=-1;redraw();}
+  drag=null;
+});
+c2.addEventListener('pointercancel',()=>drag=null);
+
+document.getElementById('mirror').addEventListener('click',()=>{
+  const cx=S.p.pelvis[0],np={},ns={};
+  ORDER.forEach(j=>{const m=j[0]==='l'?'r'+j.slice(1):j[0]==='r'?'l'+j.slice(1):j;np[m]=[2*cx-S.p[j][0],S.p[j][1]];ns[m]=S.s[j];});
+  S.p=np;S.s=ns;S.light.x=2*cx-S.light.x;redraw();
+});
+
+/* ---------- fotoğraftan eskiz ---------- */
+const fileIn=document.getElementById('file'),photoRow=document.getElementById('photoRow'),statusEl=document.getElementById('status'),detectBtn=document.getElementById('detect');
+let sample=null;
+(async()=>{try{if(window.claude&&claude.use){sample=await claude.use('sample');
+  if(sample){const lim=await sample.limits().catch(()=>null);if(!lim||!lim.images)sample=null;}}}catch(e){sample=null;}
+  detectBtn.hidden=!sample;})();
+function setStatus(t,busy){statusEl.textContent=t;statusEl.classList.toggle('busy',!!busy);}
+
+document.getElementById('upload').addEventListener('click',()=>fileIn.click());
+fileIn.addEventListener('change',async()=>{
+  const f=fileIn.files[0];fileIn.value='';if(!f)return;
+  try{
+    const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=URL.createObjectURL(f);});
+    const k=Math.min(1,1024/Math.max(img.naturalWidth,img.naturalHeight));
+    const cv=document.createElement('canvas');cv.width=Math.round(img.naturalWidth*k);cv.height=Math.round(img.naturalHeight*k);
+    const cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(img,0,0,cv.width,cv.height);
+    T={img:cv,show:true,alpha:+document.getElementById('photoAlpha').value/100};
+    document.getElementById('showPhoto').checked=true;
+    fitTrace();photoRow.classList.add('show');redraw();
+    if(sample)detect();else setStatus('Çizimin eskiz alanının arkasına yerleşti. Eklemleri çizgilerin üstüne sürükle.');
+  }catch(e){setStatus('Bu dosya açılamadı. JPG ya da PNG bir fotoğraf dene.');photoRow.classList.add('show');}
+});
+function fitTrace(){
+  calcSC();const w=T.img.width,h=T.img.height;
+  const s=Math.min(1.9*hf()/h,(W2/SC*.95)/w);T.s=s;T.ox=-w*s/2;T.oy=h*s;
+}
+document.getElementById('showPhoto').addEventListener('change',e=>{if(T){T.show=e.target.checked;draw2D();}});
+document.getElementById('photoAlpha').addEventListener('input',e=>{if(T){T.alpha=+e.target.value/100;draw2D();}});
+document.getElementById('clearPhoto').addEventListener('click',()=>{T=null;photoRow.classList.remove('show');setStatus('');draw2D();});
+detectBtn.addEventListener('click',()=>detect());
+
+const PROMPT=`The image is a photo or scan of a very simple hand-drawn stick figure on paper (Turkish "Cin Ali" style: circle head, one line for the torso, lines for arms and legs). Locate its joints.
+Return ONLY a JSON object, no prose, no code fences, in exactly this shape:
+{"found":true,"joints":{"head":[x,y],"neck":[x,y],"pelvis":[x,y],"lElbow":[x,y],"lHand":[x,y],"rElbow":[x,y],"rHand":[x,y],"lKnee":[x,y],"lFoot":[x,y],"rKnee":[x,y],"rFoot":[x,y]},"depth":{"neck":"flat","lElbow":"flat","lHand":"flat","rElbow":"flat","rHand":"flat","lKnee":"flat","lFoot":"flat","rKnee":"flat","rFoot":"flat"}}
+Rules:
+- x and y are fractions of the image width and height (0 to 1, origin at the top-left corner).
+- head = centre of the head circle. neck = top end of the torso line (where the head connects). pelvis = bottom end of the torso line where the legs start.
+- Assume the figure faces the viewer unless it is clearly drawn otherwise. "l" joints belong to the figure's own LEFT side, which appears on the viewer's RIGHT side of the image.
+- lHand/rHand and lFoot/rFoot are the ends of the arm and leg lines. If an arm or leg is drawn straight without a bend, put the elbow or knee at its midpoint. If a limb is missing, guess a natural position.
+- depth: for each listed joint say whether the segment that ends at that joint points "front" (toward the viewer), "back" (away from the viewer) or "flat", judging from overlaps, shortened lines and the intent of the pose.
+- If there is no stick figure in the image, return {"found":false}.`;
+
+async function detect(){
+  if(!sample||!T)return;
+  detectBtn.disabled=true;setStatus('Çizim okunuyor, birkaç saniye sürebilir…',true);
+  try{
+    const blob=await new Promise(r=>T.img.toBlob(r,'image/jpeg',.88));
+    const data=await sample.json(PROMPT,{images:[blob],modelTier:'default'});
+    if(!applyDetection(data)){setStatus('Çizimde bir çöp adam bulamadım. Daha net bir fotoğraf dene ya da eklemleri elle taşı.');return;}
+    setStatus('Poz yerleşti. Yanlış duran eklemleri sürükleyerek düzelt, öne/arkaya için eklemeye dokun.');
+  }catch(e){
+    const c=e&&e.code;
+    setStatus(c==='not_granted'?'Algılamaya izin verilmedi. Eklemleri çizimin üstüne elle taşıyabilirsin.'
+      :c==='rate_limited'?'Şu an çok fazla istek var. Biraz bekleyip “Yeniden algıla”ya bas.'
+      :c==='cancelled'?'':'Algılama başarısız oldu. “Yeniden algıla”yı dene ya da eklemleri elle taşı.');
+  }finally{detectBtn.disabled=false;}
+}
+function applyDetection(d){
+  if(!d||!d.found||!d.joints)return false;
+  const w=T.img.width,h=T.img.height,px={};
+  for(const j of ORDER){const v=d.joints[j];if(!Array.isArray(v)||v.length<2||!isFinite(v[0])||!isFinite(v[1]))return false;
+    px[j]=[Math.min(1,Math.max(0,v[0]))*w,Math.min(1,Math.max(0,v[1]))*h];}
+  const ratios=ORDER.slice(1).map(j=>Math.hypot(px[j][0]-px[PARENT[j]][0],px[j][1]-px[PARENT[j]][1])/LEN[j]).filter(r=>r>0).sort((a,b)=>a-b);
+  if(!ratios.length)return false;
+  const k=ratios[Math.floor(.75*(ratios.length-1))],s=1/k;
+  let low=0;ORDER.forEach(j=>low=Math.max(low,px[j][1]));
+  T.s=s;T.oy=.08+low*s;T.ox=-px.pelvis[0]*s;
+  ORDER.forEach(j=>{S.p[j]=[px[j][0]*s+T.ox,T.oy-px[j][1]*s];});
+  ORDER.forEach(j=>{if(PARENT[j]){S.p[j]=clampTo(j);const dd=d.depth&&d.depth[j];S.s[j]=dd==='back'?-1:1;}});
+  markPreset(null);redraw();return true;
+}
+
+/* ---------- 3B manken ---------- */
+const c3=document.getElementById('c3');
+const renderer=new THREE.WebGLRenderer({canvas:c3,antialias:true});
+renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputEncoding=THREE.sRGBEncoding;
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xdfe3e7);
+const camera=new THREE.PerspectiveCamera(30,1,.05,60);
+const hemi=new THREE.HemisphereLight(0xffffff,0x6e7680,.35);scene.add(hemi);
+const sun=new THREE.DirectionalLight(0xfff4e0,1.6);sun.castShadow=true;
+sun.shadow.mapSize.set(1024,1024);Object.assign(sun.shadow.camera,{left:-2,right:2,top:2,bottom:-2,near:.5,far:14});
+sun.shadow.bias=-.0006;sun.shadow.normalBias=.02;scene.add(sun,sun.target);
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.ShadowMaterial({opacity:.22}));
+floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
+const grid=new THREE.GridHelper(4,16,0xb7bec6,0xc9cfd5);scene.add(grid);
+
+const std=c=>new THREE.MeshStandardMaterial({color:c,roughness:.7,metalness:0});
+const mat=std(0xb9b2a8),matL=std(0x8fb3d4),matDark=std(0x4a4f56),matHair=std(0x5b4a3b),matStick=std(0xc8452f);
+const Y=new THREE.Vector3(0,1,0);
+function mesh(geo,m){const o=new THREE.Mesh(geo,m);o.castShadow=true;o.receiveShadow=true;scene.add(o);return o;}
+const sph=(r,m)=>mesh(new THREE.SphereGeometry(r,28,20),m);
+const ell=m=>mesh(new THREE.SphereGeometry(1,32,24),m);
+const cyl=(rb,rt,m)=>mesh(new THREE.CylinderGeometry(rt,rb,1,24,1),m);
+function place(o,a,b,rs=1){const d=b.clone().sub(a),l=d.length();o.position.copy(a).addScaledVector(d,.5);o.scale.set(rs,Math.max(l,1e-4),rs);
+  if(l>1e-6)o.quaternion.setFromUnitVectors(Y,d.multiplyScalar(1/l));}
+function orient(o,B,pos,sx,sy,sz){o.position.copy(pos);o.scale.set(sx,sy,sz);o.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(B.x,B.y,B.z));}
+function basis(u,f){let x=new THREE.Vector3().crossVectors(u,f);if(x.lengthSq()<1e-6)x.set(1,0,0);x.normalize();
+  const z=new THREE.Vector3().crossVectors(x,u).normalize();return{x,y:u.clone(),z};}
+
+const M={
+  pelvis:ell(mat),waist:cyl(.095,.11,mat),chest:ell(mat),neck:cyl(.042,.038,mat),head:ell(mat),nose:sph(.02,matDark),
+  bustL:sph(.048,matL),bustR:sph(.048,mat),hair:ell(matHair),bun:sph(.055,matHair),stick:cyl(.009,.009,matStick),
+  shL:sph(.055,matL),shR:sph(.055,mat),uaL:cyl(.05,.04,matL),uaR:cyl(.05,.04,mat),elL:sph(.04,matL),elR:sph(.04,mat),
+  faL:cyl(.038,.03,matL),faR:cyl(.038,.03,mat),hdL:ell(matL),hdR:ell(mat),
+  hpL:sph(.07,matL),hpR:sph(.07,mat),thL:cyl(.075,.055,matL),thR:cyl(.075,.055,mat),knL:sph(.052,matL),knR:sph(.052,mat),
+  shnL:cyl(.05,.037,matL),shnR:cyl(.05,.037,mat),anL:sph(.036,matL),anR:sph(.036,mat),ftL:ell(matL),ftR:ell(mat)
+};
+const target=new THREE.Vector3();let camDist=4;
+
+function update3D(){
+  const P=lift(),v=a=>new THREE.Vector3(a[0],a[1],a[2]);
+  const fem=S.body==='kadin',th=S.thin,thB=.55+.45*th,tf=LEN.neck/BASE.neck,sl=S.slouch*Math.PI/180;
+  const pel=v(P.pelvis),nk=v(P.neck),hd=v(P.head);
+  const up=nk.clone().sub(pel).normalize();
+  const hipB=basis(up,new THREE.Vector3(0,0,1));
+  const upC=up.clone().applyAxisAngle(hipB.x,sl);
+  const chB=basis(upC,hipB.z.clone().applyAxisAngle(upC,S.twist*Math.PI/180));
+  const hdS=hd.clone().addScaledVector(chB.z,.13*Math.sin(sl)).addScaledVector(up,-.05*Math.sin(sl));
+  const upH=hdS.clone().sub(nk).normalize();
+  const hB=basis(upH,chB.z.clone().applyAxisAngle(upH,S.head*Math.PI/180));
+  const rel=(a,b)=>v(P[a]).sub(v(P[b]));
+
+  const chestC=nk.clone().addScaledVector(upC,-.2*tf);
+  orient(M.pelvis,hipB,pel.clone().addScaledVector(up,.01),(fem?.17:.155)*thB,fem?.12:.11,(fem?.115:.105)*thB);
+  place(M.waist,pel.clone().addScaledVector(up,.04),chestC,thB*(fem?.78:1));
+  orient(M.chest,chB,chestC,(fem?.145:.17)*thB,(fem?.17:.2)*tf,(fem?.1:.11)*thB);
+  place(M.neck,nk.clone().addScaledVector(upC,-.03),hdS.clone().addScaledVector(upH,-.08),th);
+  orient(M.head,hB,hdS,.095,.12,.105);
+  M.nose.position.copy(hdS).addScaledVector(hB.z,.1).addScaledVector(upH,-.012);
+
+  [M.bustL,M.bustR,M.hair,M.bun,M.stick].forEach(m=>m.visible=fem);
+  if(fem){
+    [[M.bustL,1],[M.bustR,-1]].forEach(([m,sg])=>{m.position.copy(chestC).addScaledVector(chB.z,.072*thB).addScaledVector(chB.x,.055*thB*sg).addScaledVector(upC,.015*tf);m.scale.setScalar(thB);});
+    orient(M.hair,hB,hdS.clone().addScaledVector(hB.z,-.03).addScaledVector(upH,.015),.1,.122,.095);
+    const bun=hdS.clone().addScaledVector(upH,.115).addScaledVector(hB.z,-.045);M.bun.position.copy(bun);
+    place(M.stick,bun.clone().addScaledVector(hB.x,-.15).addScaledVector(upH,-.01),bun.clone().addScaledVector(hB.x,.15).addScaledVector(upH,.035));
+  }
+
+  const arm=(side,sh,ua,el,fa,hn)=>{
+    const sg=side==='l'?1:-1;
+    const s=nk.clone().addScaledVector(chB.x,(fem?.145:.165)*sg*thB).addScaledVector(upC,-.05);
+    const e=s.clone().add(rel(side+'Elbow','neck')),h=e.clone().add(rel(side+'Hand',side+'Elbow'));
+    sh.position.copy(s);sh.scale.setScalar(thB);place(ua,s,e,th);el.position.copy(e);el.scale.setScalar(th);place(fa,e,h,th);
+    const hb=basis(h.clone().sub(e).normalize(),chB.z);orient(hn,hb,h.clone().addScaledVector(hb.y,.04*S.limb),.034*thB,.07*S.limb,.02*thB);
+    return [s,e,h];
+  };
+  const leg=(side,hp,thg,kn,sn,an,ft)=>{
+    const sg=side==='l'?1:-1;
+    const hpP=pel.clone().addScaledVector(hipB.x,(fem?.1:.09)*sg*thB).addScaledVector(up,-.05);
+    const k=hpP.clone().add(rel(side+'Knee','pelvis')),f=k.clone().add(rel(side+'Foot',side+'Knee'));
+    hp.position.copy(hpP);hp.scale.setScalar(thB);place(thg,hpP,k,th);kn.position.copy(k);kn.scale.setScalar(th);place(sn,k,f,th);an.position.copy(f);an.scale.setScalar(th);
+    const fz=hipB.z.clone().setY(0);const fb=basis(Y.clone(),fz.lengthSq()>1e-4?fz.normalize():new THREE.Vector3(0,0,1));
+    orient(ft,fb,f.clone().addScaledVector(fb.z,.055).add(new THREE.Vector3(0,-.03,0)),.045*thB,.035,.11*(.7+.3*S.limb));
+    return [hpP,k,f];
+  };
+  const pts=[pel,nk,hdS.clone().addScaledVector(upH,fem?.17:.12),
+    ...arm('l',M.shL,M.uaL,M.elL,M.faL,M.hdL),...arm('r',M.shR,M.uaR,M.elR,M.faR,M.hdR),
+    ...leg('l',M.hpL,M.thL,M.knL,M.shnL,M.anL,M.ftL),...leg('r',M.hpR,M.thR,M.knR,M.shnR,M.anR,M.ftR)];
+
+  const box=new THREE.Box3().setFromPoints(pts);
+  const fy=box.min.y-.07;floor.position.y=fy;grid.position.set(pel.x,fy+.001,pel.z);
+  box.min.y=fy;box.getCenter(target);
+  const sz=box.getSize(new THREE.Vector3()),span=Math.max(sz.x,sz.y,sz.z,1.2);
+  camDist=(span*.62)/Math.tan(THREE.MathUtils.degToRad(15))+.4;
+
+  let cx=0,cy=0;ORDER.forEach(j=>{cx+=S.p[j][0];cy+=S.p[j][1];});cx/=ORDER.length;cy/=ORDER.length;
+  const ld=new THREE.Vector3(S.light.x-cx,S.light.y-cy,S.light.front?.9:-.9).normalize();
+  sun.position.copy(target).addScaledVector(ld,6);sun.target.position.copy(target);
+  hemi.intensity=S.amb/100;needs3=true;
+}
+function placeCamera(){
+  const a=THREE.MathUtils.degToRad(S.yaw),b=THREE.MathUtils.degToRad(S.pitch);
+  camera.position.set(target.x+Math.sin(a)*Math.cos(b)*camDist,target.y+Math.sin(b)*camDist,target.z+Math.cos(a)*Math.cos(b)*camDist);
+  camera.lookAt(target);
+}
+function size3(){const r=c3.getBoundingClientRect();renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+  renderer.setSize(r.width,r.height,false);camera.aspect=r.width/Math.max(r.height,1);camera.updateProjectionMatrix();needs3=true;}
+let needs3=true;
+(function loop(){if(needs3){placeCamera();renderer.render(scene,camera);needs3=false;}requestAnimationFrame(loop);})();
+
+let rot=null;
+c3.addEventListener('pointerdown',e=>{c3.setPointerCapture(e.pointerId);rot={x:e.clientX,y:e.clientY,yaw:S.yaw,pitch:S.pitch};});
+c3.addEventListener('pointermove',e=>{if(!rot)return;
+  S.yaw=((rot.yaw-(e.clientX-rot.x)*.45)%360+360)%360;S.pitch=Math.max(-35,Math.min(85,rot.pitch+(e.clientY-rot.y)*.3));
+  setSlider('yaw',S.yaw);setSlider('pitch',S.pitch);needs3=true;});
+c3.addEventListener('pointerup',()=>rot=null);c3.addEventListener('pointercancel',()=>rot=null);
+
+/* ---------- kontroller ---------- */
+const CTL={yaw:['yaw','o-yaw',v=>Math.round(v)+'°'],pitch:['pitch','o-pitch',v=>Math.round(v)+'°'],amb:['amb','o-amb',v=>Math.round(v)],
+  twist:['twist','o-twist',v=>Math.round(v)+'°'],headturn:['head','o-head',v=>Math.round(v)+'°'],slouch:['slouch','o-slouch',v=>Math.round(v)+'°'],
+  thin:['thin','o-thin',v=>Math.round(v*100)],limb:['limb','o-limb',v=>v.toFixed(2)+'×']};
+function setSlider(id,val){const c=CTL[id],el=document.getElementById(id);
+  el.value=(id==='thin'||id==='limb')?Math.round(val*100):Math.round(val);document.getElementById(c[1]).textContent=c[2](val);}
+Object.keys(CTL).forEach(id=>{
+  const el=document.getElementById(id),c=CTL[id];
+  el.addEventListener('input',()=>{
+    let val=+el.value;if(id==='thin'||id==='limb')val/=100;
+    document.getElementById(c[1]).textContent=c[2](val);
+    if(id==='limb'){setLimb(val);redraw();return;}
+    S[c[0]]=val;if(id==='yaw'||id==='pitch')needs3=true;else update3D();
+  });
+});
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{S.yaw=+b.dataset.view;S.pitch=8;setSlider('yaw',S.yaw);setSlider('pitch',8);needs3=true;}));
+document.getElementById('top').addEventListener('click',()=>{S.pitch=70;setSlider('pitch',70);needs3=true;});
+document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>applyPreset(b.dataset.preset)));
+function setBody(b){S.body=b;document.querySelectorAll('[data-body]').forEach(x=>x.classList.toggle('on',x.dataset.body===b));update3D();}
+document.querySelectorAll('[data-body]').forEach(b=>b.addEventListener('click',()=>setBody(b.dataset.body)));
+function setProps(limb,thin,slouch){
+  S.thin=thin;S.slouch=slouch;setSlider('thin',thin);setSlider('slouch',slouch);setSlider('limb',limb);setLimb(limb);redraw();
+}
+document.getElementById('myStyle').addEventListener('click',()=>setProps(1.38,.62,22));
+document.getElementById('normal').addEventListener('click',()=>setProps(1,1,0));
+
+function redraw(){draw2D();update3D();}
+const ro=new ResizeObserver(()=>{size2();size3();redraw();});
+ro.observe(c2);ro.observe(c3);
+size2();size3();setBody('kadin');applyPreset('ayakta');
+})();
+</script>
+</body>
+</html>

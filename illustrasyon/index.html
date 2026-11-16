@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>İllüstrasyon — suatilyus</title>
+<meta name="description" content="suatilyus çizimleri — telefonun için ücretsiz duvar kâğıtları.">
+<link rel="icon" href="../img/icon-192.png">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="manifest" href="../manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../ortak.css">
+<style>
+:root{--ink:#111}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fff;color:var(--ink);font-family:"Patrick Hand",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+.page{width:min(100%,520px);margin:0 auto;container-type:inline-size;padding:calc(env(safe-area-inset-top) + 15cqw) 6cqw 16cqw;display:flex;flex-direction:column;align-items:center}
+.amblem{width:80cqw;transition:transform .2s}
+.amblem:hover{transform:rotate(-2deg) scale(1.03)}
+h1{font-size:11cqw;font-weight:400;letter-spacing:.04em;margin-top:5cqw;line-height:1}
+.sub{font-size:5cqw;margin-top:1.5cqw;color:#555;text-align:center}
+.divider{width:100%;margin:6cqw 0 5cqw}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:5cqw;width:100%}
+.wp{appearance:none;border:0;background:none;padding:0;cursor:pointer;text-align:center;font:inherit;color:inherit}
+.frame{aspect-ratio:1290/2796;border:.6cqw solid var(--ink);border-radius:5cqw;outline:.3cqw solid var(--ink);outline-offset:-2cqw;overflow:hidden;background:#f3f3f3;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.frame img{width:100%;height:100%;object-fit:cover}
+.frame.empty{background:#fafafa}
+.frame.empty img{display:none}
+.frame.empty::before{content:"YAKINDA";font-size:6cqw;color:#aaa;letter-spacing:.05em}
+.wp{position:relative}
+.wp .tag{position:absolute;width:16cqw;top:-2.5cqw;right:-2cqw;transform:rotate(8deg);z-index:2}
+.wp:hover .frame{transform:rotate(-1.5deg)}
+.wp b{display:block;font-weight:400;font-size:5.2cqw;margin-top:1.6cqw;letter-spacing:.03em}
+.wp span{display:block;font-size:4cqw;color:#777}
+
+.view{position:fixed;inset:0;background:rgba(255,255,255,.97);display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:calc(env(safe-area-inset-top) + 16px) 16px calc(env(safe-area-inset-bottom) + 16px);z-index:9}
+.view.show{display:flex}
+.view .big{max-height:72vh;width:auto;border:3px solid var(--ink);border-radius:22px}
+.view .row{display:flex;gap:18px;align-items:center}
+.view .dl{width:120px}
+.view .share{width:48px}
+.view .x{width:150px}
+.view .tip{font-size:16px;color:#666;text-align:center;max-width:32ch}
+</style>
+</head>
+<body>
+<main class="page">
+  <a href="../index.html" aria-label="Ana sayfaya dön" style="display:block"><span class="amblem cz lit"><img class="c" src="../img/ui/amblem-c.png" alt=""><img src="../img/ui/amblem.png" alt="Ana sayfa" width="865" height="286"></span></a>
+  <h1>İLLÜSTRASYON</h1>
+  <p class="sub">telefonun için duvar kâğıdı, al senin olsun</p>
+  <img class="divider" src="../img/divider.png" alt="" width="1062" height="54">
+  <div class="grid" id="grid"></div>
+  <a class="alt-geri cz" href="../index.html" aria-label="Geri dön"><img class="c" src="../img/ui/geri-c.png" alt=""><img src="../img/ui/geri.png" alt="Geri" width="466" height="170"></a>
+</main>
+<script src="../ortak.js"></script>
+
+<div class="view" id="view" role="dialog" aria-modal="true" aria-label="Duvar kâğıdı">
+  <img class="big" id="big" alt="">
+  <div class="row">
+    <a class="dl cz" id="dl" download><img class="c" src="../img/ui/indir-a-c.png" alt=""><img src="../img/ui/indir-a.png" alt="İndir" width="200" height="109"></a>
+    <button class="share cz" id="share" hidden><img class="c" src="../img/ui/ikon-paylas-c.png" alt=""><img src="../img/ui/ikon-paylas.png" alt="Paylaş" width="96" height="154"></button>
+    <button class="x cz" id="close"><img class="c" src="../img/ui/cikis-c.png" alt=""><img src="../img/ui/cikis.png" alt="Kapat" width="407" height="143"></button>
+  </div>
+  <p class="tip">iPhone'da görsele basılı tut → "Fotoğraflara Kaydet". Sonra Ayarlar → Duvar Kâğıdı.</p>
+</div>
+
+<script>
+{
+/* wallpapers come from veri/duvar.json, which the control panel keeps up to date */
+let WALL=[];
+const grid=document.getElementById('grid'),view=document.getElementById('view'),big=document.getElementById('big'),dl=document.getElementById('dl');
+function render(){
+  const cards=WALL.map((w,i)=>`<button class="wp" data-i="${i}"><span class="tag cz"><img class="c" src="../img/ui/beles-c.png" alt=""><img src="../img/ui/beles.png" alt="Beleş" width="183" height="204"></span><div class="frame"><img src="../${w.dosya}" alt="${w.ad}" loading="lazy"></div><b>${w.ad}</b><span>${w.not||'telefon duvar kâğıdı'}</span></button>`);
+  for(let k=WALL.length;k<4;k++)cards.push(`<button class="wp" data-empty="1"><div class="frame empty taped"></div><b>YAKINDA</b><span>&nbsp;</span></button>`);
+  grid.innerHTML=cards.join('');
+}
+render();
+fetch('../veri/duvar.json?'+Date.now()).then(r=>r.ok?r.json():{duvar:[]}).then(d=>{WALL=(d&&d.duvar)||[];render()}).catch(()=>{});
+let cur=null;
+grid.addEventListener('click',e=>{const b=e.target.closest('.wp');if(!b)return;if(b.dataset.empty){suat.yakinda();return}cur=WALL[+b.dataset.i];
+  big.src='../'+cur.dosya;big.alt=cur.ad;dl.href=big.src;dl.setAttribute('download','suatilyus-'+cur.dosya.split('/').pop());view.classList.add('show')});
+const close=()=>view.classList.remove('show');
+const shareBtn=document.getElementById('share');shareBtn.hidden=!navigator.share;
+shareBtn.addEventListener('click',async()=>{try{await navigator.share({title:'suatilyus — '+cur.ad,text:'suatilyus duvar kâğıdı, beleş',url:location.href})}catch(e){}});
+document.getElementById('close').addEventListener('click',close);
+view.addEventListener('click',e=>{if(e.target===view)close()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+}
+</script>
+</body>
+</html>
