@@ -1,1 +1,40 @@
-{"duvar":[]}
+{
+  "duvar": [
+    {
+      "dosya": "img/duvar/mwjwpk8u-img-0630.jpg",
+      "ad": "DUVAR 01",
+      "not": "",
+      "v": 1794872446500
+    },
+    {
+      "dosya": "img/duvar/mwjwpnbh-img-0629.jpg",
+      "ad": "DUVAR 02",
+      "not": "",
+      "v": 1794872449433
+    },
+    {
+      "dosya": "img/duvar/mwjwppn9-img-0619.jpg",
+      "ad": "DUVAR 03",
+      "not": "",
+      "v": 1794872452579
+    },
+    {
+      "dosya": "img/duvar/mwjwps0s-img-0621.jpg",
+      "ad": "DUVAR 04",
+      "not": "",
+      "v": 1794872456077
+    },
+    {
+      "dosya": "img/duvar/mwjwpups-img-0595.jpg",
+      "ad": "DUVAR 05",
+      "not": "",
+      "v": 1794872458886
+    },
+    {
+      "dosya": "img/duvar/mwjwpwxf-img-0546.jpg",
+      "ad": "DUVAR 06",
+      "not": "",
+      "v": 1794872462232
+    }
+  ]
+}
