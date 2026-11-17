@@ -1,0 +1,108 @@
+{
+  "v": 1,
+  "butonlar": [
+    {
+      "id": "uygulamalar",
+      "ad": "Uygulamalar",
+      "link": "uygulamalar/",
+      "gorsel": "img/btn-uygulamalar.png",
+      "renk": "img/btn-uygulamalar-c.png"
+    },
+    {
+      "id": "illustrasyon",
+      "ad": "İllüstrasyon",
+      "link": "illustrasyon/",
+      "gorsel": "img/btn-illustrasyon.png",
+      "renk": "img/btn-illustrasyon-c.png"
+    },
+    {
+      "id": "indir",
+      "ad": "İndir-kullan",
+      "link": "indir/",
+      "gorsel": "img/btn-indir-kullan.png",
+      "renk": "img/btn-indir-kullan-c.png"
+    },
+    {
+      "id": "teklif-al",
+      "ad": "Teklif al",
+      "link": "https://ig.me/m/suatilyus",
+      "gorsel": "img/btn-teklif-al.png",
+      "renk": "img/btn-teklif-al-c.png"
+    },
+    {
+      "id": "teklif-ver",
+      "ad": "Teklif ver",
+      "link": "https://ig.me/m/suatilyus",
+      "gorsel": "img/btn-teklif-ver.png",
+      "renk": "img/btn-teklif-ver-c.png"
+    }
+  ],
+  "illustrasyon": [
+    {
+      "dosya": "img/duvar/mwjwpk8u-img-0630.jpg",
+      "ad": "DUVAR 01",
+      "not": "",
+      "indir": true
+    },
+    {
+      "dosya": "img/duvar/mwjwpnbh-img-0629.jpg",
+      "ad": "DUVAR 02",
+      "not": "",
+      "indir": true
+    },
+    {
+      "dosya": "img/duvar/mwjwppn9-img-0619.jpg",
+      "ad": "DUVAR 03",
+      "not": "",
+      "indir": true
+    },
+    {
+      "dosya": "img/duvar/mwjwps0s-img-0621.jpg",
+      "ad": "DUVAR 04",
+      "not": "",
+      "indir": true
+    },
+    {
+      "dosya": "img/duvar/mwjwpups-img-0595.jpg",
+      "ad": "DUVAR 05",
+      "not": "",
+      "indir": true
+    },
+    {
+      "dosya": "img/duvar/mwjwpwxf-img-0546.jpg",
+      "ad": "DUVAR 06",
+      "not": "",
+      "indir": true
+    }
+  ],
+  "indir": [
+    {
+      "id": "fontlar",
+      "ad": "Fontlar",
+      "not": "suatilyus el yazısı fontları",
+      "dosyalar": [
+        {
+          "ad": "suatilyus skinny",
+          "dosya": "dosyalar/suatilyus-skinny-regular.ttf",
+          "boyut": 18384
+        },
+        {
+          "ad": "suatilyus long",
+          "dosya": "dosyalar/suatilyus-long-regular.ttf",
+          "boyut": 17532
+        },
+        {
+          "ad": "suatilyus hand",
+          "dosya": "dosyalar/suatilyus-hand-regular.ttf",
+          "boyut": 17892
+        }
+      ]
+    },
+    {
+      "id": "brushlar",
+      "ad": "Brushlar",
+      "not": "Procreate fırçaları",
+      "dosyalar": []
+    }
+  ]
+}
