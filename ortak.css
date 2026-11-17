@@ -1,4 +1,5 @@
 /* suatilyus — shared pieces for every page */
+[hidden]{display:none!important}
 /* line art on top, colour layer fades in underneath on hover / finger */
 .cz{position:relative;display:block}
 .cz>img{position:relative;display:block;width:100%;height:auto}

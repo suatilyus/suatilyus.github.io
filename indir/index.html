@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>İndir-kullan — suatilyus</title>
+<meta name="description" content="suatilyus fontları, Procreate fırçaları ve daha fazlası — indir, kullan.">
+<link rel="icon" href="../img/icon-192.png">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="manifest" href="../manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../ortak.css?v=2611170330">
+<style>
+:root{--ink:#111}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#fff;color:var(--ink);font-family:"suat-long","Patrick Hand",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+.page{width:min(100%,560px);margin:0 auto;container-type:inline-size;padding:calc(env(safe-area-inset-top) + 15cqw) 6cqw 16cqw;display:flex;flex-direction:column;align-items:center}
+.amblem{width:80cqw}
+h1{font-size:11cqw;font-weight:400;letter-spacing:.04em;margin-top:5cqw;line-height:1}
+.sub{font-size:5cqw;margin-top:1.5cqw;color:#555;text-align:center}
+.divider{width:100%;margin:6cqw 0 4cqw}
+.cats{display:flex;flex-wrap:wrap;gap:2.5cqw;justify-content:center;margin-bottom:5cqw}
+.cats a{font-family:"suat-skinny","Patrick Hand",sans-serif;font-size:5cqw;letter-spacing:.04em;border:.5cqw solid var(--ink);border-radius:99px;padding:.6cqw 3.6cqw}
+.cats a:hover{background:#ffd23f}
+.kat{width:100%;margin-bottom:9cqw;scroll-margin-top:6cqw}
+.kat h2{font-size:8.4cqw;font-weight:400;letter-spacing:.04em;line-height:1}
+.kat .not{font-size:4.4cqw;color:#666;margin-top:1cqw}
+.list{margin-top:3cqw;border-top:.6cqw solid var(--ink)}
+.f{display:flex;align-items:center;gap:3cqw;padding:3cqw .5cqw;border-bottom:.35cqw dashed #bbb}
+.f .pv{width:16cqw;height:16cqw;flex:none;border:.4cqw solid var(--ink);border-radius:2cqw;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fafafa;font-family:"suat-skinny",sans-serif;font-size:4cqw;color:#999}
+.f .pv img{width:100%;height:100%;object-fit:cover}
+.f .t{flex:1;min-width:0}
+.f .t b{display:block;font-weight:400;font-size:5.4cqw;line-height:1.1;word-break:break-word}
+.f .t span{font-size:3.8cqw;color:#777}
+.f .dl{width:22cqw;flex:none}
+.bos{font-size:4.6cqw;color:#999;padding:4cqw .5cqw}
+.f .sample{font-size:6cqw;line-height:1.1;margin-top:.6cqw}
+</style>
+</head>
+<body>
+<main class="page">
+  <a href="../index.html" aria-label="Ana sayfaya dön" style="display:block"><span class="amblem cz lit"><img class="c" src="../img/ui/amblem-c.png" alt=""><img src="../img/ui/amblem.png" alt="Ana sayfa" width="865" height="286"></span></a>
+  <h1>İNDİR-KULLAN</h1>
+  <p class="sub">fontlar, fırçalar, ne varsa — al kullan</p>
+  <img class="divider" src="../img/divider.png" alt="" width="1062" height="54">
+  <nav class="cats" id="cats" aria-label="Kategoriler"></nav>
+  <div id="list" style="width:100%"></div>
+  <a class="alt-geri cz" href="../index.html" aria-label="Geri dön"><img class="c" src="../img/ui/geri-c.png" alt=""><img src="../img/ui/geri.png" alt="Geri" width="466" height="170"></a>
+</main>
+<script src="../ortak.js?v=2611170330"></script>
+<script>
+{
+const E=suat.esc, ext=f=>(f.split('.').pop()||'').toUpperCase().slice(0,5);
+const FONT=/\.(ttf|otf|woff2?)$/i, IMG=/\.(png|jpe?g|webp|gif)$/i;
+suat.veri().then(d=>{
+  const cats=(d.indir||[]).filter(k=>!k.gizli);
+  document.getElementById('cats').innerHTML=cats.map(k=>`<a href="#${E(k.id)}">${E(k.ad)}</a>`).join('');
+  let fi=0; const faces=[];
+  document.getElementById('list').innerHTML=cats.map(k=>`<section class="kat" id="${E(k.id)}"><h2>${E(k.ad)}</h2>${k.not?`<p class="not">${E(k.not)}</p>`:''}
+    <div class="list">${(k.dosyalar||[]).length?k.dosyalar.map(f=>{
+      let pv=`<div class="pv">${f.onizleme?`<img src="../${E(f.onizleme)}" alt="" loading="lazy">`:IMG.test(f.dosya)?`<img src="../${E(f.dosya)}" alt="" loading="lazy">`:E(ext(f.dosya))}</div>`, sample='';
+      if(FONT.test(f.dosya)){const fam='onz'+(fi++);faces.push([fam,f.dosya]);sample=`<div class="sample" style="font-family:${fam},sans-serif">Aa Çç Ğğ Şş</div>`;}
+      return `<div class="f">${pv}<div class="t"><b>${E(f.ad)}</b>${sample}<span>${E(ext(f.dosya))} · ${suat.kb(f.boyut)}</span></div>
+        <a class="dl cz lit" href="../${E(f.dosya)}" download><img class="c" src="../img/ui/indir-a-c.png" alt=""><img src="../img/ui/indir-a.png" alt="İndir: ${E(f.ad)}" width="200" height="109"></a></div>`;
+    }).join(''):'<p class="bos">yakında buraya bir şeyler gelecek</p>'}</div></section>`).join('');
+  faces.forEach(([fam,src])=>{const ff=new FontFace(fam,`url(../${src})`);ff.load().then(x=>document.fonts.add(x)).catch(()=>{});});
+  if(location.hash){const t=document.getElementById(decodeURIComponent(location.hash.slice(1)));if(t)t.scrollIntoView();}
+});
+}
+</script>
+</body>
+</html>

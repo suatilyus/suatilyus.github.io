@@ -60,5 +60,41 @@ function kose() {
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', kose); else kose();
 
-window.suat = {toast, yakinda, ROOT};
+/* site content (veri/site.json, written by the control panel). Falls back to defaults. */
+const VARSAYILAN = () => ({
+  v: 1,
+  butonlar: [
+    {id: 'uygulamalar', ad: 'Uygulamalar', link: 'uygulamalar/', gorsel: 'img/btn-uygulamalar.png', renk: 'img/btn-uygulamalar-c.png'},
+    {id: 'illustrasyon', ad: 'İllüstrasyon', link: 'illustrasyon/', gorsel: 'img/btn-illustrasyon.png', renk: 'img/btn-illustrasyon-c.png'},
+    {id: 'indir', ad: 'İndir-kullan', link: 'indir/', gorsel: 'img/btn-indir-kullan.png', renk: 'img/btn-indir-kullan-c.png'},
+    {id: 'teklif-al', ad: 'Teklif al', link: 'https://ig.me/m/suatilyus', gorsel: 'img/btn-teklif-al.png', renk: 'img/btn-teklif-al-c.png'},
+    {id: 'teklif-ver', ad: 'Teklif ver', link: 'https://ig.me/m/suatilyus', gorsel: 'img/btn-teklif-ver.png', renk: 'img/btn-teklif-ver-c.png'}
+  ],
+  illustrasyon: [],
+  indir: [
+    {id: 'fontlar', ad: 'Fontlar', not: 'suatilyus el yazısı fontları', dosyalar: [
+      {ad: 'suatilyus skinny', dosya: 'dosyalar/suatilyus-skinny-regular.ttf', boyut: 18384},
+      {ad: 'suatilyus long', dosya: 'dosyalar/suatilyus-long-regular.ttf', boyut: 17532},
+      {ad: 'suatilyus hand', dosya: 'dosyalar/suatilyus-hand-regular.ttf', boyut: 17892}]},
+    {id: 'brushlar', ad: 'Brushlar', not: 'Procreate fırçaları', dosyalar: []}
+  ]
+});
+let veriP;
+function veri() {
+  if (!veriP) veriP = (async () => {
+    const t = '?' + Date.now();
+    const s = await fetch(ROOT + 'veri/site.json' + t).then(r => r.ok ? r.json() : null).catch(() => null);
+    if (s && s.v) return s;
+    const d = VARSAYILAN();
+    const w = await fetch(ROOT + 'veri/duvar.json' + t).then(r => r.ok ? r.json() : null).catch(() => null);
+    d.illustrasyon = ((w && w.duvar) || []).map(x => ({dosya: x.dosya, ad: x.ad, not: x.not || '', indir: true}));
+    return d;
+  })();
+  return veriP;
+}
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]));
+const url = l => /^https?:/.test(l) ? l : ROOT + l;
+const kb = n => !n ? '' : n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
+
+window.suat = {toast, yakinda, ROOT, veri, VARSAYILAN, esc, url, kb};
 }

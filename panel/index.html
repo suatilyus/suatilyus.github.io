@@ -3,61 +3,79 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Kontrol paneli — suatilyus</title>
+<title>Müdüriyet — suatilyus</title>
 <meta name="robots" content="noindex,nofollow">
 <link rel="icon" href="../img/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../ortak.css">
+<link rel="stylesheet" href="../ortak.css?v=2611170330">
 <style>
-:root{--ink:#111;--mut:#777}
+:root{--ink:#111;--mut:#666}
 *{box-sizing:border-box;margin:0;padding:0}
 body{background:#fff;color:var(--ink);font-family:"suat-long","Patrick Hand",system-ui,sans-serif;font-size:19px;-webkit-tap-highlight-color:transparent}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit}
-.page{width:min(100%,760px);margin:0 auto;padding:calc(env(safe-area-inset-top) + 18px) 18px 80px}
+.page{width:min(100%,820px);margin:0 auto;padding:calc(env(safe-area-inset-top) + 18px) 18px 90px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.top .home{width:150px}
-.top .out{width:120px}
-h1{font-size:40px;font-weight:400;letter-spacing:.04em;margin:18px 0 2px}
-h2{font-size:28px;font-weight:400;letter-spacing:.04em;margin:34px 0 4px;display:flex;align-items:center;gap:12px}
-.hint{color:var(--mut);font-size:17px;line-height:1.35}
+.top .home{width:150px}.top .out{width:120px}
+h1{font-size:44px;font-weight:400;letter-spacing:.04em;margin:18px 0 2px}
+h2{font-size:30px;font-weight:400;letter-spacing:.04em;margin:0}
+h3{font-family:"suat-skinny","Patrick Hand",sans-serif;font-size:24px;font-weight:400;letter-spacing:.03em}
+.hint{color:var(--mut);font-size:17px;line-height:1.4}
 .divider{width:100%;margin:14px 0}
+code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-family:ui-monospace,monospace}
 
 /* login */
-.login{max-width:520px}
+.login{max-width:540px}
 .login ol{margin:12px 0 0 22px;line-height:1.5}
-.login code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px}
-.field{display:flex;gap:12px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.field{display:flex;gap:12px;align-items:center;margin-top:14px;flex-wrap:wrap}
 .field input{flex:1;min-width:220px;font:inherit;font-size:16px;border:3px solid var(--ink);border-radius:12px;padding:10px 12px}
 .field .go{width:150px}
 
-/* wallpapers */
-.walls{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px;margin-top:14px}
-.w{display:flex;flex-direction:column;gap:6px}
-.w .ph{aspect-ratio:1290/2796;border:3px solid var(--ink);border-radius:18px;overflow:hidden;background:#f3f3f3}
-.w .ph img{width:100%;height:100%;object-fit:cover}
-.w .name{font-size:19px;letter-spacing:.03em;min-height:24px;word-break:break-word}
-.w .tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.w .tools .cz{width:auto}
-.w .tools .ed{width:86px}.w .tools .rm{width:62px}.w .tools .ar{width:28px}
-.add{border:3px dashed var(--ink);border-radius:18px;aspect-ratio:1290/2796;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer;background:none;font:inherit;color:var(--ink)}
-.add .cz{width:44px}
-.add span{font-size:17px;color:var(--mut)}
+/* tabs mirror the home page */
+.tabs{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 6px;position:sticky;top:0;background:#fff;padding:10px 0;z-index:5}
+.tabs button{font-family:"suat-skinny","Patrick Hand",sans-serif;font-size:21px;letter-spacing:.04em;border:3px solid var(--ink);border-radius:99px;background:#fff;padding:4px 16px;cursor:pointer}
+.tabs button.on{background:var(--ink);color:#fff}
+.sec{margin-top:18px}
+.sec>.hint{margin:6px 0 14px}
 
-/* files */
-.files{margin-top:12px;border-top:2px solid var(--ink)}
-.f{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:2px solid #ddd;flex-wrap:wrap}
-.f .n{flex:1;min-width:150px;word-break:break-all}
-.f .s{color:var(--mut);font-size:16px;white-space:nowrap}
-.f .copy{font:inherit;font-size:16px;border:2px solid var(--ink);border-radius:9px;background:#fff;padding:2px 10px;cursor:pointer}
-.f .rm{width:62px}
-.empty{color:var(--mut);padding:14px 2px}
-.addrow{margin-top:14px;width:160px}
+/* generic rows */
+.rows{border-top:3px solid var(--ink)}
+.r{display:flex;align-items:center;gap:12px;padding:12px 2px;border-bottom:2px solid #e2e2e2}
+.r .pv{width:72px;height:72px;flex:none;border:2px solid var(--ink);border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#fafafa;font-family:"suat-skinny",sans-serif;font-size:16px;color:#999}
+.r .pv img{width:100%;height:100%;object-fit:contain}
+.r .pv.btnpv{width:120px;height:56px;border:0;background:none}
+.r .t{flex:1;min-width:0}
+.r .t b{display:block;font-weight:400;font-size:20px;line-height:1.15;word-break:break-word}
+.r .t span{font-size:15px;color:var(--mut);word-break:break-all}
+.r .t .off{color:#c0392b}
+.tools{display:flex;align-items:center;gap:6px;flex:none}
+.tools .cz{width:auto}
+.tools .ed{width:74px}.tools .rm{width:54px}.tools .ar{width:24px}
+.addbar{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+.addbar .cz{width:150px}
+.addbar span{color:var(--mut);font-size:16px}
+
+/* categories */
+.kat{border:3px solid var(--ink);border-radius:18px;padding:14px 16px;margin-bottom:22px}
+.kat-h{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.kat-h h3{flex:1}
+.kat .rows{border-top-width:2px}
+
+/* form dialog */
+.form{background:#fff;border:3px solid var(--ink);border-radius:20px;outline:2px solid var(--ink);outline-offset:-9px;padding:24px 22px;width:min(92vw,460px);display:flex;flex-direction:column;gap:12px}
+.form h3{margin-bottom:4px}
+.form label{display:flex;flex-direction:column;gap:4px;font-size:17px}
+.form input[type=text],.form input[type=url],.form select,.form textarea{font:inherit;font-size:16px;border:2.5px solid var(--ink);border-radius:10px;padding:8px 10px;background:#fff}
+.form .chk{flex-direction:row;align-items:center;gap:10px}
+.form .chk input{width:22px;height:22px}
+.form .acts{display:flex;justify-content:center;gap:18px;margin-top:6px}
+.form .acts .cz{width:130px}
+.form .file-in{font-size:15px}
 
 /* busy + dialogs */
-.veil{position:fixed;inset:0;background:rgba(255,255,255,.94);display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;z-index:30;padding:24px}
+.veil{position:fixed;inset:0;background:rgba(255,255,255,.95);display:none;align-items:center;justify-content:center;flex-direction:column;gap:18px;z-index:30;padding:24px}
 .veil.show{display:flex}
 .busy .yk{width:min(80vw,380px);animation:wob 1.2s ease-in-out infinite}
 @keyframes wob{50%{transform:rotate(-2deg) translateY(-3px)}}
@@ -70,15 +88,16 @@ h2{font-size:28px;font-weight:400;letter-spacing:.04em;margin:34px 0 4px;display
 .dlg .hit.l{left:1%}.dlg .hit.r{right:1%}
 .dlg.emin .msg{color:var(--ink);text-shadow:none;top:56%}
 @media (prefers-reduced-motion:reduce){.busy .yk{animation:none}}
+@media (max-width:520px){.r{flex-wrap:wrap}.r .t{flex-basis:calc(100% - 90px)}.tools{width:100%;justify-content:flex-end}}
 </style>
 </head>
 <body data-nokose>
 <main class="page">
   <div class="top">
     <a class="home cz lit" href="../index.html" aria-label="Siteye dön"><img class="c" src="../img/ui/anasayfa-c.png" alt=""><img src="../img/ui/anasayfa.png" alt="Ana sayfa" width="370" height="105"></a>
-    <button class="out cz" id="logout" hidden aria-label="Panelden çık"><img class="c" src="../img/ui/btn-cikis-c.png" alt=""><img src="../img/ui/btn-cikis.png" alt="Çıkış" width="281" height="103"></button>
+    <button class="out cz lit" id="logout" hidden aria-label="Panelden çık"><img class="c" src="../img/ui/btn-cikis-c.png" alt=""><img src="../img/ui/btn-cikis.png" alt="Çıkış" width="281" height="103"></button>
   </div>
-  <h1>KONTROL PANELİ</h1>
+  <h1>MÜDÜRİYET</h1>
   <p class="hint" id="who">Burayı sadece sen görüyorsun. Yaptığın değişiklik 1–2 dakika içinde sitede görünür.</p>
   <img class="divider" src="../img/divider.png" alt="" width="1062" height="54">
 
@@ -112,33 +131,65 @@ h2{font-size:28px;font-weight:400;letter-spacing:.04em;margin:34px 0 4px;display
     </div>
   </section>
 
-  <!-- içerik -->
   <section id="app" hidden>
-    <div id="setPw" hidden>
-      <h2>ŞİFRE BELİRLE</h2>
-      <p class="hint">Bu cihazda anahtar kayıtlı ama henüz müdüriyet şifren yok. Bir şifre belirle, başka cihazlarda sadece onunla girersin. En az 10 karakter.</p>
-      <div class="field"><input id="sp1" type="password" autocomplete="new-password" placeholder="yeni şifre" aria-label="Yeni şifre"></div>
-      <div class="field"><input id="sp2" type="password" autocomplete="new-password" placeholder="şifre tekrar" aria-label="Şifre tekrar">
-        <button class="go cz" id="spBtn"><img class="c" src="../img/ui/kaydet-c.png" alt=""><img src="../img/ui/kaydet.png" alt="Kaydet" width="226" height="96"></button></div>
-    </div>
-    <h2>DUVAR KÂĞITLARI</h2>
-    <p class="hint">İllüstrasyon sayfasındaki telefon duvar kâğıtları. En iyisi 1290 × 2796 px dikey görsel. Büyük görselleri ben küçültürüm.</p>
-    <div class="walls" id="walls"></div>
-    <input type="file" id="wallIn" accept="image/*" multiple hidden>
+    <nav class="tabs" id="tabs">
+      <button data-t="ana" class="on">ANA SAYFA</button>
+      <button data-t="ill">İLLÜSTRASYON</button>
+      <button data-t="ind">İNDİR-KULLAN</button>
+      <button data-t="uyg">UYGULAMALAR</button>
+      <button data-t="ayar">AYARLAR</button>
+    </nav>
 
-    <h2>DOSYALAR</h2>
-    <p class="hint">İndir-kullan köşesi için fırça, sticker, PDF… Her dosyanın bir linki olur, istediğin yere koyabilirsin. Dosya başına en fazla 25 MB.</p>
-    <div class="files" id="files"></div>
-    <button class="addrow cz" id="fileAdd"><img class="c" src="../img/ui/ekle-c.png" alt=""><img src="../img/ui/ekle.png" alt="Ekle" width="211" height="78"></button>
-    <input type="file" id="fileIn" multiple hidden>
+    <section class="sec" data-s="ana">
+      <h2>ANA SAYFA BUTONLARI</h2>
+      <p class="hint">Ana sayfadaki butonlar, aynı sırayla. Her buton bir sayfaya ya da linke gider. Çizimi olmayan butonlar senin fontunla, çerçeveli yazı olarak görünür; istersen çizimini yükle.</p>
+      <div class="rows" id="btnRows"></div>
+      <div class="addbar"><button class="cz lit" id="btnAdd"><img class="c" src="../img/ui/ekle-c.png" alt=""><img src="../img/ui/ekle.png" alt="Buton ekle" width="211" height="78"></button><span>yeni buton</span></div>
+    </section>
 
-    <h2>SİTE GÜNCELLE</h2>
-    <p class="hint">Claude'dan gelen <b>suatilyus-site.zip</b> dosyasını seç; içindeki her şey tek seferde siteye yüklenir. Panelden eklediğin duvar kâğıtları ve dosyalar korunur.</p>
-    <button class="addrow cz" id="zipAdd"><img class="c" src="../img/ui/ekle-c.png" alt=""><img src="../img/ui/ekle.png" alt="Zip seç" width="211" height="78"></button>
-    <input type="file" id="zipIn" accept=".zip" hidden>
+    <section class="sec" data-s="ill" hidden>
+      <h2>İLLÜSTRASYON</h2>
+      <p class="hint">İllüstrasyon sayfasındaki çizimler. "İndirilebilir" işaretlediklerinde BELEŞ etiketi ve İNDİR butonu çıkar. Büyük görselleri ben küçültürüm.</p>
+      <div class="rows" id="illRows"></div>
+      <div class="addbar"><button class="cz lit" id="illAdd"><img class="c" src="../img/ui/ekle-c.png" alt=""><img src="../img/ui/ekle.png" alt="Çizim ekle" width="211" height="78"></button><span>bir ya da birkaç çizim</span></div>
+      <input type="file" id="illIn" accept="image/*" multiple hidden>
+    </section>
+
+    <section class="sec" data-s="ind" hidden>
+      <h2>İNDİR-KULLAN</h2>
+      <p class="hint">Kategoriler (Fontlar, Brushlar, STL…) ve içlerindeki dosyalar. Dosya başına en fazla 25 MB. Fontlar sayfada kendi yazısıyla önizlenir.</p>
+      <div id="katList"></div>
+      <div class="addbar"><button class="cz lit" id="katAdd"><img class="c" src="../img/ui/ekle-c.png" alt=""><img src="../img/ui/ekle.png" alt="Kategori ekle" width="211" height="78"></button><span>yeni kategori</span></div>
+      <input type="file" id="fIn" multiple hidden>
+    </section>
+
+    <section class="sec" data-s="uyg" hidden>
+      <h2>UYGULAMALAR</h2>
+      <p class="hint">Uygulamalar kod olduğu için yeni uygulamayı Claude ekler. Sitede şunlar var:</p>
+      <div class="rows">
+        <div class="r"><div class="pv"><img src="../img/srf-tabela.png" alt=""></div><div class="t"><b>SRF — suatilyus Referans Fabrikası</b><span>açık · uygulamalar/srf</span></div></div>
+        <div class="r"><div class="pv">YAKINDA</div><div class="t"><b>Desen Atölyesi · Blok Büst · Kat Kat</b><span>yapım aşamasında</span></div></div>
+      </div>
+    </section>
+
+    <section class="sec" data-s="ayar" hidden>
+      <div id="setPw">
+        <h2>MÜDÜRİYET ŞİFRESİ</h2>
+        <p class="hint" id="pwInfo">Başka cihazlarda panele bu şifreyle girersin. En az 10 karakter.</p>
+        <div class="field"><input id="sp1" type="password" autocomplete="new-password" placeholder="yeni şifre" aria-label="Yeni şifre"></div>
+        <div class="field"><input id="sp2" type="password" autocomplete="new-password" placeholder="şifre tekrar" aria-label="Şifre tekrar">
+          <button class="go cz lit" id="spBtn"><img class="c" src="../img/ui/kaydet-c.png" alt=""><img src="../img/ui/kaydet.png" alt="Kaydet" width="226" height="96"></button></div>
+      </div>
+      <h2 style="margin-top:34px">SİTE GÜNCELLE</h2>
+      <p class="hint">Claude'dan gelen <b>suatilyus-site.zip</b> dosyasını seç; içindeki her şey tek seferde siteye yüklenir. Panelden eklediklerin korunur.</p>
+      <div class="addbar"><button class="cz lit" id="zipAdd"><img class="c" src="../img/ui/ekle-c.png" alt=""><img src="../img/ui/ekle.png" alt="Zip seç" width="211" height="78"></button><span>zip seç</span></div>
+      <input type="file" id="zipIn" accept=".zip" hidden>
+    </section>
   </section>
 </main>
 
+<!-- form -->
+<div class="veil" id="formV" role="dialog" aria-modal="true"><form class="form" id="form"></form></div>
 <!-- yükleniyor -->
 <div class="veil busy" id="busy" role="status" aria-live="polite">
   <img class="yk" src="../img/ui/yukleniyor.png" alt="Yükleniyor… bekle morukcum." width="455" height="143">
@@ -158,33 +209,41 @@ h2{font-size:28px;font-weight:400;letter-spacing:.04em;margin:34px 0 4px;display
     <button class="hit l" id="errClose" aria-label="Kapat"></button><button class="hit r" id="errReload" aria-label="Yenile"></button></div>
 </div>
 
-<script src="../ortak.js"></script>
+<script src="../ortak.js?v=2611170330"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 {
 const OWNER='suatilyus', REPO='suatilyus.github.io', BR='main';
-const API=`https://api.github.com/repos/${OWNER}/${REPO}`;
-const $=id=>document.getElementById(id);
+const API=`https://api.github.com/repos/${OWNER}/${REPO}`, RAW=`https://raw.githubusercontent.com/${OWNER}/${REPO}/${BR}/`;
+const $=id=>document.getElementById(id), E=suat.esc;
 let TOKEN=null; try{TOKEN=localStorage.getItem('suat-gh')}catch(e){}
-let WALLS=[], FILES=[];
+let D=null, BOX=null;   // site data, encrypted key box
 
 /* ---------- github ---------- */
 async function gh(path,opt={}){
   const r=await fetch(API+path,{...opt,headers:{Authorization:'Bearer '+TOKEN,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28',...(opt.body?{'Content-Type':'application/json'}:{})}});
   if(r.status===404&&opt.allow404)return null;
-  if(!r.ok){let m='';try{m=(await r.json()).message}catch(e){}throw new Error(r.status===401?'Anahtar geçersiz ya da süresi dolmuş.':r.status===403?'Anahtarın bu depoya yazma izni yok.':r.status===409?'Aynı anda iki değişiklik çakıştı, tekrar dene.':(m||('GitHub '+r.status)));}
+  if(!r.ok){let m='';try{m=(await r.json()).message}catch(e){}throw new Error(r.status===401?'Anahtar geçersiz ya da süresi dolmuş.':r.status===403?'Anahtarın bu depoya yazma izni yok.':r.status===409||r.status===422?'Aynı anda iki değişiklik çakıştı, tekrar dene.':(m||('GitHub '+r.status)));}
   return r.status===204?null:r.json();
 }
 const enc=s=>btoa(unescape(encodeURIComponent(s)));
 const dec=b=>decodeURIComponent(escape(atob(b.replace(/\n/g,''))));
-const path=p=>p.split('/').map(encodeURIComponent).join('/');
-async function readJSON(p,fallback){const r=await gh('/contents/'+path(p)+'?ref='+BR+'&t='+Date.now(),{allow404:true});return r?{sha:r.sha,data:JSON.parse(dec(r.content))}:{sha:null,data:fallback};}
-async function writeJSON(p,data,msg){const cur=await gh('/contents/'+path(p)+'?ref='+BR+'&t='+Date.now(),{allow404:true});
-  return gh('/contents/'+path(p),{method:'PUT',body:JSON.stringify({message:msg,branch:BR,content:enc(JSON.stringify(data,null,2)+'\n'),...(cur?{sha:cur.sha}:{})})});}
-async function putFile(p,b64,msg){const cur=await gh('/contents/'+path(p)+'?ref='+BR,{allow404:true});
-  return gh('/contents/'+path(p),{method:'PUT',body:JSON.stringify({message:msg,branch:BR,content:b64,...(cur?{sha:cur.sha}:{})})});}
-async function delFile(p,msg){const cur=await gh('/contents/'+path(p)+'?ref='+BR,{allow404:true});if(!cur)return;
-  return gh('/contents/'+path(p),{method:'DELETE',body:JSON.stringify({message:msg,branch:BR,sha:cur.sha})});}
+const P=p=>p.split('/').map(encodeURIComponent).join('/');
+async function readJSON(p){const r=await gh('/contents/'+P(p)+'?ref='+BR+'&t='+Date.now(),{allow404:true});return r?JSON.parse(dec(r.content)):null;}
+/* one commit for many files: {path: base64 | null(delete)} */
+async function commit(files,msg){
+  const ref=await gh('/git/ref/heads/'+BR), base=await gh('/git/commits/'+ref.object.sha), tree=[];
+  for(const [p,b] of Object.entries(files)){
+    if(b===null){tree.push({path:p,mode:'100644',type:'blob',sha:null});continue;}
+    const bl=await gh('/git/blobs',{method:'POST',body:JSON.stringify({content:b,encoding:'base64'})});
+    tree.push({path:p,mode:'100644',type:'blob',sha:bl.sha});
+  }
+  const tr=await gh('/git/trees',{method:'POST',body:JSON.stringify({base_tree:base.tree.sha,tree})});
+  const c=await gh('/git/commits',{method:'POST',body:JSON.stringify({message:msg,tree:tr.sha,parents:[ref.object.sha]})});
+  await gh('/git/refs/heads/'+BR,{method:'PATCH',body:JSON.stringify({sha:c.sha})});
+}
+const siteFile=()=>({'veri/site.json':enc(JSON.stringify(D,null,2)+'\n')});
+async function save(msg,extra={}){busy(true,'Kaydediliyor…',.85);await commit({...extra,...siteFile()},msg);busy(false);}
 
 /* ---------- ui helpers ---------- */
 function busy(on,what='',pct){ $('busy').classList.toggle('show',on); $('what').textContent=what; if(pct!=null)$('fill').style.width=Math.round(pct*92)+'%'; }
@@ -194,62 +253,208 @@ $('errReload').onclick=()=>{ $('err').classList.remove('show'); load(); };
 function ask(msg){ return new Promise(res=>{ $('askMsg').textContent=msg; $('ask').classList.add('show');
   const done=v=>{ $('ask').classList.remove('show'); $('yes').onclick=$('no').onclick=null; res(v); };
   $('yes').onclick=()=>done(true); $('no').onclick=()=>done(false); }); }
-const slug=s=>(s||'dosya').toLowerCase().replace(/ç/g,'c').replace(/ğ/g,'g').replace(/[ıi̇]/g,'i').replace(/ö/g,'o').replace(/ş/g,'s').replace(/ü/g,'u').replace(/[^a-z0-9.]+/g,'-').replace(/^-+|-+$/g,'')||'dosya';
-const kb=n=>n>1048576?(n/1048576).toFixed(1)+' MB':Math.max(1,Math.round(n/1024))+' KB';
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+/* small form dialog: fields [{k,l,v,t:'text'|'url'|'check'|'select'|'file'|'area',o:[[val,label]],acc}] */
+function form(title,fields){ return new Promise(res=>{
+  const f=$('form');
+  f.innerHTML=`<h3>${E(title)}</h3>`+fields.map(x=>x.t==='check'
+    ?`<label class="chk"><input type="checkbox" name="${x.k}" ${x.v?'checked':''}>${E(x.l)}</label>`
+    :x.t==='select'?`<label>${E(x.l)}<select name="${x.k}">${x.o.map(([v,l])=>`<option value="${E(v)}" ${v===x.v?'selected':''}>${E(l)}</option>`).join('')}</select></label>`
+    :x.t==='file'?`<label>${E(x.l)}<input class="file-in" type="file" name="${x.k}" accept="${x.acc||''}"></label>`
+    :x.t==='area'?`<label>${E(x.l)}<textarea name="${x.k}" rows="2">${E(x.v||'')}</textarea></label>`
+    :`<label>${E(x.l)}<input type="${x.t||'text'}" name="${x.k}" value="${E(x.v||'')}" ${x.ph?`placeholder="${E(x.ph)}"`:''}></label>`).join('')
+    +`<div class="acts"><button type="submit" class="cz lit"><img class="c" src="../img/ui/kaydet-c.png" alt=""><img src="../img/ui/kaydet.png" alt="Kaydet" width="226" height="96"></button>
+      <button type="button" class="cz lit" id="fCancel"><img class="c" src="../img/ui/vazgec-c.png" alt=""><img src="../img/ui/vazgec.png" alt="Vazgeç" width="379" height="168"></button></div>`;
+  $('formV').classList.add('show'); const first=f.querySelector('input,select,textarea'); if(first)setTimeout(()=>first.focus(),40);
+  const close=v=>{$('formV').classList.remove('show');f.onsubmit=null;res(v);};
+  $('fCancel').onclick=()=>close(null);
+  f.onsubmit=e=>{e.preventDefault();const o={};fields.forEach(x=>{const el=f.elements[x.k];o[x.k]=x.t==='check'?el.checked:x.t==='file'?el.files[0]||null:el.value.trim();});close(o);};
+}); }
+const slug=s=>(s||'dosya').toLocaleLowerCase('tr').replace(/ç/g,'c').replace(/ğ/g,'g').replace(/ı/g,'i').replace(/ö/g,'o').replace(/ş/g,'s').replace(/ü/g,'u').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')||'dosya';
+const stamp=()=>Date.now().toString(36);
 const fileB64=f=>new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(f);});
-async function wallpaperB64(f){
+async function imgB64(f,maxSide=2600){
   const img=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>rej(new Error(f.name+' açılamadı.'));i.src=URL.createObjectURL(f);});
-  const k=Math.min(1,2796/img.naturalHeight,1600/img.naturalWidth);
+  const k=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight));
   const c=document.createElement('canvas');c.width=Math.round(img.naturalWidth*k);c.height=Math.round(img.naturalHeight*k);
   const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);
   return c.toDataURL('image/jpeg',.9).split(',')[1];
 }
+const btn=(cls,name,alt,w,h)=>`<button class="${cls} cz lit" type="button"><img class="c" src="../img/ui/${name}-c.png" alt=""><img src="../img/ui/${name}.png" alt="${alt}" width="${w}" height="${h}"></button>`;
+const tools=(i,n)=>btn('ed','duzenle','Düzenle',285,101)+btn('rm','sil','Sil',215,99)+(i>0?btn('ar up','ok-yukari','Yukarı',90,99):'')+(i<n-1?btn('ar down','ok-asagi','Aşağı',93,92):'');
+const src=p=>/^https?:/.test(p)?p:RAW+p+'?v='+(D._v||0);  // raw = visible right after upload
+function move(arr,i,dir){const j=i+dir;if(j<0||j>=arr.length)return false;[arr[i],arr[j]]=[arr[j],arr[i]];return true;}
+function rowAction(e){const r=e.target.closest('[data-i]');if(!r)return null;const i=+r.dataset.i;
+  return {i,ed:!!e.target.closest('.ed'),rm:!!e.target.closest('.rm'),up:!!e.target.closest('.up'),down:!!e.target.closest('.down'),r};}
+
+/* ---------- tabs ---------- */
+$('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;
+  document.querySelectorAll('#tabs button').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('.sec').forEach(s=>s.hidden=s.dataset.s!==b.dataset.t);
+  try{sessionStorage.setItem('suat-tab',b.dataset.t)}catch(_){} };
 
 /* ---------- render ---------- */
-const btn=(cls,name,alt,w,h)=>`<button class="${cls} cz"><img class="c" src="../img/ui/${name}-c.png" alt=""><img src="../img/ui/${name}.png" alt="${alt}" width="${w}" height="${h}"></button>`;
-function renderWalls(){
-  $('walls').innerHTML=WALLS.map((w,i)=>`<div class="w" data-i="${i}">
-    <div class="ph"><img src="https://raw.githubusercontent.com/${OWNER}/${REPO}/${BR}/${esc(w.dosya)}?v=${w.v||0}" alt="" loading="lazy"></div>
-    <div class="name">${esc(w.ad)}</div>
-    <div class="tools">${btn('ed','duzenle','Düzenle',285,101)}${btn('rm','sil','Sil',215,99)}
-      ${i>0?btn('ar up','ok-yukari','Öne al',90,99):''}${i<WALLS.length-1?btn('ar down','ok-asagi','Arkaya al',93,92):''}</div></div>`).join('')
-    +`<button class="add" id="wallAdd"><span class="cz lit"><img class="c" src="../img/ui/arti-c.png" alt=""><img src="../img/ui/arti.png" alt="" width="83" height="74"></span>EKLE<span>bir ya da birkaç görsel</span></button>`;
-  $('wallAdd').onclick=()=>$('wallIn').click();
+const HEDEF=()=>[['uygulamalar/','Uygulamalar sayfası'],['illustrasyon/','İllüstrasyon sayfası'],['indir/','İndir-kullan sayfası'],
+  ...D.indir.map(k=>['indir/#'+k.id,'İndir-kullan › '+k.ad]),['https://ig.me/m/suatilyus','Instagram DM'],['__url','Başka bir link…'],['','Hiçbir yere (yakında)']];
+function renderAll(){renderBtns();renderIll();renderKat();}
+function renderBtns(){
+  $('btnRows').innerHTML=D.butonlar.map((b,i,a)=>`<div class="r" data-i="${i}">
+    <div class="pv btnpv">${b.gorsel?`<span class="cz lit" style="width:100%">${b.renk?`<img class="c" src="${src(b.renk)}" alt="">`:''}<img src="${src(b.gorsel)}" alt=""></span>`:`<b style="font-family:suat-skinny;font-weight:400;border:3px solid #111;border-radius:8px;padding:4px 8px">${E(b.ad)}</b>`}</div>
+    <div class="t"><b>${E(b.ad)}</b><span>${b.gizli?'<span class="off">gizli · </span>':''}→ ${E(b.link||'yakında')}</span></div>
+    <div class="tools">${tools(i,a.length)}</div></div>`).join('');
 }
-function renderFiles(){
-  $('files').innerHTML=FILES.length?FILES.map((f,i)=>`<div class="f" data-i="${i}"><span class="n">${esc(f.name)}</span><span class="s">${kb(f.size)}</span>
-    <button class="copy">linki kopyala</button>${btn('rm','sil','Sil',215,99)}</div>`).join(''):'<p class="empty">Henüz dosya yok.</p>';
+function renderIll(){
+  $('illRows').innerHTML=D.illustrasyon.length?D.illustrasyon.map((w,i,a)=>`<div class="r" data-i="${i}">
+    <div class="pv"><img src="${src(w.dosya)}" alt="" loading="lazy"></div>
+    <div class="t"><b>${E(w.ad)}</b><span>${w.indir?'BELEŞ · indirilebilir':'sadece görüntü'}${w.not?' · '+E(w.not):''}</span></div>
+    <div class="tools">${tools(i,a.length)}</div></div>`).join(''):'<p class="hint" style="padding:12px 2px">Henüz çizim yok.</p>';
+}
+function renderKat(){
+  $('katList').innerHTML=D.indir.map((k,ki,ka)=>`<div class="kat" data-k="${ki}">
+    <div class="kat-h"><h3>${E(k.ad)}${k.gizli?' <span class="off" style="font-size:16px">(gizli)</span>':''}</h3>
+      <div class="tools" data-i="${ki}">${tools(ki,ka.length)}</div></div>
+    ${k.not?`<p class="hint">${E(k.not)}</p>`:''}
+    <div class="rows">${(k.dosyalar||[]).map((f,i,a)=>`<div class="r" data-i="${i}">
+      <div class="pv">${f.onizleme?`<img src="${src(f.onizleme)}" alt="">`:/\.(png|jpe?g|webp)$/i.test(f.dosya)?`<img src="${src(f.dosya)}" alt="">`:E((f.dosya.split('.').pop()||'').toUpperCase().slice(0,5))}</div>
+      <div class="t"><b>${E(f.ad)}</b><span>${E(f.dosya)} · ${suat.kb(f.boyut)}</span></div>
+      <div class="tools">${tools(i,a.length)}</div></div>`).join('')||'<p class="hint" style="padding:10px 2px">Boş.</p>'}</div>
+    <div class="addbar"><button class="cz lit fadd" type="button" style="width:120px"><img class="c" src="../img/ui/ekle-c.png" alt=""><img src="../img/ui/ekle.png" alt="Dosya ekle" width="211" height="78"></button><span>bu kategoriye dosya</span></div>
+  </div>`).join('');
 }
 
-/* ---------- load ---------- */
+/* ---------- load / migrate ---------- */
 async function load(){
   try{
     busy(true,'Site okunuyor…',.3);
     const repo=await gh('');
     if(!repo.permissions||!repo.permissions.push)throw new Error('Anahtarın bu depoya yazma izni yok. Contents: Read and write seçtiğinden emin ol.');
-    WALLS=(await readJSON('veri/duvar.json',{duvar:[]})).data.duvar||[];
-    const dir=await gh('/contents/dosyalar?ref='+BR+'&t='+Date.now(),{allow404:true});
-    FILES=(dir||[]).filter(x=>x.type==='file'&&x.name!=='.gitkeep').map(x=>({name:x.name,size:x.size,path:x.path}));
-    renderWalls();renderFiles(); $('setPw').hidden=!!BOX;
+    D=await readJSON('veri/site.json');
+    if(!D){ /* first run: build from defaults + old wallpaper list + uploaded files */
+      busy(true,'İlk kurulum, içerik taşınıyor…',.6);
+      D=suat.VARSAYILAN();
+      const w=await readJSON('veri/duvar.json');
+      D.illustrasyon=((w&&w.duvar)||[]).map(x=>({dosya:x.dosya,ad:x.ad,not:x.not||'',indir:true}));
+      const dir=await gh('/contents/dosyalar?ref='+BR,{allow404:true})||[];
+      const known=new Set(D.indir.flatMap(k=>k.dosyalar.map(f=>f.dosya)));
+      for(const x of dir.filter(x=>x.type==='file'&&!known.has(x.path))){
+        const id=/\.(ttf|otf|woff2?)$/i.test(x.name)?'fontlar':/\.(brush|brushset|abr)$/i.test(x.name)?'brushlar':'diger';
+        let k=D.indir.find(k=>k.id===id); if(!k){k={id,ad:'Diğer',not:'',dosyalar:[]};D.indir.push(k);}
+        k.dosyalar.push({ad:x.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' '),dosya:x.path,boyut:x.size});
+      }
+      await save('Müdüriyet: içerik yapısı kuruldu');
+    }
+    D._v=Date.now();
+    renderAll();
     $('login').hidden=true;$('app').hidden=false;$('logout').hidden=false;
     $('who').textContent='Hoşgeldin moruk. Yaptığın değişiklik 1–2 dakika içinde sitede görünür.';
+    $('pwInfo').textContent=BOX?'Şifren kayıtlı. Değiştirmek istersen yenisini yaz.':'Henüz şifren yok! Bir şifre belirle, başka cihazlarda sadece onunla girersin. En az 10 karakter.';
+    let t='ana';try{t=sessionStorage.getItem('suat-tab')||(BOX?'ana':'ayar')}catch(_){}
+    document.querySelector(`#tabs [data-t="${t}"]`).click();
     busy(false);
   }catch(e){
     if(/Anahtar/.test(e.message)){ try{localStorage.removeItem('suat-gh')}catch(_){}; TOKEN=null; showLogin(/geçersiz/.test(e.message)?'tok':undefined); }
     fail(e);
   }
 }
-/* ---------- şifre: anahtar şifreli olarak veri/anahtar.json'da durur ---------- */
-const te=new TextEncoder(), td=new TextDecoder();
-const b64=u=>btoa(String.fromCharCode(...new Uint8Array(u))), unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+
+/* ---------- ana sayfa butonları ---------- */
+async function buttonForm(b){
+  const h=HEDEF(), known=h.some(([v])=>v===(b.link||''));
+  const o=await form(b.ad?'BUTONU DÜZENLE':'YENİ BUTON',[
+    {k:'ad',l:'Buton yazısı',v:b.ad,ph:'mesela: Muraller'},
+    {k:'hedef',l:'Nereye gitsin?',t:'select',o:h,v:known?(b.link||''):'__url'},
+    {k:'url',l:'Başka link ise (https://…)',t:'url',v:known?'':b.link,ph:'https://'},
+    {k:'gorsel',l:'Buton çizimi (PNG, isteğe bağlı)',t:'file',acc:'image/png,image/*'},
+    {k:'cizimsiz',l:'Çizimi kaldır, yazı olarak göster',t:'check',v:false},
+    {k:'gizli',l:'Ana sayfada gizle',t:'check',v:!!b.gizli}]);
+  if(!o)return null;
+  if(!o.ad){suat.toast('buton yazısı lazım');return null;}
+  const link=o.hedef==='__url'?o.url:o.hedef;
+  if(o.hedef==='__url'&&!/^https?:\/\//.test(link)){suat.toast('link https:// ile başlamalı');return null;}
+  const nb={...b,ad:o.ad,link,gizli:o.gizli}; let extra={};
+  if(o.cizimsiz){delete nb.gorsel;delete nb.renk;}
+  if(o.gorsel){const p='img/buton/'+slug(o.ad)+'-'+stamp()+'.png';extra[p]=await fileB64(o.gorsel);nb.gorsel=p;delete nb.renk;}
+  if(!nb.id)nb.id=slug(o.ad)+'-'+stamp();
+  return {nb,extra};
+}
+$('btnAdd').onclick=async()=>{try{const r=await buttonForm({});if(!r)return;D.butonlar.push(r.nb);await save('Ana sayfaya buton: '+r.nb.ad,r.extra);D._v=Date.now();renderBtns();suat.toast('buton eklendi',true);}catch(e){fail(e)}};
+$('btnRows').onclick=async e=>{const a=rowAction(e);if(!a)return;const b=D.butonlar[a.i];
+  try{
+    if(a.ed){const r=await buttonForm(b);if(!r)return;D.butonlar[a.i]=r.nb;await save('Buton: '+r.nb.ad,r.extra);D._v=Date.now();renderBtns();suat.toast('kaydettim',true);}
+    else if(a.rm){if(!await ask(`"${b.ad}" butonu kaldırılsın mı?`))return;D.butonlar.splice(a.i,1);await save('Buton kaldırıldı: '+b.ad);renderBtns();suat.toast('kaldırdım',true);}
+    else if((a.up||a.down)&&move(D.butonlar,a.i,a.up?-1:1)){renderBtns();await save('Buton sırası');}
+  }catch(err){fail(err)}};
+
+/* ---------- illüstrasyon ---------- */
+$('illAdd').onclick=()=>$('illIn').click();
+$('illIn').onchange=async e=>{
+  const fs=[...e.target.files];e.target.value='';if(!fs.length)return;
+  try{const extra={};
+    for(let k=0;k<fs.length;k++){const f=fs[k];busy(true,`${f.name} hazırlanıyor (${k+1}/${fs.length})`,(k+.5)/fs.length*.8);
+      const p='img/is/'+slug(f.name.replace(/\.[^.]+$/,''))+'-'+stamp()+'.jpg';extra[p]=await imgB64(f);
+      D.illustrasyon.unshift({dosya:p,ad:f.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').toLocaleUpperCase('tr'),not:'',indir:false});}
+    await save('İllüstrasyon eklendi ('+fs.length+')',extra);D._v=Date.now();renderIll();suat.toast('tamamdır, yüklendi',true);
+  }catch(err){fail(err)}};
+$('illRows').onclick=async e=>{const a=rowAction(e);if(!a)return;const w=D.illustrasyon[a.i];
+  try{
+    if(a.ed){const o=await form('ÇİZİMİ DÜZENLE',[{k:'ad',l:'Adı',v:w.ad},{k:'not',l:'Altına küçük not',v:w.not},{k:'indir',l:'İndirilebilir (BELEŞ)',t:'check',v:w.indir}]);
+      if(!o)return;Object.assign(w,{ad:o.ad||w.ad,not:o.not,indir:o.indir});await save('Çizim: '+w.ad);renderIll();suat.toast('kaydettim',true);}
+    else if(a.rm){if(!await ask(`"${w.ad}" silinsin mi?`))return;D.illustrasyon.splice(a.i,1);await save('Çizim silindi: '+w.ad,{[w.dosya]:null});renderIll();suat.toast('sildim',true);}
+    else if((a.up||a.down)&&move(D.illustrasyon,a.i,a.up?-1:1)){renderIll();await save('Çizim sırası');}
+  }catch(err){fail(err)}};
+
+/* ---------- indir-kullan ---------- */
+$('katAdd').onclick=async()=>{const o=await form('YENİ KATEGORİ',[{k:'ad',l:'Kategori adı',ph:'mesela: STL dosyaları'},{k:'not',l:'Kısa açıklama',ph:'3D yazıcı için modeller'}]);
+  if(!o||!o.ad)return;let id=slug(o.ad);if(D.indir.some(k=>k.id===id))id+='-'+stamp();
+  try{D.indir.push({id,ad:o.ad,not:o.not,dosyalar:[]});await save('Kategori: '+o.ad);renderKat();suat.toast('kategori eklendi',true);}catch(e){fail(e)}};
+let fTarget=null;
+$('katList').onclick=async e=>{
+  const kEl=e.target.closest('.kat');if(!kEl)return;const ki=+kEl.dataset.k,k=D.indir[ki];
+  if(e.target.closest('.fadd')){fTarget=ki;$('fIn').click();return;}
+  const head=e.target.closest('.kat-h');const a=rowAction(e);if(!a)return;
+  try{
+    if(head){ /* category tools */
+      if(a.ed){const o=await form('KATEGORİYİ DÜZENLE',[{k:'ad',l:'Adı',v:k.ad},{k:'not',l:'Kısa açıklama',v:k.not},{k:'gizli',l:'Sitede gizle',t:'check',v:!!k.gizli}]);
+        if(!o)return;Object.assign(k,{ad:o.ad||k.ad,not:o.not,gizli:o.gizli});await save('Kategori: '+k.ad);renderKat();suat.toast('kaydettim',true);}
+      else if(a.rm){if(!await ask(`"${k.ad}" kategorisi ve içindeki ${k.dosyalar.length} dosya silinsin mi?`))return;
+        const del={};k.dosyalar.forEach(f=>{if(!/^dosyalar\/suatilyus-(hand|long|skinny)-regular\.ttf$/.test(f.dosya))del[f.dosya]=null;});
+        D.indir.splice(ki,1);await save('Kategori silindi: '+k.ad,del);renderKat();suat.toast('sildim',true);}
+      else if((a.up||a.down)&&move(D.indir,ki,a.up?-1:1)){renderKat();await save('Kategori sırası');}
+      return;
+    }
+    const f=k.dosyalar[a.i];
+    if(a.ed){const o=await form('DOSYAYI DÜZENLE',[{k:'ad',l:'Görünen adı',v:f.ad},
+        {k:'kat',l:'Kategori',t:'select',o:D.indir.map((x,i)=>[String(i),x.ad]),v:String(ki)},
+        {k:'pv',l:'Önizleme görseli (isteğe bağlı)',t:'file',acc:'image/*'}]);
+      if(!o)return;f.ad=o.ad||f.ad;const extra={};
+      if(o.pv){const p='img/onizleme/'+slug(f.ad)+'-'+stamp()+'.jpg';extra[p]=await imgB64(o.pv,800);f.onizleme=p;}
+      if(+o.kat!==ki){k.dosyalar.splice(a.i,1);D.indir[+o.kat].dosyalar.push(f);}
+      await save('Dosya: '+f.ad,extra);D._v=Date.now();renderKat();suat.toast('kaydettim',true);}
+    else if(a.rm){
+      const font=/^dosyalar\/suatilyus-(hand|long|skinny)-regular\.ttf$/.test(f.dosya);
+      if(!await ask(font?`"${f.ad}" listeden kalksın mı? (site bu fontu kullandığı için dosya silinmez)`:`"${f.ad}" silinsin mi?`))return;
+      k.dosyalar.splice(a.i,1);await save('Dosya kaldırıldı: '+f.ad,font?{}:{[f.dosya]:null});renderKat();suat.toast('sildim',true);}
+    else if((a.up||a.down)&&move(k.dosyalar,a.i,a.up?-1:1)){renderKat();await save('Dosya sırası');}
+  }catch(err){fail(err)}};
+$('fIn').onchange=async e=>{
+  const fs=[...e.target.files];e.target.value='';if(!fs.length||fTarget==null)return;const k=D.indir[fTarget];
+  const big=fs.find(f=>f.size>25*1048576);if(big){fail(new Error(big.name+' 25 MB\'tan büyük.'));return;}
+  try{const extra={};
+    for(let i=0;i<fs.length;i++){const f=fs[i];busy(true,`${f.name} hazırlanıyor (${i+1}/${fs.length})`,(i+.5)/fs.length*.8);
+      const ext=(f.name.match(/\.[^.]+$/)||[''])[0].toLowerCase(),p=`dosyalar/${k.id}/${slug(f.name.replace(/\.[^.]+$/,''))}${ext}`;
+      extra[p]=await fileB64(f);k.dosyalar=k.dosyalar.filter(x=>x.dosya!==p);
+      k.dosyalar.push({ad:f.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' '),dosya:p,boyut:f.size});}
+    await save(`${k.ad}: ${fs.length} dosya eklendi`,extra);renderKat();suat.toast('tamamdır, yüklendi',true);
+  }catch(err){fail(err)}};
+
+/* ---------- şifre (anahtar şifreli olarak veri/anahtar.json'da) ---------- */
+const te=new TextEncoder(),td=new TextDecoder();
+const b64=u=>btoa(String.fromCharCode(...new Uint8Array(u))),unb64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
 async function keyFrom(pw,salt,iter){const base=await crypto.subtle.importKey('raw',te.encode(pw),'PBKDF2',false,['deriveKey']);
   return crypto.subtle.deriveKey({name:'PBKDF2',salt,iterations:iter,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);}
 async function lock(token,pw){const salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),iter=310000;
   const ct=await crypto.subtle.encrypt({name:'AES-GCM',iv},await keyFrom(pw,salt,iter),te.encode(token));
   return {v:1,iter,salt:b64(salt),iv:b64(iv),ct:b64(ct)};}
 async function unlock(box,pw){const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:unb64(box.iv)},await keyFrom(pw,unb64(box.salt),box.iter),unb64(box.ct));return td.decode(pt);}
-let BOX=null;
 function showLogin(mode){ $('login').hidden=false;$('app').hidden=true;$('logout').hidden=true;
   const pw=(mode||(BOX?'pw':'tok'))==='pw'; $('pwMode').hidden=!pw; $('tokMode').hidden=pw; $('toPwWrap').hidden=!BOX;
   setTimeout(()=>(pw?$('pw'):$('tok')).focus(),50); }
@@ -257,118 +462,40 @@ $('toTok').onclick=e=>{e.preventDefault();showLogin('tok')};
 $('toPw').onclick=e=>{e.preventDefault();showLogin('pw')};
 function remember(t){ TOKEN=t; try{localStorage.setItem('suat-gh',t);localStorage.setItem('suat-mud','1')}catch(e){} }
 $('pw').addEventListener('keydown',e=>{if(e.key==='Enter')$('pwBtn').click()});
-$('pwBtn').onclick=async()=>{
-  const pw=$('pw').value; if(!pw){suat.toast('şifreyi yaz moruk');return}
-  try{ busy(true,'Kilit açılıyor…',.4); const t=await unlock(BOX,pw); $('pw').value=''; remember(t); load(); }
-  catch(e){ busy(false); suat.toast('şifre yanlış'); }
-};
+$('pwBtn').onclick=async()=>{ const pw=$('pw').value; if(!pw){suat.toast('şifreyi yaz moruk');return}
+  try{ busy(true,'Kilit açılıyor…',.4); const t=await unlock(BOX,pw); $('pw').value=''; remember(t); load(); }catch(e){ busy(false); suat.toast('şifre yanlış'); } };
+async function setPassword(p1,p2){
+  if(p1.length<10){suat.toast('şifre en az 10 karakter');return false}
+  if(p1!==p2){suat.toast('şifreler aynı değil');return false}
+  if(!crypto.subtle){fail(new Error('Şifreleme için siteyi https:// ile açman lazım.'));return false}
+  busy(true,'Şifreli kilit kaydediliyor…',.6); BOX=await lock(TOKEN,p1);
+  await commit({'veri/anahtar.json':enc(JSON.stringify(BOX,null,2)+'\n')},'Müdüriyet kilidi'); busy(false); return true;
+}
 $('tokBtn').onclick=async()=>{
-  const t=$('tok').value.trim(), p1=$('pw1').value, p2=$('pw2').value;
-  if(!/^(github_pat_|ghp_)/.test(t)){suat.toast('anahtar github_pat_ ile başlar');return}
-  if(p1.length<10){suat.toast('şifre en az 10 karakter');return}
-  if(p1!==p2){suat.toast('şifreler aynı değil');return}
-  if(!crypto.subtle){fail(new Error('Şifreleme için siteyi https:// ile açman lazım.'));return}
+  const t=$('tok').value.trim(); if(!/^(github_pat_|ghp_)/.test(t)){suat.toast('anahtar github_pat_ ile başlar');return}
   remember(t);
   try{ busy(true,'Anahtar deneniyor…',.3); const repo=await gh('');
     if(!repo.permissions||!repo.permissions.push)throw new Error('Anahtarın bu depoya yazma izni yok. Contents: Read and write seçtiğinden emin ol.');
-    busy(true,'Şifreli kilit kaydediliyor…',.7); BOX=await lock(t,p1); await writeJSON('veri/anahtar.json',BOX,'Müdüriyet kilidi güncellendi');
-    $('tok').value=$('pw1').value=$('pw2').value=''; busy(false); suat.toast('kurulum tamam',true); load();
-  }catch(e){ try{localStorage.removeItem('suat-gh')}catch(_){}; TOKEN=null; fail(e); }
-};
+    if(!await setPassword($('pw1').value,$('pw2').value)){busy(false);return}
+    $('tok').value=$('pw1').value=$('pw2').value=''; suat.toast('kurulum tamam',true); load();
+  }catch(e){ try{localStorage.removeItem('suat-gh')}catch(_){}; TOKEN=null; fail(e); } };
+$('spBtn').onclick=async()=>{ try{ if(await setPassword($('sp1').value,$('sp2').value)){$('sp1').value=$('sp2').value='';$('pwInfo').textContent='Şifren kayıtlı. Değiştirmek istersen yenisini yaz.';suat.toast('şifre kaydedildi',true);} }catch(e){fail(e)} };
 $('logout').onclick=async()=>{ if(!await ask('Bu cihazda panelden çıkılsın mı?'))return; try{localStorage.removeItem('suat-gh')}catch(e){} TOKEN=null; showLogin(); suat.toast('çıktın, görüşürüz',true); };
 
-$('spBtn').onclick=async()=>{ const p1=$('sp1').value,p2=$('sp2').value;
-  if(p1.length<10){suat.toast('şifre en az 10 karakter');return} if(p1!==p2){suat.toast('şifreler aynı değil');return}
-  try{ busy(true,'Şifreli kilit kaydediliyor…',.6); BOX=await lock(TOKEN,p1); await writeJSON('veri/anahtar.json',BOX,'Müdüriyet kilidi'); $('sp1').value=$('sp2').value=''; $('setPw').hidden=true; busy(false); suat.toast('şifre kaydedildi',true);}catch(e){fail(e)} };
-
-/* ---------- site update from Claude's zip: one commit ---------- */
+/* ---------- site update from Claude's zip ---------- */
 $('zipAdd').onclick=()=>$('zipIn').click();
 $('zipIn').onchange=async e=>{
-  const f=e.target.files[0]; e.target.value=''; if(!f)return;
+  const f=e.target.files[0];e.target.value='';if(!f)return;
   if(!await ask(f.name+' siteye yüklensin mi?'))return;
-  try{
-    busy(true,'Zip açılıyor…',.05);
+  try{busy(true,'Zip açılıyor…',.05);
     const zip=await JSZip.loadAsync(f);
     let ent=Object.values(zip.files).filter(x=>!x.dir&&!/(^|\/)(__MACOSX|\.DS_Store)/.test(x.name));
     const pre=ent.length&&ent.every(x=>x.name.includes('/'))&&new Set(ent.map(x=>x.name.split('/')[0])).size===1?ent[0].name.split('/')[0]+'/':'';
-    /* never overwrite what the panel manages */
-    ent=ent.filter(x=>!/^(veri\/(duvar|dosyalar|anahtar)\.json)$/.test(x.name.slice(pre.length)));
-    const ref=await gh('/git/ref/heads/'+BR), base=await gh('/git/commits/'+ref.object.sha), tree=[];
-    for(const [i,x] of ent.entries()){
-      busy(true,`${i+1}/${ent.length} ${x.name.slice(pre.length)}`,.1+.8*i/ent.length);
-      const bl=await gh('/git/blobs',{method:'POST',body:JSON.stringify({content:await x.async('base64'),encoding:'base64'})});
-      tree.push({path:x.name.slice(pre.length),mode:'100644',type:'blob',sha:bl.sha});
-    }
-    busy(true,'Kaydediliyor…',.95);
-    const tr=await gh('/git/trees',{method:'POST',body:JSON.stringify({base_tree:base.tree.sha,tree})});
-    const c=await gh('/git/commits',{method:'POST',body:JSON.stringify({message:'Site güncellendi ('+ent.length+' dosya)',tree:tr.sha,parents:[ref.object.sha]})});
-    await gh('/git/refs/heads/'+BR,{method:'PATCH',body:JSON.stringify({sha:c.sha})});
-    busy(false); suat.toast('site güncellendi',true);
-  }catch(err){ fail(err); }
-};
-
-/* ---------- wallpapers ---------- */
-async function saveWalls(msg){ await writeJSON('veri/duvar.json',{duvar:WALLS},msg); }
-$('wallIn').onchange=async e=>{
-  const fs=[...e.target.files]; e.target.value=''; if(!fs.length)return;
-  try{
-    for(let k=0;k<fs.length;k++){
-      const f=fs[k], ad=('DUVAR '+String(WALLS.length+1).padStart(2,'0'));
-      busy(true,`${f.name} hazırlanıyor (${k+1}/${fs.length})`,(k+.2)/fs.length);
-      const b64=await wallpaperB64(f);
-      const p='img/duvar/'+Date.now().toString(36)+'-'+slug(f.name.replace(/\.[^.]+$/,''))+'.jpg';
-      busy(true,`${f.name} yükleniyor (${k+1}/${fs.length})`,(k+.6)/fs.length);
-      await putFile(p,b64,'Duvar kâğıdı eklendi: '+f.name);
-      WALLS.push({dosya:p,ad,not:'',v:Date.now()});
-    }
-    busy(true,'Liste kaydediliyor…',1); await saveWalls('Duvar kâğıtları güncellendi');
-    renderWalls(); busy(false); suat.toast('tamamdır, yüklendi',true);
-  }catch(err){ fail(err); }
-};
-$('walls').addEventListener('click',async e=>{
-  const card=e.target.closest('.w'); if(!card)return; const i=+card.dataset.i, w=WALLS[i];
-  try{
-    if(e.target.closest('.ed')){
-      const ad=prompt('Adı ne olsun?',w.ad); if(ad==null)return;
-      const not=prompt('Altına küçük not (boş bırakabilirsin):',w.not||''); if(not==null)return;
-      w.ad=ad.trim()||w.ad; w.not=not.trim();
-      busy(true,'Kaydediliyor…',.6); await saveWalls('Duvar kâğıdı adı: '+w.ad); renderWalls(); busy(false); suat.toast('kaydettim',true);
-    }else if(e.target.closest('.rm')){
-      if(!await ask(`"${w.ad}" silinsin mi?`))return;
-      busy(true,'Siliniyor…',.4); WALLS.splice(i,1); await saveWalls('Duvar kâğıdı silindi: '+w.ad);
-      busy(true,'Siliniyor…',.8); await delFile(w.dosya,'Görsel silindi: '+w.ad); renderWalls(); busy(false); suat.toast('sildim',true);
-    }else if(e.target.closest('.up')||e.target.closest('.down')){
-      const j=e.target.closest('.up')?i-1:i+1; [WALLS[i],WALLS[j]]=[WALLS[j],WALLS[i]];
-      renderWalls(); busy(true,'Sıra kaydediliyor…',.6); await saveWalls('Duvar kâğıdı sırası'); busy(false);
-    }
-  }catch(err){ fail(err); }
-});
-
-/* ---------- files ---------- */
-$('fileAdd').onclick=()=>$('fileIn').click();
-$('fileIn').onchange=async e=>{
-  const fs=[...e.target.files]; e.target.value=''; if(!fs.length)return;
-  const big=fs.find(f=>f.size>25*1048576); if(big){fail(new Error(big.name+' 25 MB\'tan büyük. Daha küçük bir dosya dene.'));return;}
-  try{
-    for(let k=0;k<fs.length;k++){
-      const f=fs[k], ext=(f.name.match(/\.[^.]+$/)||[''])[0].toLowerCase(), p='dosyalar/'+slug(f.name.replace(/\.[^.]+$/,''))+ext;
-      busy(true,`${f.name} yükleniyor (${k+1}/${fs.length})`,(k+.5)/fs.length);
-      await putFile(p,await fileB64(f),'Dosya eklendi: '+f.name);
-      FILES=FILES.filter(x=>x.path!==p); FILES.push({name:p.split('/').pop(),size:f.size,path:p});
-    }
-    renderFiles(); busy(false); suat.toast('tamamdır, yüklendi',true);
-  }catch(err){ fail(err); }
-};
-$('files').addEventListener('click',async e=>{
-  const row=e.target.closest('.f'); if(!row)return; const f=FILES[+row.dataset.i];
-  if(e.target.closest('.copy')){ const url='https://suatilyus.com/'+f.path;
-    try{await navigator.clipboard.writeText(url);suat.toast('link kopyalandı',true)}catch(_){prompt('Link:',url)} return; }
-  if(e.target.closest('.rm')){
-    if(!await ask(`"${f.name}" silinsin mi?`))return;
-    try{ busy(true,'Siliniyor…',.6); await delFile(f.path,'Dosya silindi: '+f.name); FILES.splice(+row.dataset.i,1); renderFiles(); busy(false); suat.toast('sildim',true); }
-    catch(err){ fail(err); }
-  }
-});
+    ent=ent.filter(x=>!/^veri\//.test(x.name.slice(pre.length)));  /* panel-managed data is never overwritten */
+    const files={};
+    for(const [i,x] of ent.entries()){busy(true,`${i+1}/${ent.length} ${x.name.slice(pre.length)}`,.05+.85*i/ent.length);files[x.name.slice(pre.length)]=await x.async('base64');}
+    busy(true,'Kaydediliyor…',.95);await commit(files,'Site güncellendi ('+ent.length+' dosya)');busy(false);suat.toast('site güncellendi',true);
+  }catch(err){fail(err)}};
 
 fetch('../veri/anahtar.json?'+Date.now()).then(r=>r.ok?r.json():null).catch(()=>null).then(b=>{ BOX=(b&&b.ct)?b:null; if(TOKEN) load(); else showLogin(); });
 }

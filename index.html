@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="ortak.css">
+<link rel="stylesheet" href="ortak.css?v=2611170330">
 <style>
 :root{--pink:#fd225a;--ink:#111}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -34,9 +34,10 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
 @keyframes float{50%{transform:translateY(-1.2cqw) rotate(-.6deg)}}
 @keyframes talk{0%,70%,100%{transform:scale(1) rotate(0)}76%{transform:scale(1.08) rotate(3deg)}82%{transform:scale(.97) rotate(-2deg)}88%{transform:scale(1.02)}}
 
-.row{display:flex;justify-content:center;gap:4.6cqw;width:100%}
-.row1{margin-top:15.6cqw}
-.row2{margin-top:4.2cqw}
+.row{display:flex;flex-wrap:wrap;justify-content:center;gap:5cqw 4.6cqw;width:94%;margin-top:15.6cqw;min-height:30cqw}
+/* buttons added from the panel without a drawing: text in a drawn-style frame */
+.btn.txt{display:flex;align-items:center;justify-content:center;min-height:8.2cqw;margin-top:.8cqw;border:.6cqw solid var(--ink);border-radius:1.4cqw;outline:.3cqw solid var(--ink);outline-offset:-1.5cqw;color:var(--ink);font-family:"suat-skinny","Patrick Hand",sans-serif;font-size:4.6cqw;letter-spacing:.04em;text-transform:uppercase;padding:0 2cqw;text-align:center;line-height:1}
+.btn.txt:hover{background:#ffd23f}
 .btn{width:23.6cqw;background:none;border:0;cursor:pointer;display:block;text-decoration:none;transition:transform .12s}
 /* color layer: line art sits on top, colour fades in underneath */
 .cz{position:relative}
@@ -77,15 +78,7 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
     <img class="bubble" src="img/bubble.png" alt="N'aber?" width="778" height="633">
   </div>
 
-  <nav class="row row1" aria-label="Ana menü">
-    <a class="btn cz" href="uygulamalar/index.html"><img class="c" src="img/btn-uygulamalar-c.png" alt=""><img src="img/btn-uygulamalar.png" alt="Uygulamalar" width="272" height="94"><img class="arrows" src="img/arrows.png" alt=""></a>
-    <a class="btn cz" href="illustrasyon/index.html"><img class="c" src="img/btn-illustrasyon-c.png" alt=""><img src="img/btn-illustrasyon.png" alt="İllüstrasyon" width="275" height="95"><img class="arrows" src="img/arrows.png" alt=""></a>
-    <a class="btn cz" href="#" data-soon><img class="c" src="img/btn-indir-kullan-c.png" alt=""><img src="img/btn-indir-kullan.png" alt="İndir - kullan" width="277" height="94"><img class="arrows" src="img/arrows.png" alt=""></a>
-  </nav>
-  <nav class="row row2" aria-label="Teklif">
-    <a class="btn cz" href="https://ig.me/m/suatilyus" target="_blank" rel="noopener"><img class="c" src="img/btn-teklif-al-c.png" alt=""><img src="img/btn-teklif-al.png" alt="Teklif al" width="278" height="93"><img class="arrows" src="img/arrows.png" alt=""></a>
-    <a class="btn cz" href="https://ig.me/m/suatilyus" target="_blank" rel="noopener"><img class="c" src="img/btn-teklif-ver-c.png" alt=""><img src="img/btn-teklif-ver.png" alt="Teklif ver" width="277" height="95"><img class="arrows" src="img/arrows.png" alt=""></a>
-  </nav>
+  <nav class="row" id="btns" aria-label="Ana menü"></nav>
 
   <div class="divider cz"><img class="c" src="img/divider-c.png" alt=""><img src="img/divider.png" alt="" width="1062" height="54"></div>
   <div class="note-header cz"><img class="c" src="img/note-header-c.png" alt=""><img src="img/note-header.png" alt="Gitmeden not bırak" width="802" height="152"></div>
@@ -103,8 +96,19 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
   <div class="divider divider2 cz" id="uygulamalar"><img class="c" src="img/divider-c.png" alt=""><img src="img/divider.png" alt="" width="1062" height="54"></div>
   <img class="soon" src="img/cok-yakinda.png" alt="Çok yakında: suatilyus app!" width="460" height="313">
 </main>
-<script src="ortak.js"></script>
+<script src="ortak.js?v=2611170330"></script>
 <script>
+/* home buttons come from veri/site.json (control panel) */
+suat.veri().then(d=>{
+  const E=suat.esc;
+  document.getElementById('btns').innerHTML=d.butonlar.filter(b=>!b.gizli).map(b=>{
+    const ext=/^https?:/.test(b.link), href=b.link?suat.url(b.link):'#';
+    const attrs=`href="${E(href)}"${ext?' target="_blank" rel="noopener"':''}${b.link?'':' data-soon'}`;
+    return b.gorsel
+      ? `<a class="btn cz" ${attrs}>${b.renk?`<img class="c" src="${E(suat.url(b.renk))}" alt="">`:''}<img src="${E(suat.url(b.gorsel))}" alt="${E(b.ad)}"><img class="arrows" src="img/arrows.png" alt=""></a>`
+      : `<a class="btn txt" ${attrs}>${E(b.ad)}</a>`;
+  }).join('');
+});
 const say=(m,ok)=>suat.toast(m,ok);
 document.getElementById('note').addEventListener('reset',()=>say('tamam, sildim',true));
 document.getElementById('note').addEventListener('submit',e=>{

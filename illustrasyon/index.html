@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>İllüstrasyon — suatilyus</title>
-<meta name="description" content="suatilyus çizimleri — telefonun için ücretsiz duvar kâğıtları.">
+<meta name="description" content="suatilyus çizimleri — illüstrasyon, mural, poster.">
 <link rel="icon" href="../img/icon-192.png">
 <link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
 <link rel="manifest" href="../manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../ortak.css">
+<link rel="stylesheet" href="../ortak.css?v=2611170330">
 <style>
 :root{--ink:#111}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -24,10 +24,12 @@ a{color:inherit;text-decoration:none}
 h1{font-size:11cqw;font-weight:400;letter-spacing:.04em;margin-top:5cqw;line-height:1}
 .sub{font-size:5cqw;margin-top:1.5cqw;color:#555;text-align:center}
 .divider{width:100%;margin:6cqw 0 5cqw}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:5cqw;width:100%}
+.grid{columns:2;column-gap:5cqw;width:100%}
+.grid .wp{break-inside:avoid;display:block;width:100%;margin-bottom:6cqw}
 .wp{appearance:none;border:0;background:none;padding:0;cursor:pointer;text-align:center;font:inherit;color:inherit}
-.frame{aspect-ratio:1290/2796;border:.6cqw solid var(--ink);border-radius:5cqw;outline:.3cqw solid var(--ink);outline-offset:-2cqw;overflow:hidden;background:#f3f3f3;display:flex;align-items:center;justify-content:center;transition:transform .15s}
-.frame img{width:100%;height:100%;object-fit:cover}
+.frame{border:.6cqw solid var(--ink);border-radius:5cqw;outline:.3cqw solid var(--ink);outline-offset:-2cqw;overflow:hidden;background:#f3f3f3;display:flex;align-items:center;justify-content:center;transition:transform .15s}
+.frame img{width:100%;height:auto;display:block}
+.frame.empty{aspect-ratio:3/4}
 .frame.empty{background:#fafafa}
 .frame.empty img{display:none}
 .frame.empty::before{content:"YAKINDA";font-size:6cqw;color:#aaa;letter-spacing:.05em}
@@ -51,41 +53,40 @@ h1{font-size:11cqw;font-weight:400;letter-spacing:.04em;margin-top:5cqw;line-hei
 <main class="page">
   <a href="../index.html" aria-label="Ana sayfaya dön" style="display:block"><span class="amblem cz lit"><img class="c" src="../img/ui/amblem-c.png" alt=""><img src="../img/ui/amblem.png" alt="Ana sayfa" width="865" height="286"></span></a>
   <h1>İLLÜSTRASYON</h1>
-  <p class="sub">telefonun için duvar kâğıdı, al senin olsun</p>
+  <p class="sub">çizimler — BELEŞ yazanları indir, kullan</p>
   <img class="divider" src="../img/divider.png" alt="" width="1062" height="54">
   <div class="grid" id="grid"></div>
   <a class="alt-geri cz" href="../index.html" aria-label="Geri dön"><img class="c" src="../img/ui/geri-c.png" alt=""><img src="../img/ui/geri.png" alt="Geri" width="466" height="170"></a>
 </main>
-<script src="../ortak.js"></script>
+<script src="../ortak.js?v=2611170330"></script>
 
-<div class="view" id="view" role="dialog" aria-modal="true" aria-label="Duvar kâğıdı">
+<div class="view" id="view" role="dialog" aria-modal="true" aria-label="Çizim">
   <img class="big" id="big" alt="">
   <div class="row">
     <a class="dl cz" id="dl" download><img class="c" src="../img/ui/indir-a-c.png" alt=""><img src="../img/ui/indir-a.png" alt="İndir" width="200" height="109"></a>
     <button class="share cz" id="share" hidden><img class="c" src="../img/ui/ikon-paylas-c.png" alt=""><img src="../img/ui/ikon-paylas.png" alt="Paylaş" width="96" height="154"></button>
     <button class="x cz" id="close"><img class="c" src="../img/ui/cikis-c.png" alt=""><img src="../img/ui/cikis.png" alt="Kapat" width="407" height="143"></button>
   </div>
-  <p class="tip">iPhone'da görsele basılı tut → "Fotoğraflara Kaydet". Sonra Ayarlar → Duvar Kâğıdı.</p>
+  <p class="tip">iPhone'da görsele basılı tut → "Fotoğraflara Kaydet".</p>
 </div>
 
 <script>
 {
-/* wallpapers come from veri/duvar.json, which the control panel keeps up to date */
+/* illustrations come from veri/site.json (control panel) */
 let WALL=[];
-const grid=document.getElementById('grid'),view=document.getElementById('view'),big=document.getElementById('big'),dl=document.getElementById('dl');
+const grid=document.getElementById('grid'),view=document.getElementById('view'),big=document.getElementById('big'),dl=document.getElementById('dl'),E=suat.esc;
 function render(){
-  const cards=WALL.map((w,i)=>`<button class="wp" data-i="${i}"><span class="tag cz"><img class="c" src="../img/ui/beles-c.png" alt=""><img src="../img/ui/beles.png" alt="Beleş" width="183" height="204"></span><div class="frame"><img src="../${w.dosya}" alt="${w.ad}" loading="lazy"></div><b>${w.ad}</b><span>${w.not||'telefon duvar kâğıdı'}</span></button>`);
-  for(let k=WALL.length;k<4;k++)cards.push(`<button class="wp" data-empty="1"><div class="frame empty taped"></div><b>YAKINDA</b><span>&nbsp;</span></button>`);
+  const cards=WALL.map((w,i)=>`<button class="wp" data-i="${i}">${w.indir?`<span class="tag cz"><img class="c" src="../img/ui/beles-c.png" alt=""><img src="../img/ui/beles.png" alt="Beleş" width="183" height="204"></span>`:''}<div class="frame"><img src="../${E(w.dosya)}" alt="${E(w.ad)}" loading="lazy"></div><b>${E(w.ad)}</b>${w.not?`<span>${E(w.not)}</span>`:''}</button>`);
+  if(!WALL.length)cards.push(`<button class="wp" data-empty="1"><div class="frame empty taped"></div><b>YAKINDA</b></button>`);
   grid.innerHTML=cards.join('');
 }
-render();
-fetch('../veri/duvar.json?'+Date.now()).then(r=>r.ok?r.json():{duvar:[]}).then(d=>{WALL=(d&&d.duvar)||[];render()}).catch(()=>{});
+suat.veri().then(d=>{WALL=d.illustrasyon||[];render()});
 let cur=null;
 grid.addEventListener('click',e=>{const b=e.target.closest('.wp');if(!b)return;if(b.dataset.empty){suat.yakinda();return}cur=WALL[+b.dataset.i];
-  big.src='../'+cur.dosya;big.alt=cur.ad;dl.href=big.src;dl.setAttribute('download','suatilyus-'+cur.dosya.split('/').pop());view.classList.add('show')});
+  big.src='../'+cur.dosya;big.alt=cur.ad;dl.href=big.src;dl.hidden=!cur.indir;dl.setAttribute('download','suatilyus-'+cur.dosya.split('/').pop());view.classList.add('show')});
 const close=()=>view.classList.remove('show');
 const shareBtn=document.getElementById('share');shareBtn.hidden=!navigator.share;
-shareBtn.addEventListener('click',async()=>{try{await navigator.share({title:'suatilyus — '+cur.ad,text:'suatilyus duvar kâğıdı, beleş',url:location.href})}catch(e){}});
+shareBtn.addEventListener('click',async()=>{try{await navigator.share({title:'suatilyus — '+cur.ad,text:'suatilyus çizimi',url:location.href})}catch(e){}});
 document.getElementById('close').addEventListener('click',close);
 view.addEventListener('click',e=>{if(e.target===view)close()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
