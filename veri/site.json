@@ -61,14 +61,14 @@
       "ad": "to night",
       "not": "",
       "indir": true,
-      "yeni": true
+      "yeni": false
     },
     {
       "dosya": "img/duvar/mwjwpups-img-0595.jpg",
       "ad": "f*ck this shit",
       "not": "",
-      "indir": false,
-      "yakinda": true
+      "indir": true,
+      "yakinda": false
     },
     {
       "dosya": "img/duvar/mwjwpwxf-img-0546.jpg",
@@ -113,7 +113,7 @@
       ]
     }
   ],
-  "_v": 1794887297775,
+  "_v": 1794887674198,
   "notKutusu": {
     "form": "https://docs.google.com/forms/d/e/1FAIpQLSccqGv7FUsKM87hh3gOBIRQdyzAYhrW-aOulezxnHgy_oIBqA/formResponse",
     "alan": "entry.494750193",
