@@ -111,7 +111,7 @@
       ]
     }
   ],
-  "_v": 1794883871513,
+  "_v": 1794884395691,
   "notKutusu": {
     "form": "https://docs.google.com/forms/d/e/1FAIpQLSccqGv7FUsKM87hh3gOBIRQdyzAYhrW-aOulezxnHgy_oIBqA/formResponse",
     "alan": "entry.494750193",
@@ -129,14 +129,12 @@
       "tarih": "17.11.2026"
     },
     {
-      "id": "17.11.2026 05:37:26",
-      "metin": "deneme notu (Claude testi, silebilirsin)",
-      "tarih": "17.11.2026"
-    },
-    {
       "id": "17.11.2026 05:51:02",
       "metin": "WOOUooOw site mükemmeeeeel\n— @suatilyus",
       "tarih": "17.11.2026"
     }
+  ],
+  "reddedilen": [
+    "17.11.2026 05:37:26"
   ]
 }
