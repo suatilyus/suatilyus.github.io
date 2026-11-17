@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../ortak.css?v=2611170608">
+<link rel="stylesheet" href="../ortak.css?v=2611170616">
 <style>
 :root{--ink:#111;--mut:#666}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -238,7 +238,7 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
     <button class="hit l" id="errClose" aria-label="Geri dön"></button><button class="hit r" id="errReload" aria-label="Yenile"></button></div>
 </div>
 
-<script src="../ortak.js?v=2611170608"></script>
+<script src="../ortak.js?v=2611170616"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 {
@@ -363,7 +363,7 @@ async function toplu(id,act,keys){const n=keys.length;if(!n)return;
       else{ws.forEach(w=>w.indir=act==='beles');await save('Çizim BELEŞ '+(act==='beles'?'açıldı':'kapandı')+' ('+n+')');ok('kaydettim');}
       SEC[id].clear();renderIll();}
     else if(id==='inRows'){const ns=GELEN.filter(x=>keys.includes(x.id));
-      if(act==='onay'){D.notlar=[...ns.map(x=>({id:x.id,metin:x.metin,tarih:x.tarih})),...(D.notlar||[])];await save('Not asıldı ('+n+')');ok('astım');}
+      if(act==='onay'){const var_=new Set((D.notlar||[]).map(x=>x.id));D.notlar=[...ns.filter(x=>!var_.has(x.id)).map(x=>({id:x.id,metin:x.metin,tarih:x.tarih})),...(D.notlar||[])];await save('Not asıldı ('+n+')');ok('astım');}
       else{if(!await ask(n+' not silinsin mi?'))return;D.reddedilen=[...(D.reddedilen||[]),...keys];await save('Not reddedildi ('+n+')');ok('sildim');}
       SEC[id].clear();renderPub();renderGelen();}
     else if(id==='pubRows'){if(!await ask(n+' not ana sayfadan kalksın mı?'))return;
@@ -556,11 +556,11 @@ $('notYenile').onclick=notlariGetir;
 document.querySelector('#tabs [data-t="not"]').addEventListener('click',()=>{if(!GELEN.length)notlariGetir()});
 $('inRows').onclick=async e=>{const r=e.target.closest('[data-id]');if(!r)return;const n=GELEN.find(x=>x.id===r.dataset.id);if(!n)return;
   try{
-    if(e.target.closest('.ok')){D.notlar=[{id:n.id,metin:n.metin,tarih:n.tarih},...(D.notlar||[])];await save('Not asıldı');renderPub();renderGelen();ok('astım');}
+    if(e.target.closest('.ok')){D.notlar=[{id:n.id,metin:n.metin,tarih:n.tarih},...(D.notlar||[]).filter(x=>x.id!==n.id)];await save('Not asıldı');renderPub();renderGelen();ok('astım');}
     else if(e.target.closest('.rm')){D.reddedilen=[...(D.reddedilen||[]),n.id];await save('Not reddedildi');renderGelen();ok('sildim');}
   }catch(err){fail(err)}};
 $('pubRows').onclick=async e=>{const a=rowAction(e);if(!a)return;const n=D.notlar[a.i];
-  try{ if(a.rm){if(!await ask('Bu not ana sayfadan kalksın mı?'))return;D.notlar.splice(a.i,1);D.reddedilen=[...(D.reddedilen||[]),n.id];await save('Not kaldırıldı');renderPub();ok('kaldırdım');}
+  try{ if(a.rm){if(!await ask('Bu not ana sayfadan kalksın mı?'))return;D.notlar=D.notlar.filter(x=>x.id!==n.id);D.reddedilen=[...(D.reddedilen||[]),n.id];await save('Not kaldırıldı');renderPub();ok('kaldırdım');}
     else if((a.up||a.down)&&move(D.notlar,a.i,a.up?-1:1)){renderPub();siraKaydet('Not sırası');}
   }catch(err){fail(err)}};
 $('kutuBtn').onclick=async()=>{const k=D.notKutusu||{};

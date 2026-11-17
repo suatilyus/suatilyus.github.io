@@ -87,7 +87,11 @@ const KUTU0 = () => ({
   alan: 'entry.494750193',
   csv: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQJo5hjYIVAyn-2LWlTgjXnSh8yAgTy2IEXXd46Fx_qr-RMZojMxtA3DEUmXaZiC47GJbPK2Vu8VAq4/pub?output=csv'
 });
-const kutuDoldur = d => { const k = d.notKutusu || {}; if (!k.form || !k.alan || !k.csv) d.notKutusu = Object.assign(KUTU0(), Object.fromEntries(Object.entries(k).filter(([, v]) => v))); return d; };
+const kutuDoldur = d => { const k = d.notKutusu || {}; if (!k.form || !k.alan || !k.csv) d.notKutusu = Object.assign(KUTU0(), Object.fromEntries(Object.entries(k).filter(([, v]) => v))); 
+  /* notes: drop duplicates and anything he removed */
+  const red = new Set(d.reddedilen || []), gor = new Set();
+  d.notlar = (d.notlar || []).filter(n => n && !red.has(n.id) && !gor.has(n.id) && gor.add(n.id));
+  return d; };
 let veriP;
 function veri() {
   if (!veriP) veriP = (async () => {
