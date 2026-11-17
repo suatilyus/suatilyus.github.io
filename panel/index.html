@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../ortak.css?v=2611170425">
+<link rel="stylesheet" href="../ortak.css?v=2611170445">
 <style>
 :root{--ink:#111;--mut:#666}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -227,7 +227,7 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
     <button class="hit l" id="errClose" aria-label="Geri dön"></button><button class="hit r" id="errReload" aria-label="Yenile"></button></div>
 </div>
 
-<script src="../ortak.js?v=2611170425"></script>
+<script src="../ortak.js?v=2611170445"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 {
@@ -364,6 +364,9 @@ async function load(){
       }
       await save('Müdüriyet: içerik yapısı kuruldu');
     }
+    /* old "DUVAR 01" names become "İLLÜSTRASYON 01" (only names he never changed) */
+    let ren=false; D.illustrasyon.forEach(w=>{const m=/^DUVAR (\d+)$/.exec(w.ad||'');if(m){w.ad='İLLÜSTRASYON '+m[1];ren=true;}});
+    if(ren) await save('İsimler: İLLÜSTRASYON');
     D._v=Date.now();
     renderAll();
     $('login').hidden=true;$('app').hidden=false;$('logout').hidden=false;
@@ -407,13 +410,14 @@ $('btnRows').onclick=async e=>{const a=rowAction(e);if(!a)return;const b=D.buton
   }catch(err){fail(err)}};
 
 /* ---------- illüstrasyon ---------- */
+function sonrakiAd(){let n=0;D.illustrasyon.forEach(w=>{const m=/^İLLÜSTRASYON (\d+)$/.exec(w.ad||'');if(m)n=Math.max(n,+m[1]);});return 'İLLÜSTRASYON '+String(n+1).padStart(2,'0');}
 $('illAdd').onclick=()=>$('illIn').click();
 $('illIn').onchange=async e=>{
   const fs=[...e.target.files];e.target.value='';if(!fs.length)return;
   try{const extra={};
     for(let k=0;k<fs.length;k++){const f=fs[k];busy(true,`${f.name} hazırlanıyor (${k+1}/${fs.length})`,(k+.5)/fs.length*.8);
       const p='img/is/'+slug(f.name.replace(/\.[^.]+$/,''))+'-'+stamp()+'.jpg';extra[p]=await imgB64(f);
-      D.illustrasyon.unshift({dosya:p,ad:f.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').toLocaleUpperCase('tr'),not:'',indir:false});}
+      D.illustrasyon.unshift({dosya:p,ad:sonrakiAd(),not:'',indir:false});}
     await save('İllüstrasyon eklendi ('+fs.length+')',extra);D._v=Date.now();renderIll();ok('tamamdır, yüklendi');
   }catch(err){fail(err)}};
 $('illRows').onclick=async e=>{const a=rowAction(e);if(!a)return;const w=D.illustrasyon[a.i];

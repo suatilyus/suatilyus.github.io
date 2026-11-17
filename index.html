@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="ortak.css?v=2611170425">
+<link rel="stylesheet" href="ortak.css?v=2611170445">
 <style>
 :root{--pink:#fd225a;--ink:#111}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -55,8 +55,8 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
 .note{position:relative;width:66cqw;margin-top:2cqw}
 .note>img{display:block;width:100%;height:auto}
 .note textarea,.note input{position:absolute;z-index:2;background:transparent;border:0;outline:0;resize:none;font:inherit;color:var(--ink);font-size:4.2cqw;line-height:5cqw;padding:0}
-.note textarea{left:10.7%;right:11.9%;top:20.5%;height:10.6%}
-.note input{left:46.5%;right:10%;top:42%;height:5.4%}
+.note textarea{left:10.7%;right:11.9%;top:25.4%;height:5.6%;overflow-y:auto}
+.note input{left:45.5%;right:11%;top:41%;height:4.4%;font-size:3.6cqw}
 .note textarea::placeholder,.note input::placeholder{color:#9a9a9a}
 .note .send{position:absolute;z-index:2;left:45.5%;width:43.2%;top:75.3%;height:13.8%;background:none;border:0;cursor:pointer;border-radius:2cqw;transition:transform .12s}
 .note .send:hover{transform:rotate(-3deg) scale(1.04);background:rgba(255,255,255,.12)}
@@ -69,7 +69,7 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
 .nt small{display:block;margin-top:1.4cqw;font-size:3.2cqw;color:#7a5a12}
 .nt.tek{grid-column:1/-1;width:62%;justify-self:center}
 .divider2{margin-top:14.5cqw}
-.soon{width:39.3cqw;margin-top:2.5cqw;animation:wobble 3s ease-in-out infinite}
+.soon{width:42cqw;margin-top:2.5cqw;animation:wobble 3s ease-in-out infinite}
 @keyframes wobble{50%{transform:rotate(-2.5deg) scale(1.03)}}
 
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -90,19 +90,19 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
   <nav class="row" id="btns" aria-label="Ana menü"></nav>
 
   <div class="divider cz"><img class="c" src="img/divider-c.png" alt=""><img src="img/divider.png" alt="" width="1062" height="54"></div>
-  <div class="note-header cz"><img class="c" src="img/note-header-c.png" alt=""><img src="img/note-header.png" alt="Gitmeden not bırak" width="802" height="152"></div>
+  <img class="note-header" src="img/ui/not-baslik.png" alt="Gitmeden not bırak" width="800" height="152">
   <form class="note" id="note">
     <img src="img/ui/pano.png" alt="Yaz moruk…" width="607" height="968">
-    <textarea name="not" maxlength="1000" aria-label="Notun" placeholder="yaz bakalım… "></textarea>
-    <input name="kim" maxlength="60" aria-label="Instagram adın (mecburi değil)" placeholder="instagram (mecburi değil)" autocomplete="off">
+    <textarea name="not" maxlength="1000" aria-label="Notun" placeholder="yaz bakalım…"></textarea>
+    <input name="kim" maxlength="60" aria-label="Instagram adın (mecburi değil)" placeholder="instagram (isteğe bağlı)" autocomplete="off">
     <button class="send" type="submit" aria-label="Gönder"></button>
   </form>
 
   <section class="notlar" id="notlar" hidden aria-label="Bırakılan notlar"><h2>BIRAKILAN NOTLAR</h2><div class="ntl" id="ntList"></div></section>
   <div class="divider divider2 cz" id="uygulamalar"><img class="c" src="img/divider-c.png" alt=""><img src="img/divider.png" alt="" width="1062" height="54"></div>
-  <img class="soon" src="img/cok-yakinda.png" alt="Çok yakında: suatilyus app!" width="460" height="313">
+  <img class="soon" src="img/ui/cok-yakinda-app.png" alt="Çok yakında: Naber Moruk — suatilyus app!" width="455" height="458">
 </main>
-<script src="ortak.js?v=2611170425"></script>
+<script src="ortak.js?v=2611170445"></script>
 <script>
 /* home buttons come from veri/site.json (control panel) */
 suat.veri().then(d=>{
