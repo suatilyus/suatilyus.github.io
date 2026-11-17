@@ -52,26 +52,28 @@
     },
     {
       "dosya": "img/duvar/mwjwppn9-img-0619.jpg",
-      "ad": "İLLÜSTRASYON 03",
+      "ad": "bonyour mother f*cker",
       "not": "",
       "indir": true
     },
     {
       "dosya": "img/duvar/mwjwps0s-img-0621.jpg",
-      "ad": "İLLÜSTRASYON 04",
+      "ad": "to night",
       "not": "",
-      "indir": true
+      "indir": true,
+      "yeni": true
     },
     {
       "dosya": "img/duvar/mwjwpups-img-0595.jpg",
-      "ad": "İLLÜSTRASYON 05",
+      "ad": "f*ck this shit",
       "not": "",
-      "indir": true
+      "indir": false,
+      "yakinda": true
     },
     {
       "dosya": "img/duvar/mwjwpwxf-img-0546.jpg",
       "ad": "İLLÜSTRASYON 06",
-      "not": "",
+      "not": "night dreamer",
       "indir": true
     }
   ],
@@ -111,7 +113,7 @@
       ]
     }
   ],
-  "_v": 1794886351449,
+  "_v": 1794887297775,
   "notKutusu": {
     "form": "https://docs.google.com/forms/d/e/1FAIpQLSccqGv7FUsKM87hh3gOBIRQdyzAYhrW-aOulezxnHgy_oIBqA/formResponse",
     "alan": "entry.494750193",
