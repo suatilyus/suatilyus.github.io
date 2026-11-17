@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="ortak.css?v=2611170330">
+<link rel="stylesheet" href="ortak.css?v=2611170425">
 <style>
 :root{--pink:#fd225a;--ink:#111}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -51,20 +51,23 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
 
 .divider{width:90.8cqw;margin-top:8.5cqw}
 .note-header{width:68.5cqw;margin-top:4.4cqw}
-.note{width:79.3cqw;margin-top:.6cqw}
-.note textarea,.note input{position:absolute;z-index:2;left:11%;right:11%;background:transparent;border:0;outline:0;resize:none;font:inherit;color:var(--ink);font-size:4.2cqw;line-height:5.4cqw;padding:0}
-/* text sits right on the drawn lines (line 1 ≈ 36.5%, line 2 ≈ 74% of the box) */
-.note textarea{top:20.5%;height:52%}
-/* approved notes */
-.notlar{width:86cqw;margin-top:8cqw;display:flex;flex-direction:column;gap:5cqw}
-.notlar h2{font-size:7cqw;font-weight:400;letter-spacing:.04em;text-align:center}
-.nt{position:relative;background:#f6ecd5;border:.5cqw solid var(--ink);border-radius:2cqw;padding:4cqw 5cqw 3cqw;font-size:4.6cqw;line-height:1.35;white-space:pre-wrap;word-break:break-word}
-.nt:nth-child(odd){transform:rotate(-.8deg)}.nt:nth-child(even){transform:rotate(.7deg)}
-.nt small{display:block;margin-top:1.6cqw;font-size:3.6cqw;color:#8a7a5a}
-.nt::before{content:"";position:absolute;top:-1.6cqw;left:50%;width:14cqw;height:3.2cqw;margin-left:-7cqw;background:rgba(255,210,63,.75);transform:rotate(-3deg)}
+/* clipboard note form — hotspots measured on the drawing */
+.note{position:relative;width:66cqw;margin-top:2cqw}
+.note>img{display:block;width:100%;height:auto}
+.note textarea,.note input{position:absolute;z-index:2;background:transparent;border:0;outline:0;resize:none;font:inherit;color:var(--ink);font-size:4.2cqw;line-height:5cqw;padding:0}
+.note textarea{left:10.7%;right:11.9%;top:20.5%;height:10.6%}
+.note input{left:46.5%;right:10%;top:42%;height:5.4%}
 .note textarea::placeholder,.note input::placeholder{color:#9a9a9a}
-.acts{display:flex;justify-content:center;gap:6cqw;margin-top:3cqw}
-.acts .cz{width:30cqw}
+.note .send{position:absolute;z-index:2;left:45.5%;width:43.2%;top:75.3%;height:13.8%;background:none;border:0;cursor:pointer;border-radius:2cqw;transition:transform .12s}
+.note .send:hover{transform:rotate(-3deg) scale(1.04);background:rgba(255,255,255,.12)}
+.note .send:active{transform:scale(.94)}
+/* approved notes, pinned with different coloured pins */
+.notlar{width:92cqw;margin-top:10cqw}
+.notlar h2{font-size:7cqw;font-weight:400;letter-spacing:.04em;text-align:center;margin-bottom:5cqw}
+.ntl{display:grid;grid-template-columns:1fr 1fr;gap:6cqw 4cqw;align-items:start}
+.nt{position:relative;background:center/100% 100% no-repeat;min-height:31cqw;padding:9.5cqw 4.5cqw 4cqw;font-size:4cqw;line-height:1.3;white-space:pre-wrap;word-break:break-word;filter:drop-shadow(0 .6cqw 0 rgba(0,0,0,.08))}
+.nt small{display:block;margin-top:1.4cqw;font-size:3.2cqw;color:#7a5a12}
+.nt.tek{grid-column:1/-1;width:62%;justify-self:center}
 .divider2{margin-top:14.5cqw}
 .soon{width:39.3cqw;margin-top:2.5cqw;animation:wobble 3s ease-in-out infinite}
 @keyframes wobble{50%{transform:rotate(-2.5deg) scale(1.03)}}
@@ -88,21 +91,18 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
 
   <div class="divider cz"><img class="c" src="img/divider-c.png" alt=""><img src="img/divider.png" alt="" width="1062" height="54"></div>
   <div class="note-header cz"><img class="c" src="img/note-header-c.png" alt=""><img src="img/note-header.png" alt="Gitmeden not bırak" width="802" height="152"></div>
-  <form class="note cz" id="note">
-    <img class="c" src="img/note-box-c.png" alt="">
-    <img src="img/note-box.png" alt="" width="928" height="782">
-    <textarea name="not" maxlength="1000" aria-label="Notun" placeholder="yaz bakalım… (isim vermek mecburi değil)"></textarea>
+  <form class="note" id="note">
+    <img src="img/ui/pano.png" alt="Yaz moruk…" width="607" height="968">
+    <textarea name="not" maxlength="1000" aria-label="Notun" placeholder="yaz bakalım… "></textarea>
+    <input name="kim" maxlength="60" aria-label="Instagram adın (mecburi değil)" placeholder="instagram (mecburi değil)" autocomplete="off">
+    <button class="send" type="submit" aria-label="Gönder"></button>
   </form>
-  <div class="acts">
-    <button class="cz" form="note" type="submit"><img class="c" src="img/ui/gonder-c.png" alt=""><img src="img/ui/gonder.png" alt="Gönder" width="372" height="170"></button>
-    <button class="cz" form="note" type="reset"><img class="c" src="img/ui/vazgec-c.png" alt=""><img src="img/ui/vazgec.png" alt="Vazgeç" width="379" height="168"></button>
-  </div>
 
-  <section class="notlar" id="notlar" hidden aria-label="Bırakılan notlar"><h2>BIRAKILAN NOTLAR</h2><div id="ntList" style="display:flex;flex-direction:column;gap:5cqw"></div></section>
+  <section class="notlar" id="notlar" hidden aria-label="Bırakılan notlar"><h2>BIRAKILAN NOTLAR</h2><div class="ntl" id="ntList"></div></section>
   <div class="divider divider2 cz" id="uygulamalar"><img class="c" src="img/divider-c.png" alt=""><img src="img/divider.png" alt="" width="1062" height="54"></div>
   <img class="soon" src="img/cok-yakinda.png" alt="Çok yakında: suatilyus app!" width="460" height="313">
 </main>
-<script src="ortak.js?v=2611170330"></script>
+<script src="ortak.js?v=2611170425"></script>
 <script>
 /* home buttons come from veri/site.json (control panel) */
 suat.veri().then(d=>{
@@ -116,19 +116,20 @@ suat.veri().then(d=>{
   }).join('');
 });
 const say=(m,ok)=>suat.toast(m,ok);
-document.querySelector('.acts [type=reset]').addEventListener('click',()=>say('tamam, sildim',true));
 let KUTU=null;
 suat.veri().then(d=>{
   KUTU=d.notKutusu||null;
   const N=(d.notlar||[]);
   if(N.length){document.getElementById('notlar').hidden=false;
-    document.getElementById('ntList').innerHTML=N.map(n=>`<div class="nt">${suat.esc(n.metin)}<small>${suat.esc(n.tarih||'')}</small></div>`).join('');}
+    const PIN=['kirmizi','mavi','yesil','pembe','mor','siyah'];
+    document.getElementById('ntList').innerHTML=N.map((n,i)=>{const rot=((i*37)%7-3)*0.7;
+      return `<div class="nt${N.length%2&&i===N.length-1?' tek':''}" style="background-image:url(img/ui/not-kart-${PIN[i%PIN.length]}.png);transform:rotate(${rot}deg)">${suat.esc(n.metin)}<small>${n.kim?'@'+suat.esc(n.kim.replace(/^@/,''))+' · ':''}${suat.esc(n.tarih||'')}</small></div>`}).join('');}
 });
 document.getElementById('note').addEventListener('submit',async e=>{
   e.preventDefault();const f=e.target,m=f.not.value.trim();
   if(!m){say('önce bi şey yaz moruk');f.not.focus();return}
   if(!KUTU||!KUTU.form||!KUTU.alan){say('not kutusu çok yakında açılıyor',true);return}
-  try{const fd=new FormData();fd.append(KUTU.alan,m);
+  try{const fd=new FormData();const k=f.kim.value.trim();fd.append(KUTU.alan,k?m+'\n— @'+k.replace(/^@/,''):m);
     await fetch(KUTU.form,{method:'POST',mode:'no-cors',body:fd});
     f.reset();say('aldım, okuyunca asarım',true);
   }catch(err){say('gitmedi, bi daha dene')}

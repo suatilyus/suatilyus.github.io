@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../ortak.css?v=2611170330">
+<link rel="stylesheet" href="../ortak.css?v=2611170425">
 <style>
 :root{--ink:#111;--mut:#666}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -87,7 +87,9 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
 .dlg .hit{position:absolute;bottom:0;height:30%;width:34%;background:none;border:0;cursor:pointer}
 .dlg .hit.l{left:1%}.dlg .hit.r{right:1%}
 .dlg.emin .msg{color:var(--ink);text-shadow:none;top:56%}
-@media (prefers-reduced-motion:reduce){.busy .yk{animation:none}}
+.okpop{position:fixed;left:50%;top:50%;width:min(80vw,380px);transform:translate(-50%,-50%) scale(.3) rotate(-10deg);opacity:0;pointer-events:none;z-index:40;transition:transform .35s cubic-bezier(.3,1.6,.5,1),opacity .2s}
+.okpop.show{transform:translate(-50%,-50%) scale(1) rotate(-2deg);opacity:1}
+@media (prefers-reduced-motion:reduce){.busy .yk{animation:none}.okpop{transition:opacity .2s}}
 @media (max-width:520px){.r{flex-wrap:wrap}.r .t{flex-basis:calc(100% - 90px)}.tools{width:100%;justify-content:flex-end}}
 </style>
 </head>
@@ -202,6 +204,8 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
   </section>
 </main>
 
+<!-- yüklendi / artık güncel -->
+<div class="okpop" id="okpop" role="status" aria-live="polite"><img id="okimg" alt=""></div>
 <!-- form -->
 <div class="veil" id="formV" role="dialog" aria-modal="true"><form class="form" id="form"></form></div>
 <!-- yükleniyor -->
@@ -218,12 +222,12 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
 </div>
 <!-- hata -->
 <div class="veil" id="err" role="alertdialog" aria-modal="true" aria-label="Hata">
-  <div class="dlg hata cz lit"><img class="c" src="../img/ui/dlg-hata-c.png" alt=""><img src="../img/ui/dlg-hata.png" alt="Hata verdi" width="659" height="461">
+  <div class="dlg hata cz lit"><img src="../img/ui/hata2.png" alt="Hassiktir moruk! Hata verdi" width="651" height="459">
     <p class="msg" id="errMsg" style="top:auto;bottom:34%"></p>
-    <button class="hit l" id="errClose" aria-label="Kapat"></button><button class="hit r" id="errReload" aria-label="Yenile"></button></div>
+    <button class="hit l" id="errClose" aria-label="Geri dön"></button><button class="hit r" id="errReload" aria-label="Yenile"></button></div>
 </div>
 
-<script src="../ortak.js?v=2611170330"></script>
+<script src="../ortak.js?v=2611170425"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 {
@@ -260,6 +264,10 @@ const siteFile=()=>({'veri/site.json':enc(JSON.stringify(D,null,2)+'\n')});
 async function save(msg,extra={}){busy(true,'Kaydediliyor…',.85);await commit({...extra,...siteFile()},msg);busy(false);}
 
 /* ---------- ui helpers ---------- */
+let popT;
+function pop(kind){const p=$('okpop'),i=$('okimg');i.src='../img/ui/'+kind+'.png';i.alt=kind==='yuklendi'?'Yüklendi':'Artık güncel';
+  p.classList.add('show');clearTimeout(popT);popT=setTimeout(()=>p.classList.remove('show'),2200);}
+const ok=m=>pop(/yükle|yüklendi|eklendi/.test(m)?'yuklendi':'artik-guncel');
 function busy(on,what='',pct){ $('busy').classList.toggle('show',on); $('what').textContent=what; if(pct!=null)$('fill').style.width=Math.round(pct*92)+'%'; }
 function fail(e){ busy(false); $('errMsg').textContent=e.message||String(e); $('err').classList.add('show'); }
 $('errClose').onclick=()=>$('err').classList.remove('show');
@@ -390,11 +398,11 @@ async function buttonForm(b){
   if(!nb.id)nb.id=slug(o.ad)+'-'+stamp();
   return {nb,extra};
 }
-$('btnAdd').onclick=async()=>{try{const r=await buttonForm({});if(!r)return;D.butonlar.push(r.nb);await save('Ana sayfaya buton: '+r.nb.ad,r.extra);D._v=Date.now();renderBtns();suat.toast('buton eklendi',true);}catch(e){fail(e)}};
+$('btnAdd').onclick=async()=>{try{const r=await buttonForm({});if(!r)return;D.butonlar.push(r.nb);await save('Ana sayfaya buton: '+r.nb.ad,r.extra);D._v=Date.now();renderBtns();ok('buton eklendi');}catch(e){fail(e)}};
 $('btnRows').onclick=async e=>{const a=rowAction(e);if(!a)return;const b=D.butonlar[a.i];
   try{
-    if(a.ed){const r=await buttonForm(b);if(!r)return;D.butonlar[a.i]=r.nb;await save('Buton: '+r.nb.ad,r.extra);D._v=Date.now();renderBtns();suat.toast('kaydettim',true);}
-    else if(a.rm){if(!await ask(`"${b.ad}" butonu kaldırılsın mı?`))return;D.butonlar.splice(a.i,1);await save('Buton kaldırıldı: '+b.ad);renderBtns();suat.toast('kaldırdım',true);}
+    if(a.ed){const r=await buttonForm(b);if(!r)return;D.butonlar[a.i]=r.nb;await save('Buton: '+r.nb.ad,r.extra);D._v=Date.now();renderBtns();ok('kaydettim');}
+    else if(a.rm){if(!await ask(`"${b.ad}" butonu kaldırılsın mı?`))return;D.butonlar.splice(a.i,1);await save('Buton kaldırıldı: '+b.ad);renderBtns();ok('kaldırdım');}
     else if((a.up||a.down)&&move(D.butonlar,a.i,a.up?-1:1)){renderBtns();await save('Buton sırası');}
   }catch(err){fail(err)}};
 
@@ -406,20 +414,20 @@ $('illIn').onchange=async e=>{
     for(let k=0;k<fs.length;k++){const f=fs[k];busy(true,`${f.name} hazırlanıyor (${k+1}/${fs.length})`,(k+.5)/fs.length*.8);
       const p='img/is/'+slug(f.name.replace(/\.[^.]+$/,''))+'-'+stamp()+'.jpg';extra[p]=await imgB64(f);
       D.illustrasyon.unshift({dosya:p,ad:f.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').toLocaleUpperCase('tr'),not:'',indir:false});}
-    await save('İllüstrasyon eklendi ('+fs.length+')',extra);D._v=Date.now();renderIll();suat.toast('tamamdır, yüklendi',true);
+    await save('İllüstrasyon eklendi ('+fs.length+')',extra);D._v=Date.now();renderIll();ok('tamamdır, yüklendi');
   }catch(err){fail(err)}};
 $('illRows').onclick=async e=>{const a=rowAction(e);if(!a)return;const w=D.illustrasyon[a.i];
   try{
     if(a.ed){const o=await form('ÇİZİMİ DÜZENLE',[{k:'ad',l:'Adı',v:w.ad},{k:'not',l:'Altına küçük not',v:w.not},{k:'indir',l:'İndirilebilir (BELEŞ)',t:'check',v:w.indir}]);
-      if(!o)return;Object.assign(w,{ad:o.ad||w.ad,not:o.not,indir:o.indir});await save('Çizim: '+w.ad);renderIll();suat.toast('kaydettim',true);}
-    else if(a.rm){if(!await ask(`"${w.ad}" silinsin mi?`))return;D.illustrasyon.splice(a.i,1);await save('Çizim silindi: '+w.ad,{[w.dosya]:null});renderIll();suat.toast('sildim',true);}
+      if(!o)return;Object.assign(w,{ad:o.ad||w.ad,not:o.not,indir:o.indir});await save('Çizim: '+w.ad);renderIll();ok('kaydettim');}
+    else if(a.rm){if(!await ask(`"${w.ad}" silinsin mi?`))return;D.illustrasyon.splice(a.i,1);await save('Çizim silindi: '+w.ad,{[w.dosya]:null});renderIll();ok('sildim');}
     else if((a.up||a.down)&&move(D.illustrasyon,a.i,a.up?-1:1)){renderIll();await save('Çizim sırası');}
   }catch(err){fail(err)}};
 
 /* ---------- indir-kullan ---------- */
 $('katAdd').onclick=async()=>{const o=await form('YENİ KATEGORİ',[{k:'ad',l:'Kategori adı',ph:'mesela: STL dosyaları'},{k:'not',l:'Kısa açıklama',ph:'3D yazıcı için modeller'}]);
   if(!o||!o.ad)return;let id=slug(o.ad);if(D.indir.some(k=>k.id===id))id+='-'+stamp();
-  try{D.indir.push({id,ad:o.ad,not:o.not,dosyalar:[]});await save('Kategori: '+o.ad);renderKat();suat.toast('kategori eklendi',true);}catch(e){fail(e)}};
+  try{D.indir.push({id,ad:o.ad,not:o.not,dosyalar:[]});await save('Kategori: '+o.ad);renderKat();ok('kategori eklendi');}catch(e){fail(e)}};
 let fTarget=null;
 $('katList').onclick=async e=>{
   const kEl=e.target.closest('.kat');if(!kEl)return;const ki=+kEl.dataset.k,k=D.indir[ki];
@@ -428,10 +436,10 @@ $('katList').onclick=async e=>{
   try{
     if(head){ /* category tools */
       if(a.ed){const o=await form('KATEGORİYİ DÜZENLE',[{k:'ad',l:'Adı',v:k.ad},{k:'not',l:'Kısa açıklama',v:k.not},{k:'gizli',l:'Sitede gizle',t:'check',v:!!k.gizli}]);
-        if(!o)return;Object.assign(k,{ad:o.ad||k.ad,not:o.not,gizli:o.gizli});await save('Kategori: '+k.ad);renderKat();suat.toast('kaydettim',true);}
+        if(!o)return;Object.assign(k,{ad:o.ad||k.ad,not:o.not,gizli:o.gizli});await save('Kategori: '+k.ad);renderKat();ok('kaydettim');}
       else if(a.rm){if(!await ask(`"${k.ad}" kategorisi ve içindeki ${k.dosyalar.length} dosya silinsin mi?`))return;
         const del={};k.dosyalar.forEach(f=>{if(!/^dosyalar\/suatilyus-(hand|long|skinny)-regular\.ttf$/.test(f.dosya))del[f.dosya]=null;});
-        D.indir.splice(ki,1);await save('Kategori silindi: '+k.ad,del);renderKat();suat.toast('sildim',true);}
+        D.indir.splice(ki,1);await save('Kategori silindi: '+k.ad,del);renderKat();ok('sildim');}
       else if((a.up||a.down)&&move(D.indir,ki,a.up?-1:1)){renderKat();await save('Kategori sırası');}
       return;
     }
@@ -442,11 +450,11 @@ $('katList').onclick=async e=>{
       if(!o)return;f.ad=o.ad||f.ad;const extra={};
       if(o.pv){const p='img/onizleme/'+slug(f.ad)+'-'+stamp()+'.jpg';extra[p]=await imgB64(o.pv,800);f.onizleme=p;}
       if(+o.kat!==ki){k.dosyalar.splice(a.i,1);D.indir[+o.kat].dosyalar.push(f);}
-      await save('Dosya: '+f.ad,extra);D._v=Date.now();renderKat();suat.toast('kaydettim',true);}
+      await save('Dosya: '+f.ad,extra);D._v=Date.now();renderKat();ok('kaydettim');}
     else if(a.rm){
       const font=/^dosyalar\/suatilyus-(hand|long|skinny)-regular\.ttf$/.test(f.dosya);
       if(!await ask(font?`"${f.ad}" listeden kalksın mı? (site bu fontu kullandığı için dosya silinmez)`:`"${f.ad}" silinsin mi?`))return;
-      k.dosyalar.splice(a.i,1);await save('Dosya kaldırıldı: '+f.ad,font?{}:{[f.dosya]:null});renderKat();suat.toast('sildim',true);}
+      k.dosyalar.splice(a.i,1);await save('Dosya kaldırıldı: '+f.ad,font?{}:{[f.dosya]:null});renderKat();ok('sildim');}
     else if((a.up||a.down)&&move(k.dosyalar,a.i,a.up?-1:1)){renderKat();await save('Dosya sırası');}
   }catch(err){fail(err)}};
 $('fIn').onchange=async e=>{
@@ -457,7 +465,7 @@ $('fIn').onchange=async e=>{
       const ext=(f.name.match(/\.[^.]+$/)||[''])[0].toLowerCase(),p=`dosyalar/${k.id}/${slug(f.name.replace(/\.[^.]+$/,''))}${ext}`;
       extra[p]=await fileB64(f);k.dosyalar=k.dosyalar.filter(x=>x.dosya!==p);
       k.dosyalar.push({ad:f.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' '),dosya:p,boyut:f.size});}
-    await save(`${k.ad}: ${fs.length} dosya eklendi`,extra);renderKat();suat.toast('tamamdır, yüklendi',true);
+    await save(`${k.ad}: ${fs.length} dosya eklendi`,extra);renderKat();ok('tamamdır, yüklendi');
   }catch(err){fail(err)}};
 
 /* ---------- notlar ---------- */
@@ -486,18 +494,18 @@ $('notYenile').onclick=notlariGetir;
 document.querySelector('#tabs [data-t="not"]').addEventListener('click',()=>{if(!GELEN.length)notlariGetir()});
 $('inRows').onclick=async e=>{const r=e.target.closest('[data-id]');if(!r)return;const n=GELEN.find(x=>x.id===r.dataset.id);if(!n)return;
   try{
-    if(e.target.closest('.ok')){D.notlar=[{id:n.id,metin:n.metin,tarih:n.tarih},...(D.notlar||[])];await save('Not asıldı');renderPub();renderGelen();suat.toast('astım',true);}
-    else if(e.target.closest('.rm')){D.reddedilen=[...(D.reddedilen||[]),n.id];await save('Not reddedildi');renderGelen();suat.toast('sildim',true);}
+    if(e.target.closest('.ok')){D.notlar=[{id:n.id,metin:n.metin,tarih:n.tarih},...(D.notlar||[])];await save('Not asıldı');renderPub();renderGelen();ok('astım');}
+    else if(e.target.closest('.rm')){D.reddedilen=[...(D.reddedilen||[]),n.id];await save('Not reddedildi');renderGelen();ok('sildim');}
   }catch(err){fail(err)}};
 $('pubRows').onclick=async e=>{const a=rowAction(e);if(!a)return;const n=D.notlar[a.i];
-  try{ if(a.rm){if(!await ask('Bu not ana sayfadan kalksın mı?'))return;D.notlar.splice(a.i,1);D.reddedilen=[...(D.reddedilen||[]),n.id];await save('Not kaldırıldı');renderPub();suat.toast('kaldırdım',true);}
+  try{ if(a.rm){if(!await ask('Bu not ana sayfadan kalksın mı?'))return;D.notlar.splice(a.i,1);D.reddedilen=[...(D.reddedilen||[]),n.id];await save('Not kaldırıldı');renderPub();ok('kaldırdım');}
     else if((a.up||a.down)&&move(D.notlar,a.i,a.up?-1:1)){renderPub();await save('Not sırası');}
   }catch(err){fail(err)}};
 $('kutuBtn').onclick=async()=>{const k=D.notKutusu||{};
   const o=await form('NOT KUTUSU',[{k:'form',l:'Form gönderim linki (…/formResponse)',t:'url',v:k.form},{k:'alan',l:'Alan kodu (entry.123…)',v:k.alan},{k:'csv',l:'Yanıt tablosu CSV linki',t:'url',v:k.csv}]);
   if(!o)return;if(o.form&&!/formResponse/.test(o.form)){suat.toast('form linki formResponse ile bitmeli');return}
   if(o.alan&&!/^entry\.\d+$/.test(o.alan)){suat.toast('alan kodu entry.123456 gibi olmalı');return}
-  try{D.notKutusu={form:o.form,alan:o.alan,csv:o.csv};await save('Not kutusu bağlantısı');renderKutu();suat.toast('kaydettim',true);}catch(e){fail(e)}};
+  try{D.notKutusu={form:o.form,alan:o.alan,csv:o.csv};await save('Not kutusu bağlantısı');renderKutu();ok('kaydettim');}catch(e){fail(e)}};
 
 /* ---------- şifre (anahtar şifreli olarak veri/anahtar.json'da) ---------- */
 const te=new TextEncoder(),td=new TextDecoder();
@@ -530,10 +538,10 @@ $('tokBtn').onclick=async()=>{
   try{ busy(true,'Anahtar deneniyor…',.3); const repo=await gh('');
     if(!repo.permissions||!repo.permissions.push)throw new Error('Anahtarın bu depoya yazma izni yok. Contents: Read and write seçtiğinden emin ol.');
     if(!await setPassword($('pw1').value,$('pw2').value)){busy(false);return}
-    $('tok').value=$('pw1').value=$('pw2').value=''; suat.toast('kurulum tamam',true); load();
+    $('tok').value=$('pw1').value=$('pw2').value=''; ok('kurulum tamam'); load();
   }catch(e){ try{localStorage.removeItem('suat-gh')}catch(_){}; TOKEN=null; fail(e); } };
-$('spBtn').onclick=async()=>{ try{ if(await setPassword($('sp1').value,$('sp2').value)){$('sp1').value=$('sp2').value='';$('pwInfo').textContent='Şifren kayıtlı. Değiştirmek istersen yenisini yaz.';suat.toast('şifre kaydedildi',true);} }catch(e){fail(e)} };
-$('logout').onclick=async()=>{ if(!await ask('Bu cihazda panelden çıkılsın mı?'))return; try{localStorage.removeItem('suat-gh')}catch(e){} TOKEN=null; showLogin(); suat.toast('çıktın, görüşürüz',true); };
+$('spBtn').onclick=async()=>{ try{ if(await setPassword($('sp1').value,$('sp2').value)){$('sp1').value=$('sp2').value='';$('pwInfo').textContent='Şifren kayıtlı. Değiştirmek istersen yenisini yaz.';ok('şifre kaydedildi');} }catch(e){fail(e)} };
+$('logout').onclick=async()=>{ if(!await ask('Bu cihazda panelden çıkılsın mı?'))return; try{localStorage.removeItem('suat-gh')}catch(e){} TOKEN=null; showLogin(); ok('çıktın, görüşürüz'); };
 
 /* ---------- site update from Claude's zip ---------- */
 $('zipAdd').onclick=()=>$('zipIn').click();
@@ -547,7 +555,7 @@ $('zipIn').onchange=async e=>{
     ent=ent.filter(x=>!/^veri\//.test(x.name.slice(pre.length)));  /* panel-managed data is never overwritten */
     const files={};
     for(const [i,x] of ent.entries()){busy(true,`${i+1}/${ent.length} ${x.name.slice(pre.length)}`,.05+.85*i/ent.length);files[x.name.slice(pre.length)]=await x.async('base64');}
-    busy(true,'Kaydediliyor…',.95);await commit(files,'Site güncellendi ('+ent.length+' dosya)');busy(false);suat.toast('site güncellendi',true);
+    busy(true,'Kaydediliyor…',.95);await commit(files,'Site güncellendi ('+ent.length+' dosya)');busy(false);ok('site güncellendi');
   }catch(err){fail(err)}};
 
 fetch('../veri/anahtar.json?'+Date.now()).then(r=>r.ok?r.json():null).catch(()=>null).then(b=>{ BOX=(b&&b.ct)?b:null; if(TOKEN) load(); else showLogin(); });
