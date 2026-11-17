@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>suatilyus AR</title>
+<meta name="theme-color" content="#111">
+<link rel="icon" href="../img/icon-192.png">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<style>
+@font-face{font-family:"suat-skinny";src:url(../dosyalar/suatilyus-skinny-regular.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"suat-hand";src:url(../dosyalar/suatilyus-hand-regular.ttf) format("truetype");font-display:swap}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#111;color:#fff;font-family:"suat-hand","Patrick Hand",system-ui,sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none}
+#ar{position:fixed;inset:0}
+#ar video{object-fit:cover}
+.kat{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;background:#fff;color:#111;gap:14px}
+.kat[hidden]{display:none}
+.kat .amb{width:44vw;max-width:220px}
+.kat h1{font-family:"suat-skinny",sans-serif;font-weight:400;font-size:13vw;max-width:520px;margin:0;line-height:1;letter-spacing:.02em}
+.kat p{margin:0;font-size:5vw;max-width:420px;line-height:1.25}
+.basla{font-family:"suat-skinny",sans-serif;font-size:9vw;max-width:100%;line-height:1;border:4px solid #111;border-radius:99px;padding:12px 34px;background:#e93e5e;color:#fff;box-shadow:4px 4px 0 #111;cursor:pointer}
+.basla:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #111}
+.hedefler{display:flex;gap:12px;justify-content:center}
+.hedefler a{display:block;width:26vw;max-width:130px;border:3px solid #111;border-radius:10px;overflow:hidden;background:#fff}
+.hedefler img{width:100%;display:block}
+.kucuk{font-size:3.8vw!important;color:#666}
+.geri{font-family:"suat-skinny",sans-serif;color:#111;font-size:5vw;text-decoration:underline}
+@media(min-width:600px){.kat h1{font-size:64px}.kat p{font-size:22px}.basla{font-size:40px}.kucuk{font-size:16px!important}.geri{font-size:22px}}
+/* camera UI */
+.ust{position:fixed;left:0;right:0;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:calc(env(safe-area-inset-top) + 10px) 14px 10px;pointer-events:none}
+.ust>*{pointer-events:auto}
+.dugme{font-family:"suat-skinny",sans-serif;font-size:20px;border:3px solid #111;border-radius:99px;padding:6px 14px;background:#fff;color:#111;box-shadow:3px 3px 0 #111;text-decoration:none;cursor:pointer}
+.dugme[hidden]{display:none}
+.ipucu{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom) + 22px);transform:translateX(-50%);z-index:5;background:#fff;color:#111;border:3px solid #111;border-radius:16px;padding:8px 16px;font-size:18px;box-shadow:3px 3px 0 #111;white-space:nowrap;transition:opacity .3s}
+.ipucu.gizli{opacity:0}
+.cerceve{position:fixed;left:50%;top:50%;width:62vw;height:62vw;max-width:340px;max-height:340px;transform:translate(-50%,-55%);z-index:4;pointer-events:none;transition:opacity .3s}
+.cerceve i{position:absolute;width:22%;height:22%;border:4px solid #fff;filter:drop-shadow(0 0 2px #000)}
+.cerceve i:nth-child(1){left:0;top:0;border-right:0;border-bottom:0;border-radius:14px 0 0 0}
+.cerceve i:nth-child(2){right:0;top:0;border-left:0;border-bottom:0;border-radius:0 14px 0 0}
+.cerceve i:nth-child(3){left:0;bottom:0;border-right:0;border-top:0;border-radius:0 0 0 14px}
+.cerceve i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0;border-radius:0 0 14px 0}
+.cerceve.gizli{opacity:0}
+</style>
+<script type="importmap">
+{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/",
+  "mindar-image-three":"https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-three.prod.js"
+}}
+</script>
+</head>
+<body>
+<div id="ar"></div>
+
+<div class="kat" id="giris">
+  <img class="amb" src="../img/ui/amblem-c.png" alt="suatilyus">
+  <h1>ÇİZİMLER CANLANIYOR</h1>
+  <p>Başla'ya bas, kameraya izin ver, telefonu aşağıdaki çizimlerden birine tut.</p>
+  <button class="basla" id="basla" type="button">BAŞLA</button>
+  <div class="hedefler">
+    <a href="hedef/pixel.jpg" target="_blank" rel="noopener"><img src="hedef/pixel.jpg" alt="Çizim 1"></a>
+    <a href="hedef/gece.jpg" target="_blank" rel="noopener"><img src="hedef/gece.jpg" alt="Çizim 2"></a>
+  </div>
+  <p class="kucuk">Çizim elinde yoksa: birine basıp başka bir ekranda aç, telefonu ona tut.</p>
+  <a class="geri" href="../">suatilyus.com'a dön</a>
+</div>
+
+<div class="kat" id="hata" hidden>
+  <h1>OLMADI MORUK</h1>
+  <p id="hataYazi">Kamera açılamadı.</p>
+  <button class="basla" type="button" onclick="location.reload()">TEKRAR DENE</button>
+  <a class="geri" href="../">suatilyus.com'a dön</a>
+</div>
+
+<div class="ust" id="ust" hidden>
+  <a class="dugme" href="../">← ÇIK</a>
+  <button class="dugme" id="ses" type="button" hidden>SESİ AÇ</button>
+</div>
+<div class="cerceve" id="cerceve" hidden><i></i><i></i><i></i><i></i></div>
+<div class="ipucu" id="ipucu" hidden>telefonu çizime tut…</div>
+
+<script type="module">
+import * as THREE from 'three';
+import { MindARThree } from 'mindar-image-three';
+
+const $ = id => document.getElementById(id);
+const ipucu = t => { $('ipucu').textContent = t; $('ipucu').classList.toggle('gizli', !t); };
+const tl = new THREE.TextureLoader();
+const tex = (src) => { const t = tl.load(src); t.colorSpace = THREE.SRGBColorSpace; return t; };
+const plane = (w, h, map, op = 1) => new THREE.Mesh(new THREE.PlaneGeometry(w, h),
+  new THREE.MeshBasicMaterial({ map, transparent: true, opacity: op, depthWrite: false, side: THREE.DoubleSide }));
+const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+
+/* ---------- 1) canlanan çizim: video exactly over the drawing ---------- */
+const video = document.createElement('video');
+Object.assign(video, { src: 'medya/pixel.mp4', loop: true, muted: true, playsInline: true, preload: 'auto', crossOrigin: 'anonymous' });
+video.setAttribute('playsinline', ''); video.setAttribute('webkit-playsinline', '');
+const vtex = new THREE.VideoTexture(video); vtex.colorSpace = THREE.SRGBColorSpace;
+const PIXEL_H = 1202 / 760;
+
+/* ---------- 2) kat kat: layers back → front, opacity when opened ---------- */
+const GECE_H = 1500 / 900;
+const KATMAN = [
+  ['1-gece', 1], ['2-yazi', .45], ['3-yazi-golge', 1], ['4-bulut', .65],
+  ['5-isik', .55], ['6-ay', 1], ['7-ev', 1]
+];
+const ARA = 0.11;  // gap between layers, in drawing widths
+
+let mind, sesVar = false, aktif = null;
+
+$('basla').onclick = async () => {
+  $('basla').disabled = true; $('basla').textContent = 'AÇILIYOR…';
+  // unlock video playback inside the tap (iOS)
+  try { await video.play(); video.pause(); video.currentTime = 0; } catch (e) {}
+  try { await kur(); }
+  catch (e) {
+    console.error(e);
+    $('giris').hidden = true; $('hata').hidden = false;
+    $('hataYazi').textContent = /Permission|NotAllowed/i.test(String(e && (e.name || e)))
+      ? 'Kameraya izin verilmedi. Tarayıcı ayarlarından bu siteye kamera izni ver, sonra tekrar dene.'
+      : 'Kamera açılamadı. Safari ya da Chrome ile açtığından emin ol.';
+  }
+};
+
+async function kur() {
+  mind = new MindARThree({
+    container: $('ar'), imageTargetSrc: './hedefler.mind',
+    uiLoading: 'no', uiScanning: 'no', uiError: 'no',
+    filterMinCF: 0.0001, filterBeta: 0.01,      // calmer tracking, less jitter
+    missTolerance: 8, warmupTolerance: 3
+  });
+  const { renderer, scene, camera } = mind;
+  renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+
+  /* target 0: pixel portrait → video */
+  const a0 = mind.addAnchor(0);
+  const vp = plane(1, PIXEL_H, vtex, 0);
+  a0.group.add(vp);
+  let vGor = false;
+  a0.onTargetFound = () => { aktif = 'video'; vGor = true; video.play().catch(() => {}); $('ses').hidden = false; ipucu(''); bul(true); };
+  a0.onTargetLost = () => { vGor = false; video.pause(); bul(false); };
+
+  /* target 1: gece → kat kat */
+  const a1 = mind.addAnchor(1);
+  const kg = new THREE.Group(); a1.group.add(kg);
+  const butun = plane(1, GECE_H, tex('hedef/gece.jpg'), 0); butun.renderOrder = 0; kg.add(butun);
+  const kats = KATMAN.map(([ad, op], i) => {
+    const m = plane(1, GECE_H, tex(`katman/${ad}.webp`), 0);
+    m.renderOrder = 1 + i; m.userData.op = op; kg.add(m);
+    const kenar = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(1, GECE_H)),
+      new THREE.LineBasicMaterial({ color: 0x7fd4ff, transparent: true, opacity: 0, depthWrite: false }));
+    kenar.renderOrder = 50; m.add(kenar); m.userData.kenar = kenar;
+    return m;
+  });
+  let acik = 0, hedef = 0, kGor = false, zaman = null;
+  a1.onTargetFound = () => { aktif = 'kat'; kGor = true; ipucu(''); bul(true); clearTimeout(zaman); zaman = setTimeout(() => { if (kGor) { hedef = 1; ipucu('ekrana dokun: kapat / aç'); setTimeout(() => kGor && ipucu(''), 2500); } }, 700); };
+  a1.onTargetLost = () => { kGor = false; clearTimeout(zaman); hedef = 0; acik = 0; bul(false); };
+  $('ar').addEventListener('click', () => { if (kGor) hedef = hedef ? 0 : 1; });
+
+  await mind.start();
+  $('giris').hidden = true; $('ust').hidden = false; $('cerceve').hidden = false; $('ipucu').hidden = false;
+  ipucu('telefonu çizime tut…');
+
+  const saat = new THREE.Clock();
+  renderer.setAnimationLoop(() => {
+    const dt = Math.min(saat.getDelta(), .05);
+    // video fades in once it is really playing
+    vp.material.opacity += ((vGor && video.readyState >= 2 ? 1 : 0) - vp.material.opacity) * Math.min(1, dt * 8);
+    // layers
+    acik += (hedef - acik) * Math.min(1, dt * 2.2);
+    if (Math.abs(hedef - acik) < .002) acik = hedef;
+    const e = ease(acik), g = kGor ? 1 : 0;
+    butun.material.opacity = g * (1 - Math.min(1, e * 3));
+    const n = kats.length;
+    kats.forEach((m, i) => {
+      m.position.z = e * i * ARA;
+      m.position.y = e * (i - (n - 1) / 2) * 0.012;      // slight fan, Jarvis style
+      m.rotation.y = e * (i - (n - 1) / 2) * 0.02;
+      m.material.opacity = g * m.userData.op * Math.min(1, e * 3);
+      m.userData.kenar.material.opacity = g * e * .55;
+    });
+    kg.rotation.x = -e * 0.12;
+    renderer.render(scene, camera);
+  });
+}
+
+function bul(var_) {
+  $('cerceve').classList.toggle('gizli', var_);
+  if (!var_) { $('ses').hidden = aktif !== 'video'; ipucu('telefonu çizime tut…'); }
+}
+
+$('ses').onclick = () => {
+  video.muted = !video.muted; if (!video.muted) video.play().catch(() => {});
+  $('ses').textContent = video.muted ? 'SESİ AÇ' : 'SESİ KAPAT';
+};
+document.addEventListener('visibilitychange', () => { if (document.hidden) video.pause(); });
+</script>
+</body>
+</html>

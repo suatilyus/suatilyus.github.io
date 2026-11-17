@@ -2,6 +2,16 @@
 {
 const ROOT = new URL('.', document.currentScript.src).href;   // site root, works on any page depth
 
+/* stale-copy guard: if the browser kept an older version of this page, reload once to get the new one */
+const SURUM = new URL(document.currentScript.src).searchParams.get('v');
+if (SURUM) fetch(ROOT + 'surum.txt?t=' + Date.now(), {cache: 'no-store'}).then(r => r.ok ? r.text() : '').then(t => {
+  t = t.trim(); if (!t || t === SURUM) return;
+  let son = 0; try { son = +sessionStorage.getItem('suat-yenile') || 0; } catch (e) {}
+  if (Date.now() - son < 60000) return;            // never loop
+  try { sessionStorage.setItem('suat-yenile', Date.now()); } catch (e) {}
+  location.reload();
+}).catch(() => {});
+
 /* toast with drawn icons */
 let toastEl, toastT;
 function toast(msg, ok) {
