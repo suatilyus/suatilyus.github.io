@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../ortak.css?v=2611170640">
+<link rel="stylesheet" href="../ortak.css?v=2611170652">
 <style>
 :root{--ink:#111}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -27,10 +27,10 @@ h1{font-size:11cqw;font-weight:400;letter-spacing:.04em;margin-top:5cqw;line-hei
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:7cqw 5cqw;width:100%;align-items:start}
 .grid .wp{display:block;width:100%}
 .wp{appearance:none;border:0;background:none;padding:0;cursor:pointer;text-align:center;font:inherit;color:inherit}
-.frame{border:.6cqw solid var(--ink);border-radius:5cqw;outline:.3cqw solid var(--ink);outline-offset:-2cqw;overflow:hidden;background:#f3f3f3;display:flex;align-items:center;justify-content:center;transition:transform .15s}
-.frame img{width:100%;height:auto;display:block}
+.frame{border:.6cqw solid var(--ink);border-radius:5cqw;outline:.3cqw solid var(--ink);outline-offset:-2cqw;overflow:hidden;background:#f3f3f3;display:block;min-height:20cqw;transition:transform .15s}
+.frame img{width:100%;height:auto;display:block;max-width:none}
 .frame.empty{aspect-ratio:3/4}
-.frame.empty{background:#fafafa}
+.frame.empty{background:#fafafa;display:flex;align-items:center;justify-content:center}
 .frame.empty img{display:none}
 .frame.empty::before{content:"YAKINDA";font-size:6cqw;color:#aaa;letter-spacing:.05em}
 .wp{position:relative}
@@ -60,7 +60,7 @@ h1{font-size:11cqw;font-weight:400;letter-spacing:.04em;margin-top:5cqw;line-hei
   <div class="grid" id="grid"></div>
   <a class="alt-geri cz" href="../index.html" aria-label="Geri dön"><img class="c" src="../img/ui/geri-c.png" alt=""><img src="../img/ui/geri.png" alt="Geri" width="466" height="170"></a>
 </main>
-<script src="../ortak.js?v=2611170640"></script>
+<script src="../ortak.js?v=2611170652"></script>
 
 <div class="view" id="view" role="dialog" aria-modal="true" aria-label="Çizim">
   <img class="big" id="big" alt="">
@@ -79,7 +79,7 @@ let WALL=[];
 const grid=document.getElementById('grid'),view=document.getElementById('view'),big=document.getElementById('big'),dl=document.getElementById('dl'),E=suat.esc;
 function render(){
   const tag=(k,alt,w,h)=>`<span class="tag ${k} cz"><img class="c" src="../img/ui/${k}-c.png" alt=""><img src="../img/ui/${k}.png" alt="${alt}" width="${w}" height="${h}"></span>`;
-  const cards=WALL.map((w,i)=>`<button class="wp" data-i="${i}">${w.indir?tag('beles','Beleş',183,204):''}${w.yeni?tag('yeni','Yeni',321,241):''}${w.yakinda?tag('yakinda','Yakında! Aha burada!',615,391):''}<div class="frame"><img src="../${E(w.dosya)}" alt="${E(w.ad)}" loading="lazy"></div><b>${E(w.ad)}</b>${w.not?`<span>${E(w.not)}</span>`:''}</button>`);
+  const cards=WALL.map((w,i)=>`<button class="wp" data-i="${i}">${w.indir?tag('beles','Beleş',183,204):''}${w.yeni?tag('yeni','Yeni',321,241):''}${w.yakinda?tag('yakinda','Yakında! Aha burada!',615,391):''}<div class="frame"><img src="../${E(w.dosya)}" alt="${E(w.ad)}"></div><b>${E(w.ad)}</b>${w.not?`<span>${E(w.not)}</span>`:''}</button>`);
   if(!WALL.length)cards.push(`<button class="wp" data-empty="1"><div class="frame empty taped"></div><b>YAKINDA</b></button>`);
   grid.innerHTML=cards.join('');
 }

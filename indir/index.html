@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../ortak.css?v=2611170640">
+<link rel="stylesheet" href="../ortak.css?v=2611170652">
 <style>
 :root{--ink:#111}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -51,7 +51,7 @@ h1{font-size:11cqw;font-weight:400;letter-spacing:.04em;margin-top:5cqw;line-hei
   <div id="list" style="width:100%"></div>
   <a class="alt-geri cz" href="../index.html" aria-label="Geri dön"><img class="c" src="../img/ui/geri-c.png" alt=""><img src="../img/ui/geri.png" alt="Geri" width="466" height="170"></a>
 </main>
-<script src="../ortak.js?v=2611170640"></script>
+<script src="../ortak.js?v=2611170652"></script>
 <script>
 {
 const E=suat.esc, ext=f=>(f.split('.').pop()||'').toUpperCase().slice(0,5);
@@ -62,7 +62,7 @@ suat.veri().then(d=>{
   let fi=0; const faces=[];
   document.getElementById('list').innerHTML=cats.map(k=>`<section class="kat" id="${E(k.id)}"><h2>${E(k.ad)}</h2>${k.not?`<p class="not">${E(k.not)}</p>`:''}
     <div class="list">${(k.dosyalar||[]).length?k.dosyalar.map(f=>{
-      let pv=`<div class="pv">${f.onizleme?`<img src="../${E(f.onizleme)}" alt="" loading="lazy">`:IMG.test(f.dosya)?`<img src="../${E(f.dosya)}" alt="" loading="lazy">`:E(ext(f.dosya))}</div>`, sample='';
+      let pv=`<div class="pv">${f.onizleme?`<img src="../${E(f.onizleme)}" alt="">`:IMG.test(f.dosya)?`<img src="../${E(f.dosya)}" alt="">`:E(ext(f.dosya))}</div>`, sample='';
       if(FONT.test(f.dosya)){const fam='onz'+(fi++);faces.push([fam,f.dosya]);sample=`<div class="sample" style="font-family:${fam},sans-serif">Aa Çç Ğğ Şş</div>`;}
       return `<div class="f">${pv}<div class="t"><b>${E(f.ad)}</b>${sample}<span>${E(ext(f.dosya))} · ${suat.kb(f.boyut)}</span></div>
         <a class="dl cz lit" href="../${E(f.dosya)}" download><img class="c" src="../img/ui/indir-a-c.png" alt=""><img src="../img/ui/indir-a.png" alt="İndir: ${E(f.ad)}" width="200" height="109"></a></div>`;

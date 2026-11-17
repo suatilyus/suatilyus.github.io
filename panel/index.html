@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../ortak.css?v=2611170640">
+<link rel="stylesheet" href="../ortak.css?v=2611170652">
 <style>
 :root{--ink:#111;--mut:#666}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -261,7 +261,7 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
     <button class="hit l" id="errClose" aria-label="Geri dön"></button><button class="hit r" id="errReload" aria-label="Yenile"></button></div>
 </div>
 
-<script src="../ortak.js?v=2611170640"></script>
+<script src="../ortak.js?v=2611170652"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 {
@@ -413,7 +413,7 @@ function illBar(){const n=ILL_KIRLI.size;$('illKbar').hidden=!n;$('illKsay').tex
 function renderIll(){
   if(!ILL_KIRLI.size)ILL_ESKI=JSON.stringify({i:D.illustrasyon,e:D.etiketler||null});
   $('illRows').innerHTML=D.illustrasyon.length?D.illustrasyon.map((w,i,a)=>`<div class="r" data-i="${i}" data-key="${E(w.dosya)}">
-    <input type="checkbox" class="ck" aria-label="Seç"><div class="pv"><img src="${src(w.dosya)}" alt="" loading="lazy"></div>
+    <input type="checkbox" class="ck" aria-label="Seç"><div class="pv"><img src="${src(w.dosya)}" alt=""></div>
     <div class="t"><input class="ad" data-f="ad" value="${E(w.ad)}" aria-label="Adı"><input class="nt" data-f="not" value="${E(w.not||'')}" placeholder="altına küçük not (isteğe bağlı)" aria-label="Not">
       <div class="etk">${ETK.map(([f,c,l])=>`<label class="${c}${w[f]?' on':''}"><input type="checkbox" data-f="${f}"${w[f]?' checked':''}>${l}</label>`).join('')}</div></div>
     <div class="tools">${btn('rm','sil','Sil',215,99)}${i>0?btn('ar up','ok-yukari','Yukarı',90,99):''}${i<a.length-1?btn('ar down','ok-asagi','Aşağı',93,92):''}</div></div>`).join(''):'<p class="hint" style="padding:12px 2px">Henüz çizim yok.</p>';
