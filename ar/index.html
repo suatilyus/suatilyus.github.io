@@ -12,7 +12,7 @@
 @font-face{font-family:"suat-hand";src:url(../dosyalar/suatilyus-hand-regular.ttf) format("truetype");font-display:swap}
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;background:#111;color:#fff;font-family:"suat-hand","Patrick Hand",system-ui,sans-serif;overflow:hidden;-webkit-user-select:none;user-select:none}
-#ar{position:fixed;inset:0}
+#ar{position:fixed;inset:0;touch-action:none}
 #ar video{object-fit:cover}
 .kat{position:fixed;inset:0;z-index:10;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;background:#fff;color:#111;gap:14px}
 .kat[hidden]{display:none}
@@ -57,6 +57,7 @@ html,body{margin:0;height:100%;background:#111;color:#fff;font-family:"suat-hand
   <img class="amb" src="../img/ui/amblem-c.png" alt="suatilyus">
   <h1>ÇİZİMLER CANLANIYOR</h1>
   <p>Başla'ya bas, kameraya izin ver, telefonu aşağıdaki çizimlerden birine tut.</p>
+  <p class="kucuk" id="izinNot" hidden>Safari her seferinde kamera izni sormasın diye: adres çubuğundaki <b>aA</b> → Web Sitesi Ayarları → Kamera → <b>İzin Ver</b>.</p>
   <button class="basla" id="basla" type="button">BAŞLA</button>
   <div class="hedefler">
     <a href="hedef/pixel.jpg" target="_blank" rel="noopener"><img src="hedef/pixel.jpg" alt="Çizim 1"></a>
@@ -74,8 +75,8 @@ html,body{margin:0;height:100%;background:#111;color:#fff;font-family:"suat-hand
 </div>
 
 <div class="ust" id="ust" hidden>
-  <a class="dugme" href="../">← ÇIK</a>
-  <button class="dugme" id="ses" type="button" hidden>SESİ AÇ</button>
+  <button class="dugme" id="cik" type="button">← ÇIK</button>
+  <span style="display:flex;gap:8px"><button class="dugme" id="elle" type="button" hidden>ELİNE AL</button><button class="dugme" id="ses" type="button" hidden>SESİ AÇ</button></span>
 </div>
 <div class="cerceve" id="cerceve" hidden><i></i><i></i><i></i><i></i></div>
 <div class="ipucu" id="ipucu" hidden>telefonu çizime tut…</div>
@@ -91,6 +92,8 @@ const tex = (src) => { const t = tl.load(src); t.colorSpace = THREE.SRGBColorSpa
 const plane = (w, h, map, op = 1) => new THREE.Mesh(new THREE.PlaneGeometry(w, h),
   new THREE.MeshBasicMaterial({ map, transparent: true, opacity: op, depthWrite: false, side: THREE.DoubleSide }));
 const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+const iOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+try { if (iOS && localStorage.getItem('suat-ar-kez')) $('izinNot').hidden = false; } catch (e) {}
 
 /* ---------- 1) canlanan çizim: video exactly over the drawing ---------- */
 const video = document.createElement('video');
@@ -105,82 +108,145 @@ const KATMAN = [
   ['1-gece', 1], ['2-yazi', .45], ['3-yazi-golge', 1], ['4-bulut', .65],
   ['5-isik', .55], ['6-ay', 1], ['7-ev', 1]
 ];
-const ARA = 0.11;  // gap between layers, in drawing widths
+const ARA = 0.11;                         // gap between layers, in drawing widths
+const DERIN = (KATMAN.length - 1) * ARA;  // total depth when open
 
-let mind, sesVar = false, aktif = null;
+let mind = null, calisiyor = false, aktif = null;
+let vp, vGor = false;
+let a1, kg, ic, butun, kats, acik = 0, hedef = 0, kGor = false, zaman = null, elde = false;
 
 $('basla').onclick = async () => {
   $('basla').disabled = true; $('basla').textContent = 'AÇILIYOR…';
-  // unlock video playback inside the tap (iOS)
-  try { await video.play(); video.pause(); video.currentTime = 0; } catch (e) {}
-  try { await kur(); }
-  catch (e) {
+  try { await video.play(); video.pause(); video.currentTime = 0; } catch (e) {}   // unlock video in the tap (iOS)
+  try {
+    if (!mind) kur();
+    await mind.start();
+    try { localStorage.setItem('suat-ar-kez', '1'); } catch (e) {}
+    calisiyor = true; dongu();
+    $('giris').hidden = true; $('ust').hidden = false; $('cerceve').hidden = false; $('ipucu').hidden = false;
+    ipucu('telefonu çizime tut…');
+  } catch (e) {
     console.error(e);
     $('giris').hidden = true; $('hata').hidden = false;
     $('hataYazi').textContent = /Permission|NotAllowed/i.test(String(e && (e.name || e)))
-      ? 'Kameraya izin verilmedi. Tarayıcı ayarlarından bu siteye kamera izni ver, sonra tekrar dene.'
+      ? 'Kameraya izin verilmedi. Adres çubuğundaki aA → Web Sitesi Ayarları → Kamera → İzin Ver, sonra tekrar dene.'
       : 'Kamera açılamadı. Safari ya da Chrome ile açtığından emin ol.';
   }
+  $('basla').disabled = false; $('basla').textContent = 'BAŞLA';
 };
 
-async function kur() {
+/* ÇIK: back to the start screen of this page (not the home page) */
+$('cik').onclick = () => {
+  calisiyor = false; mind.renderer.setAnimationLoop(null);
+  video.pause(); birak(true); hedef = 0; acik = 0; kGor = false; vGor = false;
+  try { mind.stop(); } catch (e) {}
+  $('ust').hidden = true; $('cerceve').hidden = true; $('ipucu').hidden = true; $('ses').hidden = true; $('elle').hidden = true;
+  $('giris').hidden = false;
+};
+
+function kur() {
   mind = new MindARThree({
     container: $('ar'), imageTargetSrc: './hedefler.mind',
     uiLoading: 'no', uiScanning: 'no', uiError: 'no',
     filterMinCF: 0.0001, filterBeta: 0.01,      // calmer tracking, less jitter
     missTolerance: 8, warmupTolerance: 3
   });
-  const { renderer, scene, camera } = mind;
+  const { renderer } = mind;
   renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
 
   /* target 0: pixel portrait → video */
   const a0 = mind.addAnchor(0);
-  const vp = plane(1, PIXEL_H, vtex, 0);
+  vp = plane(1, PIXEL_H, vtex, 0);
   a0.group.add(vp);
-  let vGor = false;
   a0.onTargetFound = () => { aktif = 'video'; vGor = true; video.play().catch(() => {}); $('ses').hidden = false; ipucu(''); bul(true); };
   a0.onTargetLost = () => { vGor = false; video.pause(); bul(false); };
 
-  /* target 1: gece → kat kat */
-  const a1 = mind.addAnchor(1);
-  const kg = new THREE.Group(); a1.group.add(kg);
-  const butun = plane(1, GECE_H, tex('hedef/gece.jpg'), 0); butun.renderOrder = 0; kg.add(butun);
-  const kats = KATMAN.map(([ad, op], i) => {
+  /* target 1: gece → kat kat.  kg = pivot (what you hold), ic = the stack inside it */
+  a1 = mind.addAnchor(1);
+  kg = new THREE.Group(); ic = new THREE.Group(); kg.add(ic); a1.group.add(kg);
+  butun = plane(1, GECE_H, tex('hedef/gece.jpg'), 0); butun.renderOrder = 0; ic.add(butun);
+  kats = KATMAN.map(([ad, op], i) => {
     const m = plane(1, GECE_H, tex(`katman/${ad}.webp`), 0);
-    m.renderOrder = 1 + i; m.userData.op = op; kg.add(m);
+    m.renderOrder = 1 + i; m.userData.op = op; ic.add(m);
     const kenar = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(1, GECE_H)),
       new THREE.LineBasicMaterial({ color: 0x7fd4ff, transparent: true, opacity: 0, depthWrite: false }));
     kenar.renderOrder = 50; m.add(kenar); m.userData.kenar = kenar;
     return m;
   });
-  let acik = 0, hedef = 0, kGor = false, zaman = null;
-  a1.onTargetFound = () => { aktif = 'kat'; kGor = true; ipucu(''); bul(true); clearTimeout(zaman); zaman = setTimeout(() => { if (kGor) { hedef = 1; ipucu('ekrana dokun: kapat / aç'); setTimeout(() => kGor && ipucu(''), 2500); } }, 700); };
-  a1.onTargetLost = () => { kGor = false; clearTimeout(zaman); hedef = 0; acik = 0; bul(false); };
-  $('ar').addEventListener('click', () => { if (kGor) hedef = hedef ? 0 : 1; });
+  a1.onTargetFound = () => {
+    if (elde) return;
+    aktif = 'kat'; kGor = true; ipucu(''); bul(true); clearTimeout(zaman);
+    zaman = setTimeout(() => { if (kGor) { hedef = 1; $('elle').hidden = false; ipucu('ELİNE AL: parmağınla çevir, yandan bak'); setTimeout(() => kGor && !elde && ipucu(''), 3500); } }, 700);
+  };
+  a1.onTargetLost = () => { if (elde) return; kGor = false; clearTimeout(zaman); hedef = 0; acik = 0; $('elle').hidden = true; bul(false); };
+}
 
-  await mind.start();
-  $('giris').hidden = true; $('ust').hidden = false; $('cerceve').hidden = false; $('ipucu').hidden = false;
-  ipucu('telefonu çizime tut…');
+/* ---------- ELİNE AL: take the open stack off the drawing and turn it with a finger ---------- */
+$('elle').onclick = () => elde ? birak() : al();
+function al() {
+  if (!kg || !kGor) return;
+  hedef = 1; acik = 1;
+  mind.scene.attach(kg);                    // keep exactly where it is on screen
+  kg.translateZ(DERIN / 2); ic.position.z = -DERIN / 2;   // pivot in the middle of the stack
+  elde = true; $('elle').textContent = 'ÇİZİME GERİ KOY';
+  $('cerceve').classList.add('gizli'); ipucu('parmağınla çevir · iki parmakla büyüt');
+}
+function birak(sessiz) {
+  if (!elde) return;
+  elde = false; ic.position.z = 0;
+  a1.group.add(kg); kg.position.set(0, 0, 0); kg.rotation.set(0, 0, 0); kg.scale.set(1, 1, 1);
+  $('elle').textContent = 'ELİNE AL';
+  if (!sessiz) { kGor = a1.group.visible; if (!kGor) { hedef = 0; acik = 0; $('elle').hidden = true; bul(false); } else ipucu(''); }
+}
+// drag to turn, pinch to scale (only while held)
+let dokun = {}, basla = null;
+const ar = $('ar');
+ar.addEventListener('pointerdown', e => { dokun[e.pointerId] = { x: e.clientX, y: e.clientY }; basla = { t: Date.now(), x: e.clientX, y: e.clientY, n: Object.keys(dokun).length }; });
+ar.addEventListener('pointermove', e => {
+  const o = dokun[e.pointerId]; if (!o) return;
+  const ids = Object.keys(dokun);
+  if (elde && ids.length === 1) {
+    kg.rotation.y += (e.clientX - o.x) * 0.008;
+    kg.rotation.x = Math.max(-1.2, Math.min(1.2, kg.rotation.x + (e.clientY - o.y) * 0.008));
+  } else if (elde && ids.length === 2) {
+    const [p, q] = ids.map(i => dokun[i]);
+    const once = Math.hypot(p.x - q.x, p.y - q.y);
+    o.x = e.clientX; o.y = e.clientY;
+    const sonra = Math.hypot(p.x - q.x, p.y - q.y);
+    if (once > 10) kg.scale.multiplyScalar(Math.max(.92, Math.min(1.08, sonra / once)));
+    kg.scale.clampScalar(.3, 3);
+    return;
+  }
+  o.x = e.clientX; o.y = e.clientY;
+});
+const bitir = e => {
+  delete dokun[e.pointerId];
+  // a short tap without moving: open / close the stack (when it sits on the drawing)
+  if (basla && basla.n === 1 && Date.now() - basla.t < 300 && Math.hypot(e.clientX - basla.x, e.clientY - basla.y) < 10 && kGor && !elde) hedef = hedef ? 0 : 1;
+  basla = null;
+};
+ar.addEventListener('pointerup', bitir); ar.addEventListener('pointercancel', bitir);
 
+function dongu() {
+  const { renderer, scene, camera } = mind;
   const saat = new THREE.Clock();
   renderer.setAnimationLoop(() => {
+    if (!calisiyor) return;
     const dt = Math.min(saat.getDelta(), .05);
-    // video fades in once it is really playing
     vp.material.opacity += ((vGor && video.readyState >= 2 ? 1 : 0) - vp.material.opacity) * Math.min(1, dt * 8);
-    // layers
     acik += (hedef - acik) * Math.min(1, dt * 2.2);
     if (Math.abs(hedef - acik) < .002) acik = hedef;
-    const e = ease(acik), g = kGor ? 1 : 0;
+    const e = ease(acik), g = (kGor || elde) ? 1 : 0;
     butun.material.opacity = g * (1 - Math.min(1, e * 3));
     const n = kats.length;
     kats.forEach((m, i) => {
       m.position.z = e * i * ARA;
-      m.position.y = e * (i - (n - 1) / 2) * 0.012;      // slight fan, Jarvis style
-      m.rotation.y = e * (i - (n - 1) / 2) * 0.02;
+      m.position.y = elde ? 0 : e * (i - (n - 1) / 2) * 0.012;      // slight fan, Jarvis style
+      m.rotation.y = elde ? 0 : e * (i - (n - 1) / 2) * 0.02;
       m.material.opacity = g * m.userData.op * Math.min(1, e * 3);
       m.userData.kenar.material.opacity = g * e * .55;
     });
-    kg.rotation.x = -e * 0.12;
+    if (!elde) kg.rotation.x = -e * 0.12;
     renderer.render(scene, camera);
   });
 }

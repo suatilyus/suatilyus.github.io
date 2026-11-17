@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../ortak.css?v=2611180148">
+<link rel="stylesheet" href="../ortak.css?v=2611180216">
 <style>
 :root{--ink:#111;--mut:#666}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -261,7 +261,7 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
     <button class="hit l" id="errClose" aria-label="Geri dön"></button><button class="hit r" id="errReload" aria-label="Yenile"></button></div>
 </div>
 
-<script src="../ortak.js?v=2611180148"></script>
+<script src="../ortak.js?v=2611180216"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 {
@@ -468,6 +468,9 @@ async function load(){
     /* old "DUVAR 01" names become "İLLÜSTRASYON 01" (only names he never changed) */
     let ren=false; D.illustrasyon.forEach(w=>{const m=/^DUVAR (\d+)$/.exec(w.ad||'');if(m){w.ad='İLLÜSTRASYON '+m[1];ren=true;}});
     if(ren) await save('İsimler: İLLÜSTRASYON');
+    /* one-time: AR shortcut on the home page (if he deletes it, it stays deleted) */
+    if(!D._ar){D._ar=1;if(!D.butonlar.some(b=>/(^|\/)ar\/?$/.test(b.link||'')))D.butonlar.splice(Math.min(1,D.butonlar.length),0,{id:'ar',ad:'Canlanan çizimler',link:'ar/'});
+      await save('Ana sayfaya AR butonu',{'hedefler.mind':null});}
     D._v=Date.now();
     renderAll(); notlariGetir().catch(()=>{});
     $('login').hidden=true;$('app').hidden=false;$('logout').hidden=false;
