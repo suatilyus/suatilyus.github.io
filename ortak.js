@@ -77,14 +77,23 @@ const VARSAYILAN = () => ({
       {ad: 'suatilyus long', dosya: 'dosyalar/suatilyus-long-regular.ttf', boyut: 17532},
       {ad: 'suatilyus hand', dosya: 'dosyalar/suatilyus-hand-regular.ttf', boyut: 17892}]},
     {id: 'brushlar', ad: 'Brushlar', not: 'Procreate fırçaları', dosyalar: []}
-  ]
+  ],
+  notlar: [], reddedilen: [],
+  notKutusu: KUTU0()
 });
+/* note inbox: Google Form (suatilyus not kutusu) + its response sheet published as CSV */
+const KUTU0 = () => ({
+  form: 'https://docs.google.com/forms/d/e/1FAIpQLSccqGv7FUsKM87hh3gOBIRQdyzAYhrW-aOulezxnHgy_oIBqA/formResponse',
+  alan: 'entry.494750193',
+  csv: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQJo5hjYIVAyn-2LWlTgjXnSh8yAgTy2IEXXd46Fx_qr-RMZojMxtA3DEUmXaZiC47GJbPK2Vu8VAq4/pub?output=csv'
+});
+const kutuDoldur = d => { const k = d.notKutusu || {}; if (!k.form || !k.alan || !k.csv) d.notKutusu = Object.assign(KUTU0(), Object.fromEntries(Object.entries(k).filter(([, v]) => v))); return d; };
 let veriP;
 function veri() {
   if (!veriP) veriP = (async () => {
     const t = '?' + Date.now();
     const s = await fetch(ROOT + 'veri/site.json' + t).then(r => r.ok ? r.json() : null).catch(() => null);
-    if (s && s.v) return s;
+    if (s && s.v) return kutuDoldur(s);
     const d = VARSAYILAN();
     const w = await fetch(ROOT + 'veri/duvar.json' + t).then(r => r.ok ? r.json() : null).catch(() => null);
     d.illustrasyon = ((w && w.duvar) || []).map(x => ({dosya: x.dosya, ad: x.ad, not: x.not || '', indir: true}));
@@ -96,5 +105,5 @@ const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&': '&amp
 const url = l => /^https?:/.test(l) ? l : ROOT + l;
 const kb = n => !n ? '' : n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB';
 
-window.suat = {toast, yakinda, ROOT, veri, VARSAYILAN, esc, url, kb};
+window.suat = {toast, yakinda, ROOT, veri, VARSAYILAN, esc, url, kb, kutuDoldur};
 }
