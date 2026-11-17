@@ -9,6 +9,11 @@
       "renk": "img/btn-uygulamalar-c.png"
     },
     {
+      "id": "ar",
+      "ad": "Canlanan çizimler",
+      "link": "ar/"
+    },
+    {
       "id": "illustrasyon",
       "ad": "İllüstrasyon",
       "link": "illustrasyon/",
@@ -148,5 +153,6 @@
   ],
   "reddedilen": [
     "17.11.2026 05:37:26"
-  ]
+  ],
+  "_ar": 1
 }
