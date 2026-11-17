@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../ortak.css?v=2611170537">
+<link rel="stylesheet" href="../ortak.css?v=2611170608">
 <style>
 :root{--ink:#111;--mut:#666}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -51,8 +51,16 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
 .r .t span{font-size:15px;color:var(--mut);word-break:break-all}
 .r .t .off{color:#c0392b}
 .tools{display:flex;align-items:center;gap:6px;flex:none}
+.r .ck{width:26px;height:26px;flex:none;accent-color:#111;cursor:pointer;margin:0}
+.r.secili{background:#fff6d6}
+.selbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 0 10px}
+.selbar[hidden]{display:none!important}
+.selbar .say{font-size:16px;color:var(--mut);margin-right:auto}
+.pill{font-family:suat-skinny,sans-serif;font-size:18px;line-height:1;border:3px solid #111;border-radius:99px;padding:6px 13px;background:#fff;color:#111;cursor:pointer}
+.pill:disabled{opacity:.3;cursor:default}
+.pill.k{background:#e93e5e;color:#fff}.pill.y{background:#479f48;color:#fff}.pill.m{background:#3880c8;color:#fff}
 .tools .cz{width:auto}
-.tools .ed{width:74px}.tools .rm{width:54px}.tools .ar{width:24px}
+.tools .ed{width:74px}.tools .rm{width:54px}.tools .ar{width:24px}.tools .ok{width:92px}
 .addbar{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
 .addbar .cz{width:150px}
 .addbar span{color:var(--mut);font-size:16px}
@@ -153,6 +161,7 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
     <section class="sec" data-s="ill" hidden>
       <h2>İLLÜSTRASYON</h2>
       <p class="hint">İllüstrasyon sayfasındaki çizimler. "İndirilebilir" işaretlediklerinde BELEŞ etiketi ve İNDİR butonu çıkar. Büyük görselleri ben küçültürüm.</p>
+      <div class="selbar" data-for="illRows"><button class="pill" data-tum>TÜMÜNÜ SEÇ</button><span class="say"></span><button class="pill y" data-act="beles" disabled>BELEŞ YAP</button><button class="pill m" data-act="kapa" disabled>BELEŞİ KALDIR</button><button class="pill k" data-act="sil" disabled>SİL</button></div>
       <div class="rows" id="illRows"></div>
       <div class="addbar"><button class="cz lit" id="illAdd"><img class="c" src="../img/ui/ekle-c.png" alt=""><img src="../img/ui/ekle.png" alt="Çizim ekle" width="211" height="78"></button><span>bir ya da birkaç çizim</span></div>
       <input type="file" id="illIn" accept="image/*" multiple hidden>
@@ -170,9 +179,11 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
       <h2>GELEN NOTLAR</h2>
       <p class="hint" id="notInfo">Ana sayfadaki "Gitmeden not bırak" kutusuna yazılanlar. <b>ONAYLA</b> dediklerin ana sayfada asılır, <b>SİL</b> dediklerin bir daha burada çıkmaz.</p>
       <div class="addbar"><button class="cz lit" id="notYenile" type="button" style="width:auto"><span style="font-family:suat-skinny;font-size:20px;border:3px solid #111;border-radius:99px;padding:4px 14px;display:inline-block">YENİLE</span></button><span id="notSay"></span></div>
-      <div class="rows" id="inRows" style="margin-top:12px"></div>
+      <div class="selbar" data-for="inRows" style="margin-top:8px"><button class="pill" data-tum>TÜMÜNÜ SEÇ</button><span class="say"></span><button class="pill y" data-act="onay" disabled>ONAYLA</button><button class="pill k" data-act="sil" disabled>SİL</button></div>
+      <div class="rows" id="inRows"></div>
       <h2 style="margin-top:34px">ASILAN NOTLAR</h2>
       <p class="hint">Ana sayfada görünenler.</p>
+      <div class="selbar" data-for="pubRows"><button class="pill" data-tum>TÜMÜNÜ SEÇ</button><span class="say"></span><button class="pill k" data-act="kaldir" disabled>KALDIR</button></div>
       <div class="rows" id="pubRows"></div>
     </section>
 
@@ -227,7 +238,7 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
     <button class="hit l" id="errClose" aria-label="Geri dön"></button><button class="hit r" id="errReload" aria-label="Yenile"></button></div>
 </div>
 
-<script src="../ortak.js?v=2611170537"></script>
+<script src="../ortak.js?v=2611170608"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 {
@@ -239,7 +250,7 @@ let D=null, BOX=null;   // site data, encrypted key box
 
 /* ---------- github ---------- */
 async function gh(path,opt={}){
-  const r=await fetch(API+path,{...opt,headers:{Authorization:'Bearer '+TOKEN,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28',...(opt.body?{'Content-Type':'application/json'}:{})}});
+  const r=await fetch(API+path,{cache:'no-store',...opt,headers:{Authorization:'Bearer '+TOKEN,Accept:'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28',...(opt.body?{'Content-Type':'application/json'}:{})}});
   if(r.status===404&&opt.allow404)return null;
   if(!r.ok){let m='';try{m=(await r.json()).message}catch(e){}throw new Error(r.status===401?'Anahtar geçersiz ya da süresi dolmuş.':r.status===403?'Anahtarın bu depoya yazma izni yok.':r.status===409||r.status===422?'Aynı anda iki değişiklik çakıştı, tekrar dene.':(m||('GitHub '+r.status)));}
   return r.status===204?null:r.json();
@@ -249,16 +260,24 @@ const dec=b=>decodeURIComponent(escape(atob(b.replace(/\n/g,''))));
 const P=p=>p.split('/').map(encodeURIComponent).join('/');
 async function readJSON(p){const r=await gh('/contents/'+P(p)+'?ref='+BR+'&t='+Date.now(),{allow404:true});return r?JSON.parse(dec(r.content)):null;}
 /* one commit for many files: {path: base64 | null(delete)} */
+let HEAD=null;  /* last commit we made: GitHub's ref read can lag ~1 min, so chained saves use this */
 async function commit(files,msg){
-  const ref=await gh('/git/ref/heads/'+BR), base=await gh('/git/commits/'+ref.object.sha), tree=[];
+  const blobs=[];
   for(const [p,b] of Object.entries(files)){
-    if(b===null){tree.push({path:p,mode:'100644',type:'blob',sha:null});continue;}
+    if(b===null){blobs.push({path:p,mode:'100644',type:'blob',sha:null});continue;}
     const bl=await gh('/git/blobs',{method:'POST',body:JSON.stringify({content:b,encoding:'base64'})});
-    tree.push({path:p,mode:'100644',type:'blob',sha:bl.sha});
+    blobs.push({path:p,mode:'100644',type:'blob',sha:bl.sha});
   }
-  const tr=await gh('/git/trees',{method:'POST',body:JSON.stringify({base_tree:base.tree.sha,tree})});
-  const c=await gh('/git/commits',{method:'POST',body:JSON.stringify({message:msg,tree:tr.sha,parents:[ref.object.sha]})});
-  await gh('/git/refs/heads/'+BR,{method:'PATCH',body:JSON.stringify({sha:c.sha})});
+  for(let t=0;t<4;t++){
+    let head=HEAD;
+    if(!head||t>0){const ref=await gh('/git/ref/heads/'+BR+'?t='+Date.now());head=ref.object.sha;
+      if(t>0&&head===HEAD)await new Promise(r=>setTimeout(r,1500*t));}
+    const base=await gh('/git/commits/'+head);
+    const tr=await gh('/git/trees',{method:'POST',body:JSON.stringify({base_tree:base.tree.sha,tree:blobs})});
+    const c=await gh('/git/commits',{method:'POST',body:JSON.stringify({message:msg,tree:tr.sha,parents:[head]})});
+    try{await gh('/git/refs/heads/'+BR,{method:'PATCH',body:JSON.stringify({sha:c.sha})});HEAD=c.sha;return;}
+    catch(e){if(t===3||!/çakıştı/.test(e.message))throw e;HEAD=null;}
+  }
 }
 const siteFile=()=>({'veri/site.json':enc(JSON.stringify(D,null,2)+'\n')});
 async function save(msg,extra={}){busy(true,'Kaydediliyor…',.85);await commit({...extra,...siteFile()},msg);busy(false);}
@@ -317,6 +336,44 @@ $('tabs').onclick=e=>{const b=e.target.closest('button');if(!b)return;
 /* ---------- render ---------- */
 const HEDEF=()=>[['uygulamalar/','Uygulamalar sayfası'],['illustrasyon/','İllüstrasyon sayfası'],['indir/','İndir-kullan sayfası'],
   ...D.indir.map(k=>['indir/#'+k.id,'İndir-kullan › '+k.ad]),['https://ig.me/m/suatilyus','Instagram DM'],['__url','Başka bir link…'],['','Hiçbir yere (yakında)']];
+/* ---------- bulk select: one save for many rows ---------- */
+const SEC={illRows:new Set(),inRows:new Set(),pubRows:new Set()};
+function secTazele(id){const box=$(id),S=SEC[id],keys=[...box.querySelectorAll('[data-key]')].map(r=>r.dataset.key);
+  for(const k of [...S])if(!keys.includes(k))S.delete(k);
+  box.querySelectorAll('[data-key]').forEach(r=>{const on=S.has(r.dataset.key);r.classList.toggle('secili',on);const c=r.querySelector('.ck');if(c)c.checked=on;});
+  const bar=document.querySelector(`.selbar[data-for="${id}"]`);if(!bar)return;bar.hidden=!keys.length;
+  bar.querySelector('.say').textContent=S.size?S.size+' seçili':'';
+  bar.querySelector('[data-tum]').textContent=S.size&&S.size===keys.length?'SEÇİMİ BIRAK':'TÜMÜNÜ SEÇ';
+  bar.querySelectorAll('[data-act]').forEach(b=>b.disabled=!S.size);}
+Object.keys(SEC).forEach(id=>{
+  $(id).addEventListener('change',e=>{if(!e.target.classList.contains('ck'))return;const k=e.target.closest('[data-key]').dataset.key;
+    e.target.checked?SEC[id].add(k):SEC[id].delete(k);secTazele(id);});
+  new MutationObserver(()=>secTazele(id)).observe($(id),{childList:true});
+  const bar=document.querySelector(`.selbar[data-for="${id}"]`);
+  bar.querySelector('[data-tum]').onclick=()=>{const keys=[...$(id).querySelectorAll('[data-key]')].map(r=>r.dataset.key);
+    if(SEC[id].size===keys.length)SEC[id].clear();else keys.forEach(k=>SEC[id].add(k));secTazele(id);};
+  bar.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(b&&!b.disabled)toplu(id,b.dataset.act,[...SEC[id]]);});
+});
+async function toplu(id,act,keys){const n=keys.length;if(!n)return;
+  try{
+    if(id==='illRows'){const ws=D.illustrasyon.filter(w=>keys.includes(w.dosya));
+      if(act==='sil'){if(!await ask(n+' çizim silinsin mi?'))return;
+        D.illustrasyon=D.illustrasyon.filter(w=>!keys.includes(w.dosya));
+        await save('Çizim silindi ('+n+')',Object.fromEntries(ws.map(w=>[w.dosya,null])));ok('sildim');}
+      else{ws.forEach(w=>w.indir=act==='beles');await save('Çizim BELEŞ '+(act==='beles'?'açıldı':'kapandı')+' ('+n+')');ok('kaydettim');}
+      SEC[id].clear();renderIll();}
+    else if(id==='inRows'){const ns=GELEN.filter(x=>keys.includes(x.id));
+      if(act==='onay'){D.notlar=[...ns.map(x=>({id:x.id,metin:x.metin,tarih:x.tarih})),...(D.notlar||[])];await save('Not asıldı ('+n+')');ok('astım');}
+      else{if(!await ask(n+' not silinsin mi?'))return;D.reddedilen=[...(D.reddedilen||[]),...keys];await save('Not reddedildi ('+n+')');ok('sildim');}
+      SEC[id].clear();renderPub();renderGelen();}
+    else if(id==='pubRows'){if(!await ask(n+' not ana sayfadan kalksın mı?'))return;
+      D.notlar=(D.notlar||[]).filter(x=>!keys.includes(x.id));D.reddedilen=[...(D.reddedilen||[]),...keys];
+      await save('Not kaldırıldı ('+n+')');SEC[id].clear();renderPub();ok('kaldırdım');}
+  }catch(err){fail(err)}}
+Object.keys(SEC).forEach(secTazele);
+/* order changes: wait until he stops clicking, then save once */
+let siraT=null,siraMsg='';
+function siraKaydet(msg){siraMsg=msg;clearTimeout(siraT);siraT=setTimeout(async()=>{siraT=null;try{await save(siraMsg);ok('sıra kaydedildi')}catch(e){fail(e)}},1800);}
 function renderAll(){renderBtns();renderIll();renderKat();renderPub();renderKutu();}
 function renderBtns(){
   $('btnRows').innerHTML=D.butonlar.map((b,i,a)=>`<div class="r" data-i="${i}">
@@ -325,8 +382,8 @@ function renderBtns(){
     <div class="tools">${tools(i,a.length)}</div></div>`).join('');
 }
 function renderIll(){
-  $('illRows').innerHTML=D.illustrasyon.length?D.illustrasyon.map((w,i,a)=>`<div class="r" data-i="${i}">
-    <div class="pv"><img src="${src(w.dosya)}" alt="" loading="lazy"></div>
+  $('illRows').innerHTML=D.illustrasyon.length?D.illustrasyon.map((w,i,a)=>`<div class="r" data-i="${i}" data-key="${E(w.dosya)}">
+    <input type="checkbox" class="ck" aria-label="Seç"><div class="pv"><img src="${src(w.dosya)}" alt="" loading="lazy"></div>
     <div class="t"><b>${E(w.ad)}</b><span>${w.indir?'BELEŞ · indirilebilir':'sadece görüntü'}${w.not?' · '+E(w.not):''}</span></div>
     <div class="tools">${tools(i,a.length)}</div></div>`).join(''):'<p class="hint" style="padding:12px 2px">Henüz çizim yok.</p>';
 }
@@ -406,7 +463,7 @@ $('btnRows').onclick=async e=>{const a=rowAction(e);if(!a)return;const b=D.buton
   try{
     if(a.ed){const r=await buttonForm(b);if(!r)return;D.butonlar[a.i]=r.nb;await save('Buton: '+r.nb.ad,r.extra);D._v=Date.now();renderBtns();ok('kaydettim');}
     else if(a.rm){if(!await ask(`"${b.ad}" butonu kaldırılsın mı?`))return;D.butonlar.splice(a.i,1);await save('Buton kaldırıldı: '+b.ad);renderBtns();ok('kaldırdım');}
-    else if((a.up||a.down)&&move(D.butonlar,a.i,a.up?-1:1)){renderBtns();await save('Buton sırası');}
+    else if((a.up||a.down)&&move(D.butonlar,a.i,a.up?-1:1)){renderBtns();siraKaydet('Buton sırası');}
   }catch(err){fail(err)}};
 
 /* ---------- illüstrasyon ---------- */
@@ -425,7 +482,7 @@ $('illRows').onclick=async e=>{const a=rowAction(e);if(!a)return;const w=D.illus
     if(a.ed){const o=await form('ÇİZİMİ DÜZENLE',[{k:'ad',l:'Adı',v:w.ad},{k:'not',l:'Altına küçük not',v:w.not},{k:'indir',l:'İndirilebilir (BELEŞ)',t:'check',v:w.indir}]);
       if(!o)return;Object.assign(w,{ad:o.ad||w.ad,not:o.not,indir:o.indir});await save('Çizim: '+w.ad);renderIll();ok('kaydettim');}
     else if(a.rm){if(!await ask(`"${w.ad}" silinsin mi?`))return;D.illustrasyon.splice(a.i,1);await save('Çizim silindi: '+w.ad,{[w.dosya]:null});renderIll();ok('sildim');}
-    else if((a.up||a.down)&&move(D.illustrasyon,a.i,a.up?-1:1)){renderIll();await save('Çizim sırası');}
+    else if((a.up||a.down)&&move(D.illustrasyon,a.i,a.up?-1:1)){renderIll();siraKaydet('Çizim sırası');}
   }catch(err){fail(err)}};
 
 /* ---------- indir-kullan ---------- */
@@ -444,7 +501,7 @@ $('katList').onclick=async e=>{
       else if(a.rm){if(!await ask(`"${k.ad}" kategorisi ve içindeki ${k.dosyalar.length} dosya silinsin mi?`))return;
         const del={};k.dosyalar.forEach(f=>{if(!/^dosyalar\/suatilyus-(hand|long|skinny)-regular\.ttf$/.test(f.dosya))del[f.dosya]=null;});
         D.indir.splice(ki,1);await save('Kategori silindi: '+k.ad,del);renderKat();ok('sildim');}
-      else if((a.up||a.down)&&move(D.indir,ki,a.up?-1:1)){renderKat();await save('Kategori sırası');}
+      else if((a.up||a.down)&&move(D.indir,ki,a.up?-1:1)){renderKat();siraKaydet('Kategori sırası');}
       return;
     }
     const f=k.dosyalar[a.i];
@@ -459,7 +516,7 @@ $('katList').onclick=async e=>{
       const font=/^dosyalar\/suatilyus-(hand|long|skinny)-regular\.ttf$/.test(f.dosya);
       if(!await ask(font?`"${f.ad}" listeden kalksın mı? (site bu fontu kullandığı için dosya silinmez)`:`"${f.ad}" silinsin mi?`))return;
       k.dosyalar.splice(a.i,1);await save('Dosya kaldırıldı: '+f.ad,font?{}:{[f.dosya]:null});renderKat();ok('sildim');}
-    else if((a.up||a.down)&&move(k.dosyalar,a.i,a.up?-1:1)){renderKat();await save('Dosya sırası');}
+    else if((a.up||a.down)&&move(k.dosyalar,a.i,a.up?-1:1)){renderKat();siraKaydet('Dosya sırası');}
   }catch(err){fail(err)}};
 $('fIn').onchange=async e=>{
   const fs=[...e.target.files];e.target.value='';if(!fs.length||fTarget==null)return;const k=D.indir[fTarget];
@@ -480,13 +537,13 @@ function csvParse(t){const rows=[];let r=[],f='',q=false;for(let i=0;i<t.length;
   if(f||r.length){r.push(f);rows.push(r)}return rows;}
 function renderKutu(){const k=D.notKutusu||{};$('kutuDurum').textContent=k.form&&k.alan?(k.csv?'bağlı ✓':'gönderim bağlı, okuma linki eksik'):'henüz bağlı değil';}
 function renderPub(){const N=D.notlar||[];
-  $('pubRows').innerHTML=N.length?N.map((n,i,a)=>`<div class="r" data-i="${i}"><div class="t"><b style="white-space:pre-wrap">${E(n.metin)}</b><span>${E(n.tarih||'')}</span></div><div class="tools">${btn('rm','sil','Kaldır',215,99)}${i>0?btn('ar up','ok-yukari','Yukarı',90,99):''}${i<a.length-1?btn('ar down','ok-asagi','Aşağı',93,92):''}</div></div>`).join(''):'<p class="hint" style="padding:10px 2px">Henüz asılan not yok.</p>';}
+  $('pubRows').innerHTML=N.length?N.map((n,i,a)=>`<div class="r" data-i="${i}" data-key="${E(n.id)}"><input type="checkbox" class="ck" aria-label="Seç"><div class="t"><b style="white-space:pre-wrap">${E(n.metin)}</b><span>${E(n.tarih||'')}</span></div><div class="tools">${btn('rm','sil','Kaldır',215,99)}${i>0?btn('ar up','ok-yukari','Yukarı',90,99):''}${i<a.length-1?btn('ar down','ok-asagi','Aşağı',93,92):''}</div></div>`).join(''):'<p class="hint" style="padding:10px 2px">Henüz asılan not yok.</p>';}
 function renderGelen(){
   const seen=new Set([...(D.notlar||[]).map(n=>n.id),...(D.reddedilen||[])]);
   const yeni=GELEN.filter(n=>!seen.has(n.id));
   $('notSay').textContent=yeni.length?yeni.length+' yeni not':'yeni not yok';
   const tb=document.querySelector('#tabs [data-t="not"]');tb.textContent=yeni.length?'NOTLAR ('+yeni.length+')':'NOTLAR';
-  $('inRows').innerHTML=yeni.map(n=>`<div class="r" data-id="${E(n.id)}"><div class="t"><b style="white-space:pre-wrap">${E(n.metin)}</b><span>${E(n.tarih)}</span></div>
+  $('inRows').innerHTML=yeni.map(n=>`<div class="r" data-id="${E(n.id)}" data-key="${E(n.id)}"><input type="checkbox" class="ck" aria-label="Seç"><div class="t"><b style="white-space:pre-wrap">${E(n.metin)}</b><span>${E(n.tarih)}</span></div>
     <div class="tools">${btn('ok','onay','Onayla',448,146)}${btn('rm','sil','Sil',215,99)}</div></div>`).join('');
 }
 async function notlariGetir(){
@@ -504,7 +561,7 @@ $('inRows').onclick=async e=>{const r=e.target.closest('[data-id]');if(!r)return
   }catch(err){fail(err)}};
 $('pubRows').onclick=async e=>{const a=rowAction(e);if(!a)return;const n=D.notlar[a.i];
   try{ if(a.rm){if(!await ask('Bu not ana sayfadan kalksın mı?'))return;D.notlar.splice(a.i,1);D.reddedilen=[...(D.reddedilen||[]),n.id];await save('Not kaldırıldı');renderPub();ok('kaldırdım');}
-    else if((a.up||a.down)&&move(D.notlar,a.i,a.up?-1:1)){renderPub();await save('Not sırası');}
+    else if((a.up||a.down)&&move(D.notlar,a.i,a.up?-1:1)){renderPub();siraKaydet('Not sırası');}
   }catch(err){fail(err)}};
 $('kutuBtn').onclick=async()=>{const k=D.notKutusu||{};
   const o=await form('NOT KUTUSU',[{k:'form',l:'Form gönderim linki (…/formResponse)',t:'url',v:k.form},{k:'alan',l:'Alan kodu (entry.123…)',v:k.alan},{k:'csv',l:'Yanıt tablosu CSV linki',t:'url',v:k.csv}]);

@@ -28,16 +28,16 @@ button.cz{appearance:none;background:none;border:0;padding:0;cursor:pointer;font
 .alt-geri{display:block;width:min(44%,220px);margin:12% auto 0}
 
 /* top-right corner: language + login menu */
-.kose{position:absolute;top:calc(env(safe-area-inset-top) + 10px);right:12px;z-index:15;width:88px}
+.kose{position:absolute;top:calc(env(safe-area-inset-top) + 10px);right:10px;z-index:15;width:36px}
 .kose-btn{width:100%}
-.kose-menu{position:absolute;right:0;top:calc(100% + 8px);width:230px;background:#fff;border:3px solid #111;border-radius:16px;padding:14px 16px;display:none;flex-direction:column;gap:12px;box-shadow:4px 4px 0 #111}
+.kose-menu{position:absolute;right:0;top:calc(100% + 8px);width:170px;background:#fff;border:2.5px solid #111;border-radius:13px;padding:10px 12px;display:none;flex-direction:column;gap:9px;box-shadow:3px 3px 0 #111}
 .kose.open .kose-menu{display:flex}
 .kose-menu a{display:block}
-.kose-menu .k-kayit{width:150px}.kose-menu .k-giris{width:128px}.kose-menu .k-mud{width:180px}
-.kose-menu .k-dil{width:52px;margin-top:6px}
+.kose-menu .k-kayit{width:112px}.kose-menu .k-giris{width:96px}.kose-menu .k-mud{width:136px}
+.kose-menu .k-dil{width:40px;margin-top:4px}
 .kose-menu .lang{display:flex;align-items:center;gap:8px;opacity:.38;cursor:pointer;background:none;border:0;padding:0}
 .kose-menu .lang.sel{opacity:1}
-.kose-menu .lang .fl{width:30px}.kose-menu .lang .w{height:26px;width:auto}
+.kose-menu .lang .fl{width:23px}.kose-menu .lang .w{height:20px;width:auto}
 .kose-menu .lang.sel .w{border-bottom:3px solid #111}
 .kose-menu [hidden]{display:none!important}
 
