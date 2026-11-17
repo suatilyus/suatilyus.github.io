@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../ortak.css?v=2611170455">
+<link rel="stylesheet" href="../ortak.css?v=2611170537">
 <style>
 :root{--ink:#111;--mut:#666}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -227,7 +227,7 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
     <button class="hit l" id="errClose" aria-label="Geri dön"></button><button class="hit r" id="errReload" aria-label="Yenile"></button></div>
 </div>
 
-<script src="../ortak.js?v=2611170455"></script>
+<script src="../ortak.js?v=2611170537"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 {
@@ -368,7 +368,7 @@ async function load(){
     let ren=false; D.illustrasyon.forEach(w=>{const m=/^DUVAR (\d+)$/.exec(w.ad||'');if(m){w.ad='İLLÜSTRASYON '+m[1];ren=true;}});
     if(ren) await save('İsimler: İLLÜSTRASYON');
     D._v=Date.now();
-    renderAll();
+    renderAll(); notlariGetir().catch(()=>{});
     $('login').hidden=true;$('app').hidden=false;$('logout').hidden=false;
     $('who').textContent='Hoşgeldin moruk. Yaptığın değişiklik 1–2 dakika içinde sitede görünür.';
     $('pwInfo').textContent=BOX?'Şifren kayıtlı. Değiştirmek istersen yenisini yaz.':'Henüz şifren yok! Bir şifre belirle, başka cihazlarda sadece onunla girersin. En az 10 karakter.';
@@ -485,6 +485,7 @@ function renderGelen(){
   const seen=new Set([...(D.notlar||[]).map(n=>n.id),...(D.reddedilen||[])]);
   const yeni=GELEN.filter(n=>!seen.has(n.id));
   $('notSay').textContent=yeni.length?yeni.length+' yeni not':'yeni not yok';
+  const tb=document.querySelector('#tabs [data-t="not"]');tb.textContent=yeni.length?'NOTLAR ('+yeni.length+')':'NOTLAR';
   $('inRows').innerHTML=yeni.map(n=>`<div class="r" data-id="${E(n.id)}"><div class="t"><b style="white-space:pre-wrap">${E(n.metin)}</b><span>${E(n.tarih)}</span></div>
     <div class="tools">${btn('ok','onay','Onayla',448,146)}${btn('rm','sil','Sil',215,99)}</div></div>`).join('');
 }
