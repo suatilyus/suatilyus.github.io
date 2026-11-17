@@ -655,7 +655,8 @@ $('zipIn').onchange=async e=>{
   try{busy(true,'Zip açılıyor…',.05);
     const zip=await JSZip.loadAsync(f);
     let ent=Object.values(zip.files).filter(x=>!x.dir&&!/(^|\/)(__MACOSX|\.DS_Store)/.test(x.name));
-    const pre=ent.length&&ent.every(x=>x.name.includes('/'))&&new Set(ent.map(x=>x.name.split('/')[0])).size===1?ent[0].name.split('/')[0]+'/':'';
+    const kok=ent.length&&ent.every(x=>x.name.includes('/'))&&new Set(ent.map(x=>x.name.split('/')[0])).size===1?ent[0].name.split('/')[0]+'/':'';
+    const pre=kok&&ent.some(x=>x.name===kok+'index.html')?kok:'';  /* strip only a wrapper folder that holds the whole site */
     ent=ent.filter(x=>!/^veri\//.test(x.name.slice(pre.length)));  /* panel-managed data is never overwritten */
     const files={};
     for(const [i,x] of ent.entries()){busy(true,`${i+1}/${ent.length} ${x.name.slice(pre.length)}`,.05+.85*i/ent.length);files[x.name.slice(pre.length)]=await x.async('base64');}
