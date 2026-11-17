@@ -102,7 +102,14 @@
       "id": "brushlar",
       "ad": "Brushlar",
       "not": "Procreate fırçaları",
-      "dosyalar": []
+      "dosyalar": [
+        {
+          "ad": "Suatilyus brush",
+          "dosya": "dosyalar/brushlar/suatilyus-brush.brushset",
+          "boyut": 3317914
+        }
+      ]
     }
-  ]
+  ],
+  "_v": 1794875757915
 }
