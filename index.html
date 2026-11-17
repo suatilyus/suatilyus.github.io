@@ -34,7 +34,7 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
 @keyframes float{50%{transform:translateY(-1.2cqw) rotate(-.6deg)}}
 @keyframes talk{0%,70%,100%{transform:scale(1) rotate(0)}76%{transform:scale(1.08) rotate(3deg)}82%{transform:scale(.97) rotate(-2deg)}88%{transform:scale(1.02)}}
 
-.row{display:flex;flex-wrap:wrap;justify-content:center;gap:5cqw 4.6cqw;width:94%;margin-top:15.6cqw;min-height:30cqw}
+.row{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;align-content:flex-start;gap:5cqw 4.6cqw;width:94%;margin-top:15.6cqw;min-height:30cqw}
 /* buttons added from the panel without a drawing: text in a drawn-style frame */
 .btn.txt{display:flex;align-items:center;justify-content:center;min-height:8.2cqw;margin-top:.8cqw;border:.6cqw solid var(--ink);border-radius:1.4cqw;outline:.3cqw solid var(--ink);outline-offset:-1.5cqw;color:var(--ink);font-family:"suat-skinny","Patrick Hand",sans-serif;font-size:4.6cqw;letter-spacing:.04em;text-transform:uppercase;padding:0 2cqw;text-align:center;line-height:1}
 .btn.txt:hover{background:#ffd23f}
@@ -54,8 +54,14 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
 .note{width:79.3cqw;margin-top:.6cqw}
 .note textarea,.note input{position:absolute;z-index:2;left:11%;right:11%;background:transparent;border:0;outline:0;resize:none;font:inherit;color:var(--ink);font-size:4.2cqw;line-height:5.4cqw;padding:0}
 /* text sits right on the drawn lines (line 1 ≈ 36.5%, line 2 ≈ 74% of the box) */
-.note textarea{top:20.5%;height:16.2%}
-.note input{top:66%;height:8%}
+.note textarea{top:20.5%;height:52%}
+/* approved notes */
+.notlar{width:86cqw;margin-top:8cqw;display:flex;flex-direction:column;gap:5cqw}
+.notlar h2{font-size:7cqw;font-weight:400;letter-spacing:.04em;text-align:center}
+.nt{position:relative;background:#f6ecd5;border:.5cqw solid var(--ink);border-radius:2cqw;padding:4cqw 5cqw 3cqw;font-size:4.6cqw;line-height:1.35;white-space:pre-wrap;word-break:break-word}
+.nt:nth-child(odd){transform:rotate(-.8deg)}.nt:nth-child(even){transform:rotate(.7deg)}
+.nt small{display:block;margin-top:1.6cqw;font-size:3.6cqw;color:#8a7a5a}
+.nt::before{content:"";position:absolute;top:-1.6cqw;left:50%;width:14cqw;height:3.2cqw;margin-left:-7cqw;background:rgba(255,210,63,.75);transform:rotate(-3deg)}
 .note textarea::placeholder,.note input::placeholder{color:#9a9a9a}
 .acts{display:flex;justify-content:center;gap:6cqw;margin-top:3cqw}
 .acts .cz{width:30cqw}
@@ -85,14 +91,14 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
   <form class="note cz" id="note">
     <img class="c" src="img/note-box-c.png" alt="">
     <img src="img/note-box.png" alt="" width="928" height="782">
-    <textarea name="not" maxlength="1000" aria-label="Notun" placeholder="yaz bakalım…"></textarea>
-    <input name="kim" maxlength="80" aria-label="Adın ya da Instagram'ın" placeholder="adın / @instagram (istersen)">
+    <textarea name="not" maxlength="1000" aria-label="Notun" placeholder="yaz bakalım… (isim vermek mecburi değil)"></textarea>
   </form>
   <div class="acts">
     <button class="cz" form="note" type="submit"><img class="c" src="img/ui/gonder-c.png" alt=""><img src="img/ui/gonder.png" alt="Gönder" width="372" height="170"></button>
     <button class="cz" form="note" type="reset"><img class="c" src="img/ui/vazgec-c.png" alt=""><img src="img/ui/vazgec.png" alt="Vazgeç" width="379" height="168"></button>
   </div>
 
+  <section class="notlar" id="notlar" hidden aria-label="Bırakılan notlar"><h2>BIRAKILAN NOTLAR</h2><div id="ntList" style="display:flex;flex-direction:column;gap:5cqw"></div></section>
   <div class="divider divider2 cz" id="uygulamalar"><img class="c" src="img/divider-c.png" alt=""><img src="img/divider.png" alt="" width="1062" height="54"></div>
   <img class="soon" src="img/cok-yakinda.png" alt="Çok yakında: suatilyus app!" width="460" height="313">
 </main>
@@ -110,11 +116,22 @@ suat.veri().then(d=>{
   }).join('');
 });
 const say=(m,ok)=>suat.toast(m,ok);
-document.getElementById('note').addEventListener('reset',()=>say('tamam, sildim',true));
-document.getElementById('note').addEventListener('submit',e=>{
-  e.preventDefault();const f=e.target;
-  if(!f.not.value.trim()){say('önce bi şey yaz moruk');f.not.focus();return}
-  say('not kutusu çok yakında açılıyor',true);
+document.querySelector('.acts [type=reset]').addEventListener('click',()=>say('tamam, sildim',true));
+let KUTU=null;
+suat.veri().then(d=>{
+  KUTU=d.notKutusu||null;
+  const N=(d.notlar||[]);
+  if(N.length){document.getElementById('notlar').hidden=false;
+    document.getElementById('ntList').innerHTML=N.map(n=>`<div class="nt">${suat.esc(n.metin)}<small>${suat.esc(n.tarih||'')}</small></div>`).join('');}
+});
+document.getElementById('note').addEventListener('submit',async e=>{
+  e.preventDefault();const f=e.target,m=f.not.value.trim();
+  if(!m){say('önce bi şey yaz moruk');f.not.focus();return}
+  if(!KUTU||!KUTU.form||!KUTU.alan){say('not kutusu çok yakında açılıyor',true);return}
+  try{const fd=new FormData();fd.append(KUTU.alan,m);
+    await fetch(KUTU.form,{method:'POST',mode:'no-cors',body:fd});
+    f.reset();say('aldım, okuyunca asarım',true);
+  }catch(err){say('gitmedi, bi daha dene')}
 });
 </script>
 </body>
