@@ -2,20 +2,6 @@
 {
 const ROOT = new URL('.', document.currentScript.src).href;   // site root, works on any page depth
 
-/* easter egg: whatever a finger passes over gets its colour, then fades back */
-const lit = new Map();
-const paint = t => {
-  const el = document.elementFromPoint(t.clientX, t.clientY);
-  const z = el && el.closest('.cz');
-  if (!z) return;
-  z.classList.add('on');
-  clearTimeout(lit.get(z));
-  lit.set(z, setTimeout(() => { z.classList.remove('on'); lit.delete(z); }, 700));
-};
-const onTouch = e => { for (const t of e.touches) paint(t); };
-document.addEventListener('touchstart', onTouch, {passive: true});
-document.addEventListener('touchmove', onTouch, {passive: true});
-
 /* toast with drawn icons */
 let toastEl, toastT;
 function toast(msg, ok) {

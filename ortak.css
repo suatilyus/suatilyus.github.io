@@ -2,7 +2,7 @@
 /* line art on top, colour layer fades in underneath on hover / finger */
 .cz{position:relative;display:block}
 .cz>img{position:relative;display:block;width:100%;height:auto}
-.cz>img.c{position:absolute;inset:0;height:100%;opacity:0;transition:opacity .9s ease}
+.cz>img.c{position:absolute;inset:0;height:100%;opacity:1}
 .cz.lit>img.c,.cz:hover>img.c,.cz.on>img.c,.cz:focus-visible>img.c,.cz:focus-within>img.c{opacity:1;transition-duration:.15s}
 a.cz,button.cz{transition:transform .12s}
 a.cz:hover,button.cz:hover{transform:rotate(-2deg) scale(1.03)}
@@ -39,3 +39,11 @@ button.cz{appearance:none;background:none;border:0;padding:0;cursor:pointer;font
 .kose-menu .lang .fl{width:30px}.kose-menu .lang .w{height:26px;width:auto}
 .kose-menu .lang.sel .w{border-bottom:3px solid #111}
 .kose-menu [hidden]{display:none!important}
+
+/* suatilyus fonts (uploaded from the panel into /dosyalar — don't delete them there) */
+@font-face{font-family:"suat-skinny";src:url(dosyalar/suatilyus-skinny-regular.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"suat-long";src:url(dosyalar/suatilyus-long-regular.ttf) format("truetype");font-display:swap}
+@font-face{font-family:"suat-hand";src:url(dosyalar/suatilyus-hand-regular.ttf) format("truetype");font-display:swap}
+/* headings in skinny; digits/symbols the fonts don't have fall back to Patrick Hand */
+h1,h2,.box b,.wp b,.app h2,.sub-title{font-family:"suat-skinny","Patrick Hand",system-ui,sans-serif}
+.toast{font-family:"suat-long","Patrick Hand",system-ui,sans-serif}

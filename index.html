@@ -23,7 +23,7 @@
 :root{--pink:#fd225a;--ink:#111}
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{background:#fff;color:var(--ink);font-family:"Patrick Hand",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:#fff;color:var(--ink);font-family:"suat-long","Patrick Hand",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
 img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:none}
 .page{width:min(100%,520px);margin:0 auto;container-type:inline-size;padding:calc(env(safe-area-inset-top) + 17cqw) 0 18cqw;display:flex;flex-direction:column;align-items:center;overflow:hidden}
 
@@ -41,7 +41,7 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
 /* color layer: line art sits on top, colour fades in underneath */
 .cz{position:relative}
 .cz>img{position:relative}
-.cz>img.c{position:absolute;inset:0;width:100%;height:100%;opacity:0;transition:opacity .9s ease}
+.cz>img.c{position:absolute;inset:0;width:100%;height:100%;opacity:1}
 .cz:hover>img.c,.cz.on>img.c,.cz:focus-within>img.c,.btn:focus-visible>img.c{opacity:1;transition-duration:.15s}
 .btn .arrows{position:absolute;z-index:3;width:85%;left:-1%;bottom:96%;opacity:0;pointer-events:none;transition:opacity .15s}
 .btn:hover .arrows,.btn:focus-visible .arrows,.btn.on .arrows{opacity:1;transition-duration:.15s;animation:poke .6s ease-in-out infinite alternate}
