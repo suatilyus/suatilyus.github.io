@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../ortak.css?v=2611170616">
+<link rel="stylesheet" href="../ortak.css?v=2611170640">
 <style>
 :root{--ink:#111;--mut:#666}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -51,8 +51,23 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
 .r .t span{font-size:15px;color:var(--mut);word-break:break-all}
 .r .t .off{color:#c0392b}
 .tools{display:flex;align-items:center;gap:6px;flex:none}
-.r .ck{width:26px;height:26px;flex:none;accent-color:#111;cursor:pointer;margin:0}
+.r .ck{width:19px;height:19px;flex:none;accent-color:#111;cursor:pointer;margin:0}
 .r.secili{background:#fff6d6}
+.r.kirli{box-shadow:inset 4px 0 0 #ed6d2c}
+.r .t input.ad,.r .t input.nt{display:block;width:100%;box-sizing:border-box;font:inherit;font-size:18px;border:0;border-bottom:2px solid #111;background:transparent;padding:3px 0;outline:0}
+.r .t input.nt{font-size:15px;border-bottom:1.5px dashed #999;color:#555;margin-top:4px}
+.r .t input:focus{border-bottom-color:#3880c8}
+.etk{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.etk label{display:inline-flex;align-items:center;gap:4px;font-family:suat-skinny,sans-serif;font-size:16px;border:2px solid #111;border-radius:99px;padding:3px 10px;cursor:pointer;user-select:none;background:#fff}
+.etk input{display:none}
+.etk label.on.beles{background:#479f48;color:#fff}.etk label.on.yeni{background:#ed6d2c;color:#fff}.etk label.on.yakinda{background:#784379;color:#fff}
+.kaydetbar{position:sticky;bottom:10px;z-index:20;display:flex;align-items:center;gap:12px;justify-content:space-between;background:#fff;border:3px solid #111;border-radius:16px;padding:8px 12px;box-shadow:3px 3px 0 #111;margin:14px 0}
+.kaydetbar[hidden]{display:none!important}
+.kaydetbar span{font-size:16px}.kaydetbar .vz{font-family:suat-skinny,sans-serif;font-size:17px;background:none;border:0;text-decoration:underline;cursor:pointer}
+.kaydetbar .cz{width:120px}
+.etkset{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.etkset label{display:flex;align-items:center;gap:10px;font-size:18px;cursor:pointer}
+.etkset input{width:20px;height:20px;accent-color:#111}
 .selbar{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:8px 0 10px}
 .selbar[hidden]{display:none!important}
 .selbar .say{font-size:16px;color:var(--mut);margin-right:auto}
@@ -160,11 +175,19 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
 
     <section class="sec" data-s="ill" hidden>
       <h2>İLLÜSTRASYON</h2>
-      <p class="hint">İllüstrasyon sayfasındaki çizimler. "İndirilebilir" işaretlediklerinde BELEŞ etiketi ve İNDİR butonu çıkar. Büyük görselleri ben küçültürüm.</p>
-      <div class="selbar" data-for="illRows"><button class="pill" data-tum>TÜMÜNÜ SEÇ</button><span class="say"></span><button class="pill y" data-act="beles" disabled>BELEŞ YAP</button><button class="pill m" data-act="kapa" disabled>BELEŞİ KALDIR</button><button class="pill k" data-act="sil" disabled>SİL</button></div>
+      <p class="hint">İllüstrasyon sayfasındaki çizimler. İsimleri, notları ve etiketleri (BELEŞ / YENİ / YAKINDA) direkt burada değiştir, hepsi bitince altta çıkan <b>KAYDET</b>'e bir kere bas. BELEŞ olanlarda İNDİR butonu çıkar.</p>
+      <div class="selbar" data-for="illRows"><button class="pill" data-tum>TÜMÜNÜ SEÇ</button><span class="say"></span><button class="pill k" data-act="sil" disabled>SİL</button></div>
       <div class="rows" id="illRows"></div>
       <div class="addbar"><button class="cz lit" id="illAdd"><img class="c" src="../img/ui/ekle-c.png" alt=""><img src="../img/ui/ekle.png" alt="Çizim ekle" width="211" height="78"></button><span>bir ya da birkaç çizim</span></div>
       <input type="file" id="illIn" accept="image/*" multiple hidden>
+      <div class="kaydetbar" id="illKbar" hidden><span id="illKsay"></span><button class="vz" id="illVaz" type="button">vazgeç</button><button class="cz lit" id="illKaydet" type="button"><img class="c" src="../img/ui/kaydet-c.png" alt=""><img src="../img/ui/kaydet.png" alt="Kaydet" width="226" height="96"></button></div>
+      <h2 style="margin-top:30px">ETİKETLER</h2>
+      <p class="hint">Sitede hangi etiketler görünsün? Kapattığın etiket çizimlerde işaretli olsa bile gizlenir.</p>
+      <div class="etkset" id="etkSet">
+        <label><input type="checkbox" data-e="beles"> BELEŞ <span class="hint" style="margin:0">(indirme butonu da buna bağlı)</span></label>
+        <label><input type="checkbox" data-e="yeni"> YENİ</label>
+        <label><input type="checkbox" data-e="yakinda"> YAKINDA! AHA BURADA!</label>
+      </div>
     </section>
 
     <section class="sec" data-s="ind" hidden>
@@ -238,7 +261,7 @@ code{background:#f2f2f2;padding:1px 6px;border-radius:5px;font-size:15px;font-fa
     <button class="hit l" id="errClose" aria-label="Geri dön"></button><button class="hit r" id="errReload" aria-label="Yenile"></button></div>
 </div>
 
-<script src="../ortak.js?v=2611170616"></script>
+<script src="../ortak.js?v=2611170640"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script>
 {
@@ -322,7 +345,9 @@ async function imgB64(f,maxSide=2600){
 }
 const btn=(cls,name,alt,w,h)=>`<button class="${cls} cz lit" type="button"><img class="c" src="../img/ui/${name}-c.png" alt=""><img src="../img/ui/${name}.png" alt="${alt}" width="${w}" height="${h}"></button>`;
 const tools=(i,n)=>btn('ed','duzenle','Düzenle',285,101)+btn('rm','sil','Sil',215,99)+(i>0?btn('ar up','ok-yukari','Yukarı',90,99):'')+(i<n-1?btn('ar down','ok-asagi','Aşağı',93,92):'');
-const src=p=>/^https?:/.test(p)?p:RAW+p+'?v='+(D._v||0);  // raw = visible right after upload
+const src=p=>/^https?:/.test(p)?p:'../'+p+(D._v?'?v='+D._v:'');
+/* fresh uploads aren't on the site for ~1 min: fall back to GitHub raw */
+document.addEventListener('error',e=>{const i=e.target;if(i.tagName!=='IMG'||i.dataset.yedek)return;const m=/^(?:\.\.\/)?((?:img|dosyalar)\/[^?]+)/.exec(i.getAttribute('src')||'');if(!m)return;i.dataset.yedek=1;i.src=RAW+m[1]+'?v='+Date.now();},true);
 function move(arr,i,dir){const j=i+dir;if(j<0||j>=arr.length)return false;[arr[i],arr[j]]=[arr[j],arr[i]];return true;}
 function rowAction(e){const r=e.target.closest('[data-i]');if(!r)return null;const i=+r.dataset.i;
   return {i,ed:!!e.target.closest('.ed'),rm:!!e.target.closest('.rm'),up:!!e.target.closest('.up'),down:!!e.target.closest('.down'),r};}
@@ -359,8 +384,7 @@ async function toplu(id,act,keys){const n=keys.length;if(!n)return;
     if(id==='illRows'){const ws=D.illustrasyon.filter(w=>keys.includes(w.dosya));
       if(act==='sil'){if(!await ask(n+' çizim silinsin mi?'))return;
         D.illustrasyon=D.illustrasyon.filter(w=>!keys.includes(w.dosya));
-        await save('Çizim silindi ('+n+')',Object.fromEntries(ws.map(w=>[w.dosya,null])));ok('sildim');}
-      else{ws.forEach(w=>w.indir=act==='beles');await save('Çizim BELEŞ '+(act==='beles'?'açıldı':'kapandı')+' ('+n+')');ok('kaydettim');}
+        await save('Çizim silindi ('+n+')',Object.fromEntries(ws.map(w=>[w.dosya,null])));ILL_KIRLI.clear();ILL_ESKI=null;ok('sildim');}
       SEC[id].clear();renderIll();}
     else if(id==='inRows'){const ns=GELEN.filter(x=>keys.includes(x.id));
       if(act==='onay'){const var_=new Set((D.notlar||[]).map(x=>x.id));D.notlar=[...ns.filter(x=>!var_.has(x.id)).map(x=>({id:x.id,metin:x.metin,tarih:x.tarih})),...(D.notlar||[])];await save('Not asıldı ('+n+')');ok('astım');}
@@ -381,12 +405,32 @@ function renderBtns(){
     <div class="t"><b>${E(b.ad)}</b><span>${b.gizli?'<span class="off">gizli · </span>':''}→ ${E(b.link||'yakında')}</span></div>
     <div class="tools">${tools(i,a.length)}</div></div>`).join('');
 }
+const ETK=[['indir','beles','BELEŞ'],['yeni','yeni','YENİ'],['yakinda','yakinda','YAKINDA']];
+let ILL_KIRLI=new Set(), ILL_ESKI=null;
+function illKirli(key){if(key)ILL_KIRLI.add(key);illBar();}
+function illBar(){const n=ILL_KIRLI.size;$('illKbar').hidden=!n;$('illKsay').textContent='kaydedilmemiş değişiklik var';
+  $('illRows').querySelectorAll('[data-key]').forEach(r=>r.classList.toggle('kirli',ILL_KIRLI.has(r.dataset.key)));}
 function renderIll(){
+  if(!ILL_KIRLI.size)ILL_ESKI=JSON.stringify({i:D.illustrasyon,e:D.etiketler||null});
   $('illRows').innerHTML=D.illustrasyon.length?D.illustrasyon.map((w,i,a)=>`<div class="r" data-i="${i}" data-key="${E(w.dosya)}">
     <input type="checkbox" class="ck" aria-label="Seç"><div class="pv"><img src="${src(w.dosya)}" alt="" loading="lazy"></div>
-    <div class="t"><b>${E(w.ad)}</b><span>${w.indir?'BELEŞ · indirilebilir':'sadece görüntü'}${w.not?' · '+E(w.not):''}</span></div>
-    <div class="tools">${tools(i,a.length)}</div></div>`).join(''):'<p class="hint" style="padding:12px 2px">Henüz çizim yok.</p>';
+    <div class="t"><input class="ad" data-f="ad" value="${E(w.ad)}" aria-label="Adı"><input class="nt" data-f="not" value="${E(w.not||'')}" placeholder="altına küçük not (isteğe bağlı)" aria-label="Not">
+      <div class="etk">${ETK.map(([f,c,l])=>`<label class="${c}${w[f]?' on':''}"><input type="checkbox" data-f="${f}"${w[f]?' checked':''}>${l}</label>`).join('')}</div></div>
+    <div class="tools">${btn('rm','sil','Sil',215,99)}${i>0?btn('ar up','ok-yukari','Yukarı',90,99):''}${i<a.length-1?btn('ar down','ok-asagi','Aşağı',93,92):''}</div></div>`).join(''):'<p class="hint" style="padding:12px 2px">Henüz çizim yok.</p>';
+  const E2=D.etiketler||{};$('etkSet').querySelectorAll('input').forEach(c=>c.checked=E2[c.dataset.e]!==false);
+  illBar();
 }
+$('illRows').addEventListener('input',e=>{const f=e.target.dataset.f;if(!f||e.target.type==='checkbox')return;const r=e.target.closest('[data-i]');
+  D.illustrasyon[+r.dataset.i][f]=f==='ad'?e.target.value:e.target.value.trim();illKirli(r.dataset.key);});
+$('illRows').addEventListener('change',e=>{const f=e.target.dataset.f;if(!f||e.target.type!=='checkbox')return;const r=e.target.closest('[data-i]');
+  D.illustrasyon[+r.dataset.i][f]=e.target.checked;e.target.closest('label').classList.toggle('on',e.target.checked);illKirli(r.dataset.key);});
+$('etkSet').addEventListener('change',e=>{const k=e.target.dataset.e;if(!k)return;D.etiketler={beles:true,yeni:true,yakinda:true,...(D.etiketler||{}),[k]:e.target.checked};illKirli('__etiket');});
+$('illKaydet').onclick=async()=>{
+  D.illustrasyon.forEach(w=>{w.ad=String(w.ad||'').trim()||sonrakiAd();});
+  try{await save('İllüstrasyon düzenlendi ('+ILL_KIRLI.size+')');ILL_KIRLI.clear();ILL_ESKI=null;renderIll();ok('kaydettim');}catch(err){fail(err)}};
+$('illVaz').onclick=async()=>{if(!ILL_ESKI)return;if(!await ask('Kaydetmediğin değişiklikler geri alınsın mı?'))return;
+  const o=JSON.parse(ILL_ESKI);D.illustrasyon=o.i;if(o.e)D.etiketler=o.e;else delete D.etiketler;ILL_KIRLI.clear();ILL_ESKI=null;renderIll();};
+window.addEventListener('beforeunload',e=>{if(ILL_KIRLI.size){e.preventDefault();e.returnValue='';}});
 function renderKat(){
   $('katList').innerHTML=D.indir.map((k,ki,ka)=>`<div class="kat" data-k="${ki}">
     <div class="kat-h"><h3>${E(k.ad)}${k.gizli?' <span class="off" style="font-size:16px">(gizli)</span>':''}</h3>
@@ -475,14 +519,12 @@ $('illIn').onchange=async e=>{
     for(let k=0;k<fs.length;k++){const f=fs[k];busy(true,`${f.name} hazırlanıyor (${k+1}/${fs.length})`,(k+.5)/fs.length*.8);
       const p='img/is/'+slug(f.name.replace(/\.[^.]+$/,''))+'-'+stamp()+'.jpg';extra[p]=await imgB64(f);
       D.illustrasyon.unshift({dosya:p,ad:sonrakiAd(),not:'',indir:false});}
-    await save('İllüstrasyon eklendi ('+fs.length+')',extra);D._v=Date.now();renderIll();ok('tamamdır, yüklendi');
+    await save('İllüstrasyon eklendi ('+fs.length+')',extra);D._v=Date.now();ILL_KIRLI.clear();ILL_ESKI=null;renderIll();ok('tamamdır, yüklendi');
   }catch(err){fail(err)}};
 $('illRows').onclick=async e=>{const a=rowAction(e);if(!a)return;const w=D.illustrasyon[a.i];
   try{
-    if(a.ed){const o=await form('ÇİZİMİ DÜZENLE',[{k:'ad',l:'Adı',v:w.ad},{k:'not',l:'Altına küçük not',v:w.not},{k:'indir',l:'İndirilebilir (BELEŞ)',t:'check',v:w.indir}]);
-      if(!o)return;Object.assign(w,{ad:o.ad||w.ad,not:o.not,indir:o.indir});await save('Çizim: '+w.ad);renderIll();ok('kaydettim');}
-    else if(a.rm){if(!await ask(`"${w.ad}" silinsin mi?`))return;D.illustrasyon.splice(a.i,1);await save('Çizim silindi: '+w.ad,{[w.dosya]:null});renderIll();ok('sildim');}
-    else if((a.up||a.down)&&move(D.illustrasyon,a.i,a.up?-1:1)){renderIll();siraKaydet('Çizim sırası');}
+    if(a.rm){if(!await ask(`"${w.ad}" silinsin mi?`))return;D.illustrasyon.splice(a.i,1);await save('Çizim silindi: '+w.ad,{[w.dosya]:null});ILL_KIRLI.clear();ILL_ESKI=null;renderIll();ok('sildim');}
+    else if((a.up||a.down)&&move(D.illustrasyon,a.i,a.up?-1:1)){illKirli('__sira');renderIll();}
   }catch(err){fail(err)}};
 
 /* ---------- indir-kullan ---------- */
