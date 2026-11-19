@@ -21,8 +21,8 @@ html,body{margin:0;height:100%;background:#111;color:#fff;font-family:"suat-hand
 .kat p{margin:0;font-size:5vw;max-width:420px;line-height:1.25}
 .basla{font-family:"suat-skinny",sans-serif;font-size:9vw;max-width:100%;line-height:1;border:4px solid #111;border-radius:99px;padding:12px 34px;background:#e93e5e;color:#fff;box-shadow:4px 4px 0 #111;cursor:pointer}
 .basla:active{transform:translate(2px,2px);box-shadow:2px 2px 0 #111}
-.hedefler{display:flex;gap:12px;justify-content:center}
-.hedefler{flex-wrap:wrap}.hedefler a{display:flex;align-items:center;width:24vw;max-width:120px;border:3px solid #111;border-radius:10px;overflow:hidden;background:#fff}
+.hedefler{display:flex;gap:10px;justify-content:center}
+.hedefler{flex-wrap:wrap}.hedefler a{display:flex;align-items:center;width:19vw;max-width:110px;border:3px solid #111;border-radius:10px;overflow:hidden;background:#fff}
 .hedefler img{width:100%;display:block}
 .kucuk{font-size:3.8vw!important;color:#666}
 .geri{font-family:"suat-skinny",sans-serif;color:#111;font-size:5vw;text-decoration:underline}
@@ -42,6 +42,18 @@ html,body{margin:0;height:100%;background:#111;color:#fff;font-family:"suat-hand
 .cerceve i:nth-child(4){right:0;bottom:0;border-left:0;border-top:0;border-radius:0 0 14px 0}
 .cerceve.gizli{opacity:0}
 </style>
+<script>
+/* eski kopya koruması (ortak.js'deki gibi): tarayıcı bu sayfanın eski halini tuttuysa bir kere yenile.
+   SURUM her güncellemede surum.txt ile aynı değere çekilir. */
+window.SURUM = '2611190300';
+fetch('../surum.txt?t=' + Date.now(), {cache: 'no-store'}).then(r => r.ok ? r.text() : '').then(t => {
+  t = t.trim(); if (!t || t === window.SURUM) return;
+  let son = 0; try { son = +sessionStorage.getItem('suat-yenile') || 0; } catch (e) {}
+  if (Date.now() - son < 60000) return;            // never loop
+  try { sessionStorage.setItem('suat-yenile', Date.now()); } catch (e) {}
+  location.reload();
+}).catch(() => {});
+</script>
 <script type="importmap">
 {"imports":{
   "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
@@ -63,6 +75,7 @@ html,body{margin:0;height:100%;background:#111;color:#fff;font-family:"suat-hand
     <a data-ad="pixel" href="hedef/pixel.jpg" target="_blank" rel="noopener"><img src="hedef/pixel.jpg" alt="Çizim 1"></a>
     <a data-ad="gece" href="hedef/gece.jpg" target="_blank" rel="noopener"><img src="hedef/gece.jpg" alt="Çizim 2"></a>
     <a data-ad="naber" href="hedef/naber.jpg" target="_blank" rel="noopener"><img src="hedef/naber.jpg" alt="Çizim 3"></a>
+    <a data-ad="uyku" href="hedef/uyku.jpg" target="_blank" rel="noopener"><img src="hedef/uyku.jpg" alt="Çizim 4"></a>
   </div>
   <p class="kucuk">Çizim elinde yoksa: birine basıp başka bir ekranda aç, telefonu ona tut.</p>
   <a class="geri" href="../">suatilyus.com'a dön</a>
@@ -99,13 +112,16 @@ const ESER = {
   gece:  { tip: 'kat', oran: 1500 / 900, katman: [
     ['1-gece', 1], ['2-yazi', .45], ['3-yazi-golge', 1], ['4-bulut', .65], ['5-isik', .55], ['6-ay', 1], ['7-ev', 1]] },
   naber: { tip: 'alfa', video: 'medya/naber.mp4', oran: 674 / 800, dongu: false },
+  uyku:  { tip: 'kat', oran: 1415 / 1000, klasor: 'katman/uyku/', katman: [
+    ['1-zemin', 1], ['2-agaclar', 1], ['3-yapraklar', 1], ['4-toprak', 1], ['5-kurt', 1], ['6-adam', 1], ['7-yaprak-on', 1], ['8-kurt-sag', 1]] },
 };
-const TUM = ['pixel', 'gece', 'naber'];
+const TUM = ['pixel', 'gece', 'naber', 'uyku'];
 
 const $ = id => document.getElementById(id);
 const tek = new URLSearchParams(location.search).get('d');
 const LISTE = tek && ESER[tek] ? [tek] : TUM;
-const MIND = tek && ESER[tek] ? `./hedef-${tek}.mind` : './hedefler.mind';
+const V = '?v=' + (window.SURUM || '');          // so a new .mind / layer never comes from an old cache
+const MIND = (tek && ESER[tek] ? `./hedef-${tek}.mind` : './hedefler.mind') + V;
 // start screen: only the drawings this link knows
 document.querySelectorAll('.hedefler a').forEach(a => { if (!LISTE.includes(a.dataset.ad)) a.remove(); });
 
@@ -123,7 +139,7 @@ const VIDEO = {};
 for (const ad of LISTE) {
   const e = ESER[ad]; if (e.tip !== 'video' && e.tip !== 'alfa') continue;
   const v = document.createElement('video');
-  Object.assign(v, { src: e.video, loop: !!e.dongu, muted: true, playsInline: true, preload: 'auto', crossOrigin: 'anonymous' });
+  Object.assign(v, { src: e.video + V, loop: !!e.dongu, muted: true, playsInline: true, preload: 'auto', crossOrigin: 'anonymous' });
   v.setAttribute('playsinline', ''); v.setAttribute('webkit-playsinline', '');
   VIDEO[ad] = v;
 }
@@ -141,7 +157,8 @@ function alfaMalzeme(video) {
 }
 
 let mind = null, calisiyor = false, sahne = [];   // sahne: per-anchor update functions
-let katim = null;                                  // the (single) Kat Kat state, for ELİNE AL
+const katlar = [];                                 // every Kat Kat drawing
+const katim = () => katlar.find(k => k.elde()) || katlar.find(k => k.gor()) || null;   // the one ELİNE AL / gestures act on
 
 $('basla').onclick = async () => {
   $('basla').disabled = true; $('basla').textContent = 'AÇILIYOR…';
@@ -166,7 +183,7 @@ $('basla').onclick = async () => {
 $('cik').onclick = () => {
   calisiyor = false; mind.renderer.setAnimationLoop(null);
   seslenen().forEach(v => v.pause());
-  if (katim) { katim.birak(true); katim.sifirla(); }
+  katlar.forEach(k => { k.birak(true); k.sifirla(); });
   try { mind.stop(); } catch (e) {}
   $('ust').hidden = true; $('cerceve').hidden = true; $('ipucu').hidden = true; $('ses').hidden = true; $('elle').hidden = true;
   $('giris').hidden = false;
@@ -181,7 +198,7 @@ function kur() {
   mind.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
   LISTE.forEach((ad, i) => {
     const e = ESER[ad], a = mind.addAnchor(i);
-    if (e.tip === 'kat') katim = katKur(a, e);
+    if (e.tip === 'kat') katlar.push(katKur(a, e, ad));
     else videoKur(a, e, VIDEO[ad]);
   });
 }
@@ -205,12 +222,12 @@ function videoKur(a, e, video) {
 }
 
 /* ---------- Kat Kat ---------- */
-function katKur(a1, e) {
+function katKur(a1, e, ad) {
   const ARA = 0.11, DERIN = (e.katman.length - 1) * ARA;
   const kg = new THREE.Group(), ic = new THREE.Group(); kg.add(ic); a1.group.add(kg);
-  const butun = plane(1, e.oran, tex('hedef/gece.jpg'), 0); butun.renderOrder = 0; ic.add(butun);
-  const kats = e.katman.map(([ad, op], i) => {
-    const m = plane(1, e.oran, tex(`katman/${ad}.webp`), 0);
+  const butun = plane(1, e.oran, tex(`hedef/${ad}.jpg${V}`), 0); butun.renderOrder = 0; ic.add(butun);
+  const kats = e.katman.map(([k, op], i) => {
+    const m = plane(1, e.oran, tex(`${e.klasor || 'katman/'}${k}.webp${V}`), 0);
     m.renderOrder = 1 + i; m.userData.op = op; ic.add(m);
     const kenar = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.PlaneGeometry(1, e.oran)),
       new THREE.LineBasicMaterial({ color: 0x7fd4ff, transparent: true, opacity: 0, depthWrite: false }));
@@ -219,11 +236,11 @@ function katKur(a1, e) {
   });
   let acik = 0, hedef = 0, gor = false, zaman = null, elde = false;
   a1.onTargetFound = () => {
-    if (elde) return;
+    if (elde || katlar.some(k => k.elde())) return;   // another drawing is in hand
     gor = true; ipucu(''); bul(true); clearTimeout(zaman);
     zaman = setTimeout(() => { if (gor) { hedef = 1; $('elle').hidden = false; ipucu('ELİNE AL: parmağınla çevir, yandan bak'); setTimeout(() => gor && !elde && ipucu(''), 3500); } }, 700);
   };
-  a1.onTargetLost = () => { if (elde) return; gor = false; clearTimeout(zaman); hedef = 0; acik = 0; $('elle').hidden = true; bul(false); };
+  a1.onTargetLost = () => { if (elde || !gor) return; gor = false; clearTimeout(zaman); hedef = 0; acik = 0; $('elle').hidden = true; bul(false); };
 
   const al = () => {
     if (!gor) return;
@@ -262,30 +279,30 @@ function katKur(a1, e) {
 }
 
 /* ELİNE AL button + gestures */
-$('elle').onclick = () => katim && (katim.elde() ? katim.birak() : katim.al());
+$('elle').onclick = () => { const k = katim(); if (k) k.elde() ? k.birak() : k.al(); };
 let dokun = {}, ilk = null;
 const ar = $('ar');
 ar.addEventListener('pointerdown', e => { dokun[e.pointerId] = { x: e.clientX, y: e.clientY }; ilk = { t: Date.now(), x: e.clientX, y: e.clientY, n: Object.keys(dokun).length }; });
 ar.addEventListener('pointermove', e => {
   const o = dokun[e.pointerId]; if (!o) return;
-  const ids = Object.keys(dokun), held = katim && katim.elde();
+  const ids = Object.keys(dokun), k = katim(), held = k && k.elde();
   if (held && ids.length === 1) {
-    katim.kg.rotation.y += (e.clientX - o.x) * 0.008;
-    katim.kg.rotation.x = Math.max(-1.2, Math.min(1.2, katim.kg.rotation.x + (e.clientY - o.y) * 0.008));
+    k.kg.rotation.y += (e.clientX - o.x) * 0.008;
+    k.kg.rotation.x = Math.max(-1.2, Math.min(1.2, k.kg.rotation.x + (e.clientY - o.y) * 0.008));
   } else if (held && ids.length === 2) {
     const [p, q] = ids.map(i => dokun[i]);
     const once = Math.hypot(p.x - q.x, p.y - q.y);
     o.x = e.clientX; o.y = e.clientY;
     const sonra = Math.hypot(p.x - q.x, p.y - q.y);
-    if (once > 10) katim.kg.scale.multiplyScalar(Math.max(.92, Math.min(1.08, sonra / once)));
-    katim.kg.scale.clampScalar(.3, 3);
+    if (once > 10) k.kg.scale.multiplyScalar(Math.max(.92, Math.min(1.08, sonra / once)));
+    k.kg.scale.clampScalar(.3, 3);
     return;
   }
   o.x = e.clientX; o.y = e.clientY;
 });
 const bitir = e => {
   delete dokun[e.pointerId];
-  if (ilk && ilk.n === 1 && Date.now() - ilk.t < 300 && Math.hypot(e.clientX - ilk.x, e.clientY - ilk.y) < 10 && katim) katim.tik();
+  if (ilk && ilk.n === 1 && Date.now() - ilk.t < 300 && Math.hypot(e.clientX - ilk.x, e.clientY - ilk.y) < 10 && katim()) katim().tik();
   ilk = null;
 };
 ar.addEventListener('pointerup', bitir); ar.addEventListener('pointercancel', bitir);
