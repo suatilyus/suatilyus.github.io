@@ -57,7 +57,7 @@ html,body{margin:0;height:100%;background:#111;color:#fff;font-family:"suat-hand
 <script>
 /* eski kopya koruması (ortak.js'deki gibi): tarayıcı bu sayfanın eski halini tuttuysa bir kere yenile.
    SURUM her güncellemede surum.txt ile aynı değere çekilir. */
-window.SURUM = '2611200556';
+window.SURUM = '2611200603';
 fetch('../surum.txt?t=' + Date.now(), {cache: 'no-store'}).then(r => r.ok ? r.text() : '').then(t => {
   t = t.trim(); if (!t || t === window.SURUM) return;
   let son = 0; try { son = +sessionStorage.getItem('suat-yenile') || 0; } catch (e) {}
