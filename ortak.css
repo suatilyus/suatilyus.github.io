@@ -25,7 +25,7 @@ button.cz{appearance:none;background:none;border:0;padding:0;cursor:pointer;font
 @media (prefers-reduced-motion:reduce){.yk-pop{transition:none}}
 
 /* bottom "geri dön" */
-.alt-geri{display:block;width:min(44%,220px);margin:12% auto 0}
+.alt-geri{display:block;width:min(30%,160px);margin:10% auto 0}.alt-geri img{display:block;width:100%;height:auto}
 
 /* top-right corner: language + login menu */
 .kose{position:absolute;top:calc(env(safe-area-inset-top) + 10px);right:10px;z-index:15;width:36px}
