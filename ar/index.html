@@ -20,7 +20,14 @@ html,body{margin:0;height:100%;background:#111;color:#fff;font-family:"suat-hand
 #giris{justify-content:flex-start;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-top:calc(env(safe-area-inset-top) + 18px);padding-bottom:40px}
 .cz{position:relative;display:block}.cz>img{display:block;width:100%;height:auto}.cz>img.c{position:absolute;inset:0;height:100%}
 .ar-banner{width:86vw;max-width:440px;height:auto}.ar-yazi{width:76vw;max-width:380px;height:auto}
-.ar-baloncuk{width:52vw;max-width:260px;height:auto;margin-top:6px}
+.ar-baloncuk{width:72vw;max-width:340px;height:auto;margin-top:10px}
+.uyari{font-size:3.6vw!important;max-width:340px!important;color:#666;text-transform:lowercase;line-height:1.5!important}
+.uyari .kor{text-transform:none}
+.giris-btn{background:none;border:0;padding:0;margin:6px 0 4px;cursor:pointer;width:46vw;max-width:230px;transition:transform .15s}
+.giris-btn img{display:block;width:100%;height:auto}
+.giris-btn:active{transform:scale(.96)}
+.giris-btn:disabled{opacity:.45;transform:scale(.97)}
+@media(min-width:600px){.uyari{font-size:15px!important}}
 .alt-geri{display:block;width:30vw;max-width:150px;margin-top:10px}.alt-geri img{width:100%;height:auto;display:block}
 .kat h1{font-family:"suat-skinny",sans-serif;font-weight:400;font-size:13vw;max-width:520px;margin:0;line-height:1;letter-spacing:.02em}
 .kat p{margin:0;font-size:5vw;max-width:420px;line-height:1.25}
@@ -50,7 +57,7 @@ html,body{margin:0;height:100%;background:#111;color:#fff;font-family:"suat-hand
 <script>
 /* eski kopya koruması (ortak.js'deki gibi): tarayıcı bu sayfanın eski halini tuttuysa bir kere yenile.
    SURUM her güncellemede surum.txt ile aynı değere çekilir. */
-window.SURUM = '2611200506';
+window.SURUM = '2611200546';
 fetch('../surum.txt?t=' + Date.now(), {cache: 'no-store'}).then(r => r.ok ? r.text() : '').then(t => {
   t = t.trim(); if (!t || t === window.SURUM) return;
   let son = 0; try { son = +sessionStorage.getItem('suat-yenile') || 0; } catch (e) {}
@@ -74,10 +81,10 @@ fetch('../surum.txt?t=' + Date.now(), {cache: 'no-store'}).then(r => r.ok ? r.te
   <a class="amb cz" href="../" aria-label="Ana sayfa"><img class="c" src="../img/ui/amblem-c.png" alt=""><img src="../img/ui/amblem.png" alt="suatilyus — ana sayfa"></a>
   <img class="ar-banner" src="../img/ui/ar-banner.png" alt="suatilyus iftiharla sunar moruk" width="1100" height="238">
   <img class="ar-yazi" src="../img/ui/ar-yazi.png" alt="Bazı basılı işleri canlandırır…" width="1000" height="224">
-  <p class="kucuk">Başla'ya bas, kameraya izin ver, telefonu çizime tut.</p>
-  <p class="kucuk" id="izinNot" hidden>Safari her seferinde kamera izni sormasın diye: adres çubuğundaki <b>aA</b> → Web Sitesi Ayarları → Kamera → <b>İzin Ver</b>.</p>
-  <button class="basla" id="basla" type="button">BAŞLA</button>
   <img class="ar-baloncuk" src="../img/ui/ar-baloncuk.png" alt="Alttaki çizimlerden elinde yoksa üstüne tıkla, başka telefonla canlandır" width="700" height="578">
+  <p class="uyari">girişe bas, kameraya izin ver, telefonu çizime tut.</p>
+  <p class="uyari" id="izinNot" hidden>safari her seferinde kamera izni sormasın diye: adres çubuğundaki <span class="kor">aA</span> → web sitesi ayarları → kamera → izin ver.</p>
+  <button class="giris-btn" id="basla" type="button" aria-label="Giriş: kamerayı aç"><img src="../img/ui/giris-kapi.png" alt="" width="700" height="443"></button>
   <div class="hedefler">
     <a data-ad="pixel" href="hedef/pixel.jpg" target="_blank" rel="noopener"><img src="hedef/pixel.jpg" alt="Çizim 1"></a>
     <a data-ad="gece" href="hedef/gece.jpg" target="_blank" rel="noopener"><img src="hedef/gece.jpg" alt="Çizim 2"></a>
@@ -167,7 +174,7 @@ const katlar = [];                                 // every Kat Kat drawing
 const katim = () => katlar.find(k => k.elde()) || katlar.find(k => k.gor()) || null;   // the one ELİNE AL / gestures act on
 
 $('basla').onclick = async () => {
-  $('basla').disabled = true; $('basla').textContent = 'AÇILIYOR…';
+  $('basla').disabled = true;
   for (const v of seslenen()) { try { await v.play(); v.pause(); v.currentTime = 0; } catch (e) {} }
   try {
     if (!mind) kur();
@@ -183,7 +190,7 @@ $('basla').onclick = async () => {
       ? 'Kameraya izin verilmedi. Adres çubuğundaki aA → Web Sitesi Ayarları → Kamera → İzin Ver, sonra tekrar dene.'
       : 'Kamera açılamadı. Safari ya da Chrome ile açtığından emin ol.';
   }
-  $('basla').disabled = false; $('basla').textContent = 'BAŞLA';
+  $('basla').disabled = false;
 };
 
 $('cik').onclick = () => {
