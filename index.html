@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="ortak.css?v=2611200553">
+<link rel="stylesheet" href="ortak.css?v=2611200556">
 <style>
 :root{--pink:#fd225a;--ink:#111}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -30,7 +30,10 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
 /* 1 cqw = 11.7px on the 1170px drawing */
 .header{width:69.6cqw;position:relative}
 .btn.ar{width:19cqw;margin-top:-4cqw}.btn.ar img{display:block;width:100%;height:auto}
-.header .kose{position:absolute;top:2%;right:-9cqw;width:8cqw}
+.header .kose{position:absolute;top:auto;bottom:-2%;right:4%;width:12cqw}
+.header .kose .kose-btn{display:none}
+.header .kose .kose-menu{top:100%}
+.v01{position:absolute;right:4%;bottom:0;width:17%;height:34%;background:none;border:0;padding:0;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;touch-action:manipulation;cursor:default;z-index:5}
 .portrait{width:66.5cqw;margin-top:2.2cqw;animation:float 6s ease-in-out infinite}
 .portrait .bubble{position:absolute;inset:0;z-index:2;transform-origin:83% 40%;animation:talk 4s ease-in-out infinite}
 @keyframes float{50%{transform:translateY(-1.2cqw) rotate(-.6deg)}}
@@ -104,10 +107,21 @@ img{display:block;max-width:100%;height:auto;user-select:none;-webkit-user-drag:
   <div class="divider divider2 cz" id="uygulamalar"><img class="c" src="img/divider-c.png" alt=""><img src="img/divider.png" alt="" width="1062" height="54"></div>
   <img class="soon" src="img/ui/cok-yakinda-app.png" alt="Çok yakında: Naber Moruk — suatilyus app!" width="455" height="458">
 </main>
-<script src="ortak.js?v=2611200553"></script>
+<script src="ortak.js?v=2611200556"></script>
 <script>
 /* home buttons come from veri/site.json (control panel) */
-(function koseTasi(n){n=n||0;const k=document.querySelector('.kose'),h=document.querySelector('.header');if(k&&h){h.appendChild(k);}else if(n<100)setTimeout(()=>koseTasi(n+1),50);})();
+(function koseTasi(n){n=n||0;const k=document.querySelector('.kose'),h=document.querySelector('.header');
+  if(!(k&&h)){if(n<100)setTimeout(()=>koseTasi(n+1),50);return;}
+  /* home page: no visible "giriş" corner. Hold the V-01 tag ~1.5 s to open the menu (with MÜDÜRİYET) */
+  h.appendChild(k);
+  const v=document.createElement('button');v.className='v01';v.type='button';v.setAttribute('aria-label','V-01');h.appendChild(v);
+  const btn=k.querySelector('.kose-btn'),mud=k.querySelector('.k-mud');let t;
+  const ac=()=>{mud.hidden=false;try{localStorage.setItem('suat-mud','1')}catch(e){}k.classList.add('open');btn.setAttribute('aria-expanded','true');if(navigator.vibrate)navigator.vibrate(30);};
+  v.addEventListener('pointerdown',e=>{t=setTimeout(ac,1500);});
+  ['pointerup','pointerleave','pointercancel'].forEach(ev=>v.addEventListener(ev,()=>clearTimeout(t)));
+  v.addEventListener('contextmenu',e=>e.preventDefault());
+  v.addEventListener('click',e=>e.stopPropagation());
+})();
 suat.veri().then(d=>{
   const E=suat.esc;
   document.getElementById('btns').innerHTML=d.butonlar.filter(b=>!b.gizli).map(b=>{
