@@ -603,7 +603,7 @@ nBtn.addEventListener('click',()=>{setProps(1,1,0);markStyle('normal');});
 function redraw(){draw2D();update3D();}
 const ro=new ResizeObserver(()=>{size2();size3();redraw();});
 ro.observe(c2);ro.observe(c3);
-size2();size3();setBody('kadin');markStyle('normal');applyPreset('ayakta');markView();
+size2();size3();S.body='kadin';applyPreset('ayakta');setBody('kadin');markStyle('normal');markView();
 })();
 </script>
 <script src="../../ortak.js?v=2611200430"></script>
