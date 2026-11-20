@@ -23,7 +23,9 @@ html,body{margin:0;height:100%;background:#111;color:#fff;font-family:"suat-hand
 .ar-baloncuk{width:72vw;max-width:340px;height:auto;margin-top:10px}
 .uyari{font-size:3.6vw!important;max-width:340px!important;color:#666;text-transform:lowercase;line-height:1.5!important}
 .uyari .kor{text-transform:none}
-.giris-btn{background:none;border:0;padding:0;margin:6px 0 4px;cursor:pointer;width:46vw;max-width:230px;transition:transform .15s}
+.kapilar{display:flex;align-items:center;justify-content:center;gap:9vw;margin:22px 0 10px;width:100%}
+.giris-btn{background:none;border:0;padding:0;margin:0;cursor:pointer;width:36vw;max-width:190px;transition:transform .15s}
+.cikis-btn{display:block;width:28vw;max-width:150px;transition:transform .15s}.cikis-btn img{display:block;width:100%;height:auto}.cikis-btn:active{transform:scale(.96)}
 .giris-btn img{display:block;width:100%;height:auto}
 .giris-btn:active{transform:scale(.96)}
 .giris-btn:disabled{opacity:.45;transform:scale(.97)}
@@ -57,7 +59,7 @@ html,body{margin:0;height:100%;background:#111;color:#fff;font-family:"suat-hand
 <script>
 /* eski kopya koruması (ortak.js'deki gibi): tarayıcı bu sayfanın eski halini tuttuysa bir kere yenile.
    SURUM her güncellemede surum.txt ile aynı değere çekilir. */
-window.SURUM = '2611200603';
+window.SURUM = '2611200616';
 fetch('../surum.txt?t=' + Date.now(), {cache: 'no-store'}).then(r => r.ok ? r.text() : '').then(t => {
   t = t.trim(); if (!t || t === window.SURUM) return;
   let son = 0; try { son = +sessionStorage.getItem('suat-yenile') || 0; } catch (e) {}
@@ -82,16 +84,17 @@ fetch('../surum.txt?t=' + Date.now(), {cache: 'no-store'}).then(r => r.ok ? r.te
   <img class="ar-banner" src="../img/ui/ar-banner.png" alt="suatilyus iftiharla sunar moruk" width="1100" height="238">
   <img class="ar-yazi" src="../img/ui/ar-yazi.png" alt="Bazı basılı işleri canlandırır…" width="1000" height="224">
   <img class="ar-baloncuk" src="../img/ui/ar-baloncuk.png" alt="Alttaki çizimlerden elinde yoksa üstüne tıkla, başka telefonla canlandır" width="700" height="578">
-  <p class="uyari">girişe bas, kameraya izin ver, telefonu çizime tut.</p>
-  <p class="uyari" id="izinNot" hidden>safari her seferinde kamera izni sormasın diye: adres çubuğundaki <span class="kor">aA</span> → web sitesi ayarları → kamera → izin ver.</p>
+  <div class="kapilar">
   <button class="giris-btn" id="basla" type="button" aria-label="Giriş: kamerayı aç"><img src="../img/ui/giris-kapi.png" alt="" width="700" height="443"></button>
+    <a class="cikis-btn" href="../" aria-label="Çıkış: suatilyus.com'a dön"><img src="../img/ui/cikis-kapi.png" alt="" width="308" height="166"></a>
+  </div>
   <div class="hedefler">
     <a data-ad="pixel" href="hedef/pixel.jpg" target="_blank" rel="noopener"><img src="hedef/pixel.jpg" alt="Çizim 1"></a>
     <a data-ad="gece" href="hedef/gece.jpg" target="_blank" rel="noopener"><img src="hedef/gece.jpg" alt="Çizim 2"></a>
     <a data-ad="naber" href="hedef/naber.jpg" target="_blank" rel="noopener"><img src="hedef/naber-temiz.jpg" alt="Çizim 3: N'aber Moruk"></a>
     <a data-ad="uyku" href="hedef/uyku.jpg" target="_blank" rel="noopener"><img src="hedef/uyku.jpg" alt="Çizim 4"></a>
   </div>
-  <a class="alt-geri" href="../" aria-label="suatilyus.com'a dön"><img src="../img/ui/geri-tabela.png" alt="Geri" width="800" height="536"></a>
+  <p class="uyari" id="izinNot" hidden>safari her seferinde kamera izni sormasın diye: adres çubuğundaki <span class="kor">aA</span> → web sitesi ayarları → kamera → izin ver.</p>
 </div>
 
 <div class="kat" id="hata" hidden>
