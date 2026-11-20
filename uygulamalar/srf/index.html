@@ -1,161 +1,193 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>SRF — suatilyus Referans Fabrikası</title>
 <meta name="description" content="suatilyus Referans Fabrikası: kâğıda çöp adamdan istediğin pozu çiz, çek, biz üretelim.">
 <link rel="icon" href="../../img/icon-192.png">
 <link rel="apple-touch-icon" href="../../img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Shantell+Sans:wght@500;700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../ortak.css?v=2611190300">
+<link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Patrick+Hand&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../ortak.css?v=2611200430">
 <style>
-:root{
-  --bg:#e9ecef; --surface:#f7f8f9; --ink:#1d2126; --muted:#5f6670; --line:#cfd4da;
-  --blue:#3d86c6; --chip:#dde2e7; --chip-on:#1d2126; --chip-on-ink:#f7f8f9;
-  box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
-  color-scheme:light;
-}
-@media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){
-    --bg:#14171a; --surface:#1d2125; --ink:#eef1f4; --muted:#9aa3ad; --line:#30363d;
-    --chip:#2a3036; --chip-on:#eef1f4; --chip-on-ink:#14171a; color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#14171a; --surface:#1d2125; --ink:#eef1f4; --muted:#9aa3ad; --line:#30363d;
-  --chip:#2a3036; --chip-on:#eef1f4; --chip-on-ink:#14171a; color-scheme:dark;
-}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*,*::before,*::after{box-sizing:inherit}
-body{margin:0;background:var(--bg);color:var(--ink);
-  font-family:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:15px;line-height:1.45}
-header{max-width:1240px;margin:0 auto;padding:64px 18px 6px}
-.nav{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}
-.nav a{display:block;transition:transform .12s}
-.nav a:hover{transform:rotate(-3deg) scale(1.04)}
-.nav a:active{transform:scale(.94)}
-.nav .home{width:150px}
-.nav .geri{width:130px}
-.title{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-.title img{width:min(320px,70vw);height:auto}
-@media (prefers-color-scheme: dark){.nav img,.title img{filter:drop-shadow(0 0 1px #fff)}}
-h1{font-family:"Shantell Sans","Comic Sans MS",system-ui,sans-serif;font-weight:700;font-size:clamp(28px,5vw,42px);line-height:1.05;margin:0;letter-spacing:-.01em}
-header p{margin:6px 0 0;color:var(--muted);max-width:68ch}
-main{max-width:1240px;margin:0 auto;padding:12px 18px 28px;display:grid;gap:14px;grid-template-columns:1fr}
-@media (min-width:860px){main{grid-template-columns:1fr 1fr}}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
-.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 12px}
-.bar + .bar{padding-top:0}
-.bar h2{font-family:"Shantell Sans",system-ui,sans-serif;font-size:18px;font-weight:700;margin:0 auto 0 4px}
-.chip{appearance:none;border:0;border-radius:999px;background:var(--chip);color:var(--ink);font:inherit;font-size:14px;padding:7px 12px;cursor:pointer}
-.chip:hover{filter:brightness(.97)}
-.chip:disabled{opacity:.5;cursor:default}
-.chip.on{background:var(--chip-on);color:var(--chip-on-ink)}
-.chip.strong{background:var(--blue);color:#fff}
-.chip:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-.stage{position:relative;height:clamp(380px,64vh,700px);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+/* VOICE: suatilyus'un elle çizdiği arayüz eskizi, çalışan hali
+   IDEA: kâğıttaki iki uzun çerçeve (Eskiz | Referans) gerçek araca dönüşüyor
+   PICTURE: solda çöp adam eskizi, sağda ışıklı 3B manken
+   COLOUR and TYPE: beyaz kâğıt, kalın siyah çerçeve, butonlar onun boyalı çizimleri; Amatic SC + Patrick Hand
+   LAYOUT: iki çerçeve yan yana, 860px altında alt alta */
+:root{color-scheme:light;--bg:#fff;--ink:#111;--soft:#666;--blue:#2f86d6}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.45 "Patrick Hand",system-ui,sans-serif;overflow-x:clip}
+img{display:block;max-width:100%;height:auto}
+button,label.btn{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ib{display:inline-block;transition:transform .15s,opacity .15s,filter .15s}
+.ib:hover{transform:rotate(-2deg) scale(1.04)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px dashed var(--ink);outline-offset:4px}
+.off{opacity:.38;filter:grayscale(.6)}
+.on{transform:scale(1.07) rotate(-2deg)}
+.wrap{max-width:1240px;margin:0 auto;padding:clamp(14px,2.5vw,32px) max(4vw,14px) 50px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.nav{display:flex;align-items:center;gap:14px}.nav .geri{width:clamp(100px,14vw,130px)}.nav .home{width:clamp(110px,15vw,150px)}
+.wip{font-family:"suat-skinny","Amatic SC",sans-serif;font-weight:700;font-size:26px;line-height:1;padding:8px 16px;border:4px solid var(--ink);border-radius:8px 16px 6px 14px;
+  background:repeating-linear-gradient(-45deg,#fbb321 0 14px,#fff 14px 28px);box-shadow:4px 4px 0 var(--ink);transform:rotate(2deg)}
+.wip span{background:#fff;padding:0 6px}
+.frames{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(18px,3vw,44px)}
+.frame{position:relative;border:5px solid var(--ink);border-radius:3px 8px 4px 6px;padding:14px 14px 18px;background:#fff;display:flex;flex-direction:column}
+.frame::before,.frame::after{content:"";position:absolute;background:var(--ink);border-radius:3px}
+.frame::before{left:-14px;right:-14px;bottom:-5px;height:5px}
+.frame::after{top:-14px;bottom:-14px;right:-5px;width:5px}
+.fhead{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center}
+.fhead .t{height:32px;width:auto;align-self:start}
+.src{display:flex;flex-direction:column;gap:2px;align-items:flex-start}
+.src img{height:58px;width:auto}
+.bas img{height:110px;width:auto}
+.bas.busy img{animation:wob .45s infinite alternate}
+@keyframes wob{to{transform:rotate(4deg) scale(.94)}}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-family:"suat-skinny","Amatic SC",sans-serif;font-weight:700;font-size:21px;line-height:1;padding:7px 12px 6px;border:3px solid var(--ink);border-radius:12px 8px 14px 9px;background:#fff;cursor:pointer;min-height:40px}
+.chip.on{background:var(--ink);color:#fff;transform:rotate(-2deg)}
+.board{position:relative;margin-top:30px}
+.tab{position:absolute;left:50%;top:-29px;transform:translateX(-50%);width:40%;z-index:2}
+.tab:hover{transform:translateX(-50%) rotate(-2deg)}
+.tab span{position:absolute;inset:0;display:grid;place-items:center;font-family:"suat-skinny","Amatic SC";font-weight:700;font-size:22px}
+.stage{position:relative;height:clamp(380px,60vh,640px);border:5px solid var(--ink);border-radius:6px 8px 14px 8px;overflow:hidden;background:#fff}
 .stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none}
-#c2{background:#fff;cursor:crosshair}
-.photo{display:none;flex-wrap:wrap;gap:8px 12px;align-items:center;padding:10px 12px;border-top:1px solid var(--line)}
-.photo.show{display:flex}
-.photo label{display:flex;align-items:center;gap:8px;font-size:14px}
-.photo input[type=range]{width:110px;accent-color:var(--blue)}
-.status{font-size:13.5px;color:var(--muted);flex-basis:100%}
-.status.busy::before{content:"";display:inline-block;width:10px;height:10px;margin-right:6px;border-radius:50%;
-  border:2px solid var(--blue);border-right-color:transparent;vertical-align:-1px;animation:spin .8s linear infinite}
+#c2{cursor:crosshair}
+.mode{position:absolute;left:8px;top:8px;font-size:14px;background:#fff;border:2px solid var(--ink);border-radius:8px;padding:1px 8px;pointer-events:none}
+.status{min-height:1.5em;font-size:15px;color:var(--soft);margin:8px 2px 0}
+.status.busy::before{content:"";display:inline-block;width:10px;height:10px;margin-right:6px;border-radius:50%;border:2px solid var(--ink);border-right-color:transparent;vertical-align:-1px;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-@media (prefers-reduced-motion:reduce){.status.busy::before{animation:none}}
-.hint{padding:10px 14px 12px;color:var(--muted);font-size:13.5px}
-.hint b{color:var(--ink);font-weight:700}
-.dot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px;margin-right:3px}
-.controls{display:grid;grid-template-columns:1fr;gap:4px 18px;padding:12px 14px 14px}
-@media (min-width:520px){.controls{grid-template-columns:1fr 1fr}}
-.controls h3{grid-column:1/-1;margin:6px 0 0;font-size:14px;font-weight:700}
-.ctl{display:grid;grid-template-columns:1fr auto;align-items:center;gap:2px 8px;font-size:14px}
-.ctl output{color:var(--muted);font-variant-numeric:tabular-nums;font-size:13px}
-.ctl input{grid-column:1/-1;width:100%;accent-color:var(--blue);margin:2px 0 6px}
-.ctl.wide{grid-column:1/-1}
+.photo{display:none;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:15px;margin-top:6px}
+.photo.show{display:flex}
+.brush{position:relative;margin-top:12px}
+.brush input{position:absolute;left:24%;right:6%;top:50%;transform:translateY(-50%);width:auto;opacity:0;height:44px;cursor:pointer}
+.bsize{display:flex;justify-content:center;align-items:center;gap:14px;font-size:22px}
+.bsize button{width:44px;height:44px;font-size:28px;line-height:1}
+.bsize output{min-width:70px;text-align:center;border:3px solid var(--ink);border-radius:8px;padding:0 8px}
+.hint{font-size:14px;color:var(--soft);margin-top:8px}
+.hint b{color:var(--ink)}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--blue);vertical-align:-1px}
+.steps{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);gap:6px 10px;align-items:center;margin-top:4px}
+.steps .col{display:flex;flex-direction:column;align-items:center;gap:6px}
+.badge{height:42px;width:auto}
+.ch{height:56px;width:auto}.ch.big{height:80px}
+.mid img{width:clamp(80px,9vw,118px)}
+.cam{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px;border-top:5px solid var(--ink);border-bottom:3px solid var(--ink);margin:12px -14px 12px;padding:10px 8px}
+.cam img{height:50px;width:auto}
+.cam .lbl{display:flex;flex-direction:column;align-items:center}
+.cam .lbl img{height:26px}.cam .lbl img+img{height:42px}
+#s3{background:#f1eee8}
+.sliders{display:grid;gap:4px;margin-top:12px}
+.sl{display:grid;grid-template-columns:7.2em minmax(0,1fr) 3.6em;gap:10px;align-items:center;font-size:16px}
+.sl output{text-align:right;white-space:nowrap;color:var(--soft)}
+details{margin-top:8px;border-top:3px solid var(--ink);padding-top:6px}
+summary{cursor:pointer;font-family:"suat-skinny","Amatic SC";font-weight:700;font-size:24px;min-height:40px;display:flex;align-items:center}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:40px;background:transparent}
+input[type=range]::-webkit-slider-runnable-track{height:12px;border:3px solid var(--ink);border-radius:10px;background:#fff}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;margin-top:-11px;border:3px solid var(--ink);border-radius:50%;background:#fff radial-gradient(circle,var(--ink) 0 3px,transparent 4px)}
+input[type=range]::-moz-range-track{height:8px;border:3px solid var(--ink);border-radius:10px;background:#fff}
+input[type=range]::-moz-range-thumb{width:24px;height:24px;border:3px solid var(--ink);border-radius:50%;background:#fff}
+input[type=checkbox]{width:20px;height:20px;accent-color:var(--ink)}
+@media(max-width:860px){.frames{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:600px){.bas img{height:88px}.src img{height:50px}.ch{height:46px}.ch.big{height:66px}.cam img{height:42px}.wip{font-size:21px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
-<header>
-  <nav class="nav">
-    <a class="geri cz" href="../index.html" aria-label="Geri: uygulamalar"><img class="c" src="../../img/ui/geri-c.png" alt=""><img src="../../img/ui/geri.png" alt="Geri" width="466" height="170"></a>
-    <a class="home cz lit" href="../../index.html" aria-label="Ana sayfa"><img class="c" src="../../img/ui/anasayfa-c.png" alt=""><img src="../../img/ui/anasayfa.png" alt="Ana sayfa" width="370" height="105"></a>
-  </nav>
-  <div class="title"><h1 style="position:absolute;left:-9999px">SRF — suatilyus Referans Fabrikası</h1>
-    <img src="../../img/srf-tabela.png" alt="SRF — suatilyus Referans Fabrikası" width="912" height="699"></div>
-  <p><b style="color:var(--ink)">Kâğıda çöp adamdan istediğin pozu çiz, çek, biz üretelim.</b> Fotoğrafını yükle ya da çöp adamı burada sürükle; sağdaki manken aynı pozu ışığıyla gösterir, açıyı çevirip istediğin yerden çiz.</p>
-</header>
-<main>
-  <section class="panel">
-    <div class="bar">
-      <h2>Eskiz</h2>
-      <button class="chip strong" id="upload">Fotoğraf yükle</button>
-      <button class="chip" id="mirror">Aynala</button>
-      <input type="file" id="file" accept="image/*" hidden>
-    </div>
-    <div class="bar">
-      <button class="chip" data-preset="ayakta">Ayakta</button>
-      <button class="chip" data-preset="yuruyus">Yürüyüş</button>
-      <button class="chip" data-preset="kosu">Koşu</button>
-      <button class="chip" data-preset="oturma">Oturma</button>
-      <button class="chip" data-preset="uzanma">Uzanma</button>
-      <button class="chip" data-preset="kambur">Bezgin</button>
-    </div>
-    <div class="stage"><canvas id="c2" aria-label="Çöp adam eskiz alanı"></canvas></div>
-    <div class="photo" id="photoRow">
-      <label><input type="checkbox" id="showPhoto" checked> Çizimi göster</label>
-      <label>Saydamlık <input type="range" id="photoAlpha" min="10" max="100" value="45"></label>
-      <button class="chip" id="detect">Yeniden algıla</button>
-      <button class="chip" id="clearPhoto">Fotoğrafı kaldır</button>
-      <span class="status" id="status"></span>
-    </div>
-    <div class="hint">
-      <b>Sürükle:</b> eklemleri ve güneşi taşı. <b>Eklemeye dokun:</b> o uzuv öne mi arkaya mı gidiyor, değiştirir (dolu nokta öne, boş nokta arkaya, soluk çizgi arkaya giden uzuv).
-      <b>Güneşe dokun:</b> ışık önden / arkadan.
-      <br><span class="dot" style="background:var(--blue)"></span>mavi taraf figürün sol tarafı.
-    </div>
-  </section>
+<div class="wrap">
+  <div class="top">
+    <nav class="nav">
+      <a class="geri cz" href="../index.html" aria-label="Geri: uygulamalar"><img class="c" src="../../img/ui/geri-c.png" alt=""><img src="../../img/ui/geri.png" alt="Geri" width="466" height="170"></a>
+      <a class="home cz lit" href="../../index.html" aria-label="Ana sayfa"><img class="c" src="../../img/ui/anasayfa-c.png" alt=""><img src="../../img/ui/anasayfa.png" alt="Ana sayfa" width="370" height="105"></a>
+    </nav>
+    <div class="wip"><span>yapım aşamasında</span></div>
+  </div>
+  <div class="frames">
 
-  <section class="panel">
-    <div class="bar">
-      <h2>Referans</h2>
-      <button class="chip" data-view="0">Ön</button>
-      <button class="chip" data-view="45">¾</button>
-      <button class="chip" data-view="90">Yan</button>
-      <button class="chip" data-view="180">Arka</button>
-      <button class="chip" id="top">Kuş bakışı</button>
-    </div>
-    <div class="bar">
-      <button class="chip" data-body="kadin">Kadın</button>
-      <button class="chip" data-body="erkek">Erkek</button>
-      <button class="chip" id="myStyle">suatilyus oranı</button>
-      <button class="chip" id="normal">Normal oran</button>
-    </div>
-    <div class="stage"><canvas id="c3" aria-label="3B manken referansı"></canvas></div>
-    <div class="controls">
-      <h3>Görünüm</h3>
-      <label class="ctl wide">Yatay açı <output id="o-yaw">0°</output><input id="yaw" type="range" min="0" max="360" value="0"></label>
-      <label class="ctl">Dikey açı <output id="o-pitch">8°</output><input id="pitch" type="range" min="-35" max="85" value="8"></label>
-      <label class="ctl">Ortam ışığı <output id="o-amb">35</output><input id="amb" type="range" min="0" max="100" value="35"></label>
-      <h3>Beden</h3>
-      <label class="ctl">Kol-bacak uzunluğu <output id="o-limb">1.00×</output><input id="limb" type="range" min="100" max="160" value="100"></label>
-      <label class="ctl">Kalınlık <output id="o-thin">100</output><input id="thin" type="range" min="45" max="130" value="100"></label>
-      <label class="ctl">Kamburluk <output id="o-slouch">0°</output><input id="slouch" type="range" min="0" max="55" value="0"></label>
-      <label class="ctl">Gövde dönüşü <output id="o-twist">0°</output><input id="twist" type="range" min="-90" max="90" value="0"></label>
-      <label class="ctl wide">Baş dönüşü <output id="o-head">0°</output><input id="headturn" type="range" min="-80" max="80" value="0"></label>
-    </div>
-  </section>
-</main>
-<a class="alt-geri cz" href="../index.html" aria-label="Geri dön" style="margin:8px auto 40px"><img class="c" src="../../img/ui/geri-c.png" alt=""><img src="../../img/ui/geri.png" alt="Geri" width="466" height="170"></a>
+    <!-- ESKİZ -->
+    <section class="frame">
+      <div class="fhead">
+        <img class="t" src="img/eskiz.png" alt="Eskiz">
+        <div class="src">
+          <button class="ib" id="upload"><img src="img/yukle.png" alt="Fotoğraf yükle"></button>
+          <input type="file" id="file" accept="image/*" hidden>
+          <button class="ib off" id="cizBtn" aria-pressed="false"><img src="img/ciz.png" alt="Çiz"></button>
+        </div>
+        <button class="ib bas" id="detect"><img src="img/bas.png" alt="Bas — çizimi oku"></button>
+      </div>
+      <div class="chips">
+        <button class="chip" data-preset="ayakta">Ayakta</button>
+        <button class="chip" data-preset="yuruyus">Yürüyüş</button>
+        <button class="chip" data-preset="kosu">Koşu</button>
+        <button class="chip" data-preset="oturma">Oturma</button>
+        <button class="chip" data-preset="uzanma">Uzanma</button>
+        <button class="chip" data-preset="kambur">Bezgin</button>
+        <button class="chip" id="mirror">Aynala</button>
+      </div>
+      <div class="board">
+        <button class="tab ib" id="clearPhoto" title="Çizimi ve fotoğrafı temizle"><img src="img/tab.png" alt=""><span>temizle</span></button>
+        <div class="stage"><canvas id="c2" aria-label="Çöp adam eskiz alanı"></canvas><div class="mode" id="mode">eklem modu</div></div>
+      </div>
+      <div class="photo" id="photoRow">
+        <label><input type="checkbox" id="showPhoto" checked> Çizimi göster</label>
+        <label class="sl" style="grid-template-columns:auto 120px">Saydamlık <input type="range" id="photoAlpha" min="10" max="100" value="45"></label>
+      </div>
+      <p class="status" id="status"></p>
+      <div class="brush">
+        <img src="img/brush.png" alt="Brush">
+        <input id="bsl" type="range" min="1" max="100" value="8" aria-label="Fırça kalınlığı">
+      </div>
+      <div class="bsize">
+        <button id="bplus" aria-label="Büyüt">+</button><output id="bval">8</output><button id="bminus" aria-label="Küçült">−</button>
+      </div>
+      <p class="hint"><b>Eklem modu:</b> eklemleri ve güneşi sürükle. Ekleme dokun: uzuv öne/arkaya (dolu nokta öne, boş nokta arkaya). Güneşe dokun: ışık önden/arkadan. <span class="dot"></span> mavi taraf figürün solu.
+      <b>Çiz modu:</b> çöp adamı elle çiz, sonra BAS.</p>
+    </section>
 
-<script src="../../ortak.js?v=2611190300"></script>
+    <!-- REFERANS -->
+    <section class="frame">
+      <img src="img/referans.png" alt="Referans" style="height:32px;width:auto">
+      <div class="steps">
+        <div class="col">
+          <img class="badge" src="img/adim1.png" alt="1. adım">
+          <button class="ib" data-body="kadin"><img class="ch" src="img/kadin.png" alt="Kadın"></button>
+          <button class="ib" data-body="erkek"><img class="ch" src="img/erkek.png" alt="Erkek"></button>
+        </div>
+        <div class="mid"><img src="img/oranlar.png" alt="Oranlar"></div>
+        <div class="col">
+          <img class="badge" src="img/adim2.png" alt="2. adım">
+          <button class="ib" id="normal"><img class="ch" src="img/normal.png" alt="Normal oran"></button>
+          <button class="ib" id="myStyle"><img class="ch big" src="img/suatilyus.png" alt="suatilyus oranı"></button>
+        </div>
+      </div>
+      <div class="cam">
+        <button class="ib" data-view="0"><img src="img/on.png" alt="Ön"></button>
+        <button class="ib" data-view="45"><img src="img/ceyrek.png" alt="3/4"></button>
+        <span class="lbl"><img src="img/kamera.png" alt="Kamera"><button class="ib" id="top" title="Kuş bakışı"><img src="img/cop.png" alt="Kuş bakışı"></button></span>
+        <button class="ib" data-view="90"><img src="img/yan.png" alt="Yan"></button>
+        <button class="ib" data-view="180"><img src="img/arka.png" alt="Arka"></button>
+      </div>
+      <div class="stage" id="s3"><canvas id="c3" aria-label="3B manken referansı"></canvas></div>
+      <div class="sliders">
+        <label class="sl">360° döndür <input id="yaw" type="range" min="0" max="360" value="0"><output id="o-yaw">0°</output></label>
+        <label class="sl">Dikey açı <input id="pitch" type="range" min="-35" max="85" value="8"><output id="o-pitch">8°</output></label>
+        <label class="sl">Ortam ışığı <input id="amb" type="range" min="0" max="100" value="35"><output id="o-amb">35</output></label>
+      </div>
+      <details>
+        <summary>Beden ayarları</summary>
+        <div class="sliders">
+          <label class="sl">Kol-bacak <input id="limb" type="range" min="100" max="160" value="100"><output id="o-limb">1.00×</output></label>
+          <label class="sl">Kalınlık <input id="thin" type="range" min="45" max="130" value="100"><output id="o-thin">100</output></label>
+          <label class="sl">Kamburluk <input id="slouch" type="range" min="0" max="55" value="0"><output id="o-slouch">0°</output></label>
+          <label class="sl">Gövde dönüşü <input id="twist" type="range" min="-90" max="90" value="0"><output id="o-twist">0°</output></label>
+          <label class="sl">Baş dönüşü <input id="headturn" type="range" min="-80" max="80" value="0"><output id="o-head">0°</output></label>
+        </div>
+      </details>
+    </section>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
 (function(){
@@ -182,8 +214,8 @@ const PRESETS={
           lKnee:[.14,.62,1],lFoot:[.16,.2,1],rKnee:[-.13,.6,1],rFoot:[-.15,.18,1]}
 };
 
-const S={p:{},s:{},light:{x:-.55,y:1.85,front:true},yaw:0,pitch:8,twist:0,head:0,amb:35,limb:1,thin:1,slouch:0,body:'kadin'};
-let T=null; // fotoğraf izi
+const S={p:{},s:{},light:{x:-.55,y:1.85,front:true},yaw:0,pitch:8,twist:0,head:0,amb:35,limb:1,thin:1,slouch:0,body:'kadin',draw:false};
+let T=null; // fotoğraf ya da elle çizim izi
 
 function lenFor(j,f){if(j==='neck')return BASE.neck*(1+(f-1)*.25);if(j==='head')return BASE.head*(1+(f-1)*.45);return BASE[j]*f;}
 const hf=()=>.45+.55*S.limb;
@@ -241,39 +273,67 @@ const toW=(px,py)=>[(px-W2/2)/SC,(H2-py)/SC-.12];
 function draw2D(){
   calcSC();
   ctx.globalAlpha=1;ctx.clearRect(0,0,W2,H2);ctx.fillStyle='#fff';ctx.fillRect(0,0,W2,H2);
-  if(T&&T.show&&T.s){const tl=toPx(T.ox,T.oy);ctx.globalAlpha=T.alpha;
+  if(T&&T.show&&T.s){const tl=toPx(T.ox,T.oy);ctx.globalAlpha=S.draw?1:T.alpha;
     ctx.drawImage(T.img,tl[0],tl[1],T.img.width*T.s*SC,T.img.height*T.s*SC);ctx.globalAlpha=1;}
   const g=toPx(0,0);ctx.strokeStyle='#e6e9ec';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,g[1]);ctx.lineTo(W2,g[1]);ctx.stroke();
-
+  if(S.draw&&T&&T.drawn)return; // çiz modunda, çizim varken iskelet gizli
+  ctx.save();if(S.draw)ctx.globalAlpha=.18;
   const L=toPx(S.light.x,S.light.y),r=15;
-  ctx.save();ctx.strokeStyle='#d8a400';ctx.lineWidth=2;ctx.lineCap='round';
+  ctx.strokeStyle='#d8a400';ctx.lineWidth=2;ctx.lineCap='round';
   for(let i=0;i<8;i++){const a=i*Math.PI/4;ctx.beginPath();ctx.moveTo(L[0]+Math.cos(a)*(r+5),L[1]+Math.sin(a)*(r+5));ctx.lineTo(L[0]+Math.cos(a)*(r+11),L[1]+Math.sin(a)*(r+11));ctx.stroke();}
   ctx.beginPath();ctx.arc(L[0],L[1],r,0,Math.PI*2);
-  if(S.light.front){ctx.fillStyle='#f2c230';ctx.fill();}else{ctx.fillStyle='#fff';ctx.fill();ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);}
-  ctx.stroke();ctx.fillStyle='#8a6a00';ctx.font='700 12px "Atkinson Hyperlegible",system-ui';ctx.textAlign='center';
-  ctx.fillText(S.light.front?'önden':'arkadan',L[0],L[1]+r+26);ctx.restore();
+  if(S.light.front){ctx.fillStyle='#fbb321';ctx.fill();}else{ctx.fillStyle='#fff';ctx.fill();ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);}
+  ctx.stroke();ctx.fillStyle='#8a6a00';ctx.font='16px "Patrick Hand",system-ui';ctx.textAlign='center';
+  ctx.fillText(S.light.front?'önden':'arkadan',L[0],L[1]+r+24);
 
-  const P3=lift();
+  const P3=lift(),base=ctx.globalAlpha;
   ctx.lineCap='round';ctx.lineJoin='round';
   const bones=[['pelvis','neck'],['neck','lElbow'],['lElbow','lHand'],['neck','rElbow'],['rElbow','rHand'],['pelvis','lKnee'],['lKnee','lFoot'],['pelvis','rKnee'],['rKnee','rFoot']];
   bones.sort((a,b)=>(P3[a[0]][2]+P3[a[1]][2])-(P3[b[0]][2]+P3[b[1]][2])).forEach(([a,b])=>{
     const A=toPx(...S.p[a]),B=toPx(...S.p[b]),back=S.s[b]<0&&depthOf(b)>.03;
-    ctx.strokeStyle=LEFT.has(b)?'#3d86c6':'#1d2126';ctx.globalAlpha=back?.35:1;ctx.lineWidth=back?5:6.5;
-    ctx.beginPath();ctx.moveTo(A[0],A[1]);ctx.lineTo(B[0],B[1]);ctx.stroke();ctx.globalAlpha=1;
+    ctx.strokeStyle=LEFT.has(b)?'#2f86d6':'#111';ctx.globalAlpha=base*(back?.35:1);ctx.lineWidth=back?5:6.5;
+    ctx.beginPath();ctx.moveTo(A[0],A[1]);ctx.lineTo(B[0],B[1]);ctx.stroke();ctx.globalAlpha=base;
   });
   const N=toPx(...S.p.neck),Hh=toPx(...S.p.head),hr=.11*SC;
   const vx=Hh[0]-N[0],vy=Hh[1]-N[1],vl=Math.hypot(vx,vy)||1;
-  ctx.strokeStyle='#1d2126';ctx.lineWidth=6.5;
+  ctx.strokeStyle='#111';ctx.lineWidth=6.5;
   ctx.beginPath();ctx.moveTo(N[0],N[1]);ctx.lineTo(Hh[0]-vx/vl*hr,Hh[1]-vy/vl*hr);ctx.stroke();
   ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(Hh[0],Hh[1],hr,0,Math.PI*2);ctx.fill();ctx.stroke();
-
   ORDER.forEach(j=>{
-    const [x,y]=toPx(...S.p[j]),flat=!PARENT[j]||depthOf(j)<.03,col=LEFT.has(j)?'#3d86c6':'#1d2126';
+    const [x,y]=toPx(...S.p[j]),flat=!PARENT[j]||depthOf(j)<.03,col=LEFT.has(j)?'#2f86d6':'#111';
     ctx.lineWidth=2;ctx.beginPath();ctx.arc(x,y,j==='head'||flat?5:7,0,Math.PI*2);
     if(flat||S.s[j]>0){ctx.fillStyle=col;ctx.fill();}else{ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle=col;ctx.stroke();}
-    if(j==='pelvis'){ctx.strokeStyle='#1d2126';ctx.beginPath();ctx.arc(x,y,10,0,Math.PI*2);ctx.stroke();}
+    if(j==='pelvis'){ctx.strokeStyle='#111';ctx.beginPath();ctx.arc(x,y,10,0,Math.PI*2);ctx.stroke();}
   });
+  ctx.restore();
 }
+
+/* ---------- elle çizim katmanı ---------- */
+const bsl=document.getElementById('bsl'),bval=document.getElementById('bval');
+const setB=v=>{v=Math.max(1,Math.min(100,v));bsl.value=v;bval.textContent=v};
+bsl.oninput=()=>setB(+bsl.value);
+document.getElementById('bplus').onclick=()=>setB(+bsl.value+1);
+document.getElementById('bminus').onclick=()=>setB(+bsl.value-1);
+function blankSketch(){
+  calcSC();const k=2,cv=document.createElement('canvas');cv.width=Math.round(W2*k);cv.height=Math.round(H2*k);
+  const c=cv.getContext('2d');c.fillStyle='#fff';c.fillRect(0,0,cv.width,cv.height);
+  const tl=toW(0,0);T={img:cv,show:true,alpha:1,s:1/(SC*k),ox:tl[0],oy:tl[1],sketch:true,drawn:false};
+}
+function toImg(px,py){const w=toW(px,py);return[(w[0]-T.ox)/T.s,(T.oy-w[1])/T.s];}
+let pen=null;
+function stroke(a,b){const c=T.img.getContext('2d'),wpx=(+bsl.value)/(T.s*SC);
+  c.strokeStyle='#111';c.fillStyle='#111';c.lineCap='round';c.lineJoin='round';c.lineWidth=wpx;
+  c.beginPath();c.moveTo(...a);c.lineTo(...b);c.stroke();T.drawn=true;}
+const modeEl=document.getElementById('mode'),cizBtn=document.getElementById('cizBtn');
+function setDraw(on){
+  S.draw=on;cizBtn.classList.toggle('off',!on);cizBtn.classList.toggle('on',on);cizBtn.setAttribute('aria-pressed',on);
+  modeEl.textContent=on?'çiz modu':'eklem modu';
+  if(on&&!(T&&T.sketch))blankSketch();
+  photoRow.classList.toggle('show',!!T&&!on);
+  setStatus(on?'Çöp adamı çiz, bitince BAS. Eklemlere dönmek için Çiz’e tekrar dokun.':'');
+  draw2D();
+}
+cizBtn.addEventListener('click',()=>setDraw(!S.draw));
 
 let drag=null;
 function local(e){const r=c2.getBoundingClientRect();return [e.clientX-r.left,e.clientY-r.top];}
@@ -284,13 +344,18 @@ function hit(px,py){
   return best;
 }
 c2.addEventListener('pointerdown',e=>{
-  const [x,y]=local(e),h=hit(x,y);if(!h)return;
+  const [x,y]=local(e);
+  if(S.draw){e.preventDefault();c2.setPointerCapture(e.pointerId);if(!T||!T.sketch)blankSketch();
+    pen=toImg(x,y);stroke(pen,[pen[0]+.01,pen[1]]);draw2D();return;}
+  const h=hit(x,y);if(!h)return;
   e.preventDefault();c2.setPointerCapture(e.pointerId);
   const w=toW(x,y),o=h==='light'?[S.light.x,S.light.y]:S.p[h];
   drag={h,sx:x,sy:y,moved:false,off:[o[0]-w[0],o[1]-w[1]]};
 });
 c2.addEventListener('pointermove',e=>{
-  if(!drag)return;const [x,y]=local(e);
+  const [x,y]=local(e);
+  if(S.draw){if(!pen)return;const p=toImg(x,y);stroke(pen,p);pen=p;draw2D();return;}
+  if(!drag)return;
   if(!drag.moved&&Math.hypot(x-drag.sx,y-drag.sy)>6)drag.moved=true;
   if(!drag.moved)return;
   const w=toW(x,y),t=[w[0]+drag.off[0],w[1]+drag.off[1]];
@@ -298,10 +363,11 @@ c2.addEventListener('pointermove',e=>{
   markPreset(null);redraw();
 });
 c2.addEventListener('pointerup',()=>{
+  if(S.draw){pen=null;return;}
   if(drag&&!drag.moved){if(drag.h==='light')S.light.front=!S.light.front;else if(drag.h!=='pelvis')S.s[drag.h]*=-1;redraw();}
   drag=null;
 });
-c2.addEventListener('pointercancel',()=>drag=null);
+c2.addEventListener('pointercancel',()=>{drag=null;pen=null});
 
 document.getElementById('mirror').addEventListener('click',()=>{
   const cx=S.p.pelvis[0],np={},ns={};
@@ -309,12 +375,11 @@ document.getElementById('mirror').addEventListener('click',()=>{
   S.p=np;S.s=ns;S.light.x=2*cx-S.light.x;redraw();
 });
 
-/* ---------- fotoğraftan eskiz ---------- */
+/* ---------- fotoğraftan / çizimden okuma ---------- */
 const fileIn=document.getElementById('file'),photoRow=document.getElementById('photoRow'),statusEl=document.getElementById('status'),detectBtn=document.getElementById('detect');
 let sample=null;
 (async()=>{try{if(window.claude&&claude.use){sample=await claude.use('sample');
-  if(sample){const lim=await sample.limits().catch(()=>null);if(!lim||!lim.images)sample=null;}}}catch(e){sample=null;}
-  detectBtn.hidden=!sample;})();
+  if(sample){const lim=await sample.limits().catch(()=>null);if(!lim||!lim.images)sample=null;}}}catch(e){sample=null;}})();
 function setStatus(t,busy){statusEl.textContent=t;statusEl.classList.toggle('busy',!!busy);}
 
 document.getElementById('upload').addEventListener('click',()=>fileIn.click());
@@ -327,9 +392,10 @@ fileIn.addEventListener('change',async()=>{
     const cx=cv.getContext('2d');cx.fillStyle='#fff';cx.fillRect(0,0,cv.width,cv.height);cx.drawImage(img,0,0,cv.width,cv.height);
     T={img:cv,show:true,alpha:+document.getElementById('photoAlpha').value/100};
     document.getElementById('showPhoto').checked=true;
+    if(S.draw){S.draw=false;cizBtn.classList.add('off');cizBtn.classList.remove('on');modeEl.textContent='eklem modu';}
     fitTrace();photoRow.classList.add('show');redraw();
-    if(sample)detect();else setStatus('Çizimin eskiz alanının arkasına yerleşti. Eklemleri çizgilerin üstüne sürükle.');
-  }catch(e){setStatus('Bu dosya açılamadı. JPG ya da PNG bir fotoğraf dene.');photoRow.classList.add('show');}
+    if(sample)detect();else setStatus('Çizimin arkaya yerleşti. Eklemleri çizgilerin üstüne sürükle.');
+  }catch(e){setStatus('Bu dosya açılamadı. JPG ya da PNG bir fotoğraf dene.');}
 });
 function fitTrace(){
   calcSC();const w=T.img.width,h=T.img.height;
@@ -337,8 +403,14 @@ function fitTrace(){
 }
 document.getElementById('showPhoto').addEventListener('change',e=>{if(T){T.show=e.target.checked;draw2D();}});
 document.getElementById('photoAlpha').addEventListener('input',e=>{if(T){T.alpha=+e.target.value/100;draw2D();}});
-document.getElementById('clearPhoto').addEventListener('click',()=>{T=null;photoRow.classList.remove('show');setStatus('');draw2D();});
-detectBtn.addEventListener('click',()=>detect());
+document.getElementById('clearPhoto').addEventListener('click',()=>{
+  if(S.draw){blankSketch();}else{T=null;photoRow.classList.remove('show');}setStatus('');draw2D();});
+detectBtn.addEventListener('click',()=>{
+  if(!T||(T.sketch&&!T.drawn)){setStatus('Önce Yükle ile bir fotoğraf seç ya da Çiz ile çöp adamı çiz.');return;}
+  if(!sample){setStatus('Otomatik okuma bu sürümde yok (yapım aşamasında). Eklemleri çizimin üstüne elle sürükleyerek pozu kur.');
+    if(S.draw){setDraw(false);T.alpha=.45;photoRow.classList.add('show');draw2D();}return;}
+  detect();
+});
 
 const PROMPT=`The image is a photo or scan of a very simple hand-drawn stick figure on paper (Turkish "Cin Ali" style: circle head, one line for the torso, lines for arms and legs). Locate its joints.
 Return ONLY a JSON object, no prose, no code fences, in exactly this shape:
@@ -353,18 +425,20 @@ Rules:
 
 async function detect(){
   if(!sample||!T)return;
-  detectBtn.disabled=true;setStatus('Çizim okunuyor, birkaç saniye sürebilir…',true);
+  detectBtn.disabled=true;detectBtn.classList.add('busy');setStatus('Çizim okunuyor, birkaç saniye sürebilir…',true);
   try{
     const blob=await new Promise(r=>T.img.toBlob(r,'image/jpeg',.88));
     const data=await sample.json(PROMPT,{images:[blob],modelTier:'default'});
-    if(!applyDetection(data)){setStatus('Çizimde bir çöp adam bulamadım. Daha net bir fotoğraf dene ya da eklemleri elle taşı.');return;}
-    setStatus('Poz yerleşti. Yanlış duran eklemleri sürükleyerek düzelt, öne/arkaya için eklemeye dokun.');
+    if(S.draw){S.draw=false;cizBtn.classList.add('off');cizBtn.classList.remove('on');modeEl.textContent='eklem modu';}
+    if(!applyDetection(data)){setStatus('Çizimde çöp adam bulamadım. Daha net çiz ya da eklemleri elle taşı.');return;}
+    T.alpha=.45;photoRow.classList.add('show');draw2D();
+    setStatus('Poz yerleşti. Yanlış duran eklemleri sürükleyerek düzelt, öne/arkaya için ekleme dokun.');
   }catch(e){
     const c=e&&e.code;
-    setStatus(c==='not_granted'?'Algılamaya izin verilmedi. Eklemleri çizimin üstüne elle taşıyabilirsin.'
-      :c==='rate_limited'?'Şu an çok fazla istek var. Biraz bekleyip “Yeniden algıla”ya bas.'
-      :c==='cancelled'?'':'Algılama başarısız oldu. “Yeniden algıla”yı dene ya da eklemleri elle taşı.');
-  }finally{detectBtn.disabled=false;}
+    setStatus(c==='not_granted'?'Okumaya izin verilmedi. Eklemleri elle taşıyabilirsin.'
+      :c==='rate_limited'?'Şu an çok fazla istek var. Biraz bekleyip tekrar BAS.'
+      :c==='cancelled'?'':'Okuma başarısız oldu. Tekrar BAS ya da eklemleri elle taşı.');
+  }finally{detectBtn.disabled=false;detectBtn.classList.remove('busy');}
 }
 function applyDetection(d){
   if(!d||!d.found||!d.joints)return false;
@@ -375,7 +449,7 @@ function applyDetection(d){
   if(!ratios.length)return false;
   const k=ratios[Math.floor(.75*(ratios.length-1))],s=1/k;
   let low=0;ORDER.forEach(j=>low=Math.max(low,px[j][1]));
-  T.s=s;T.oy=.08+low*s;T.ox=-px.pelvis[0]*s;
+  T.s=s;T.oy=.08+low*s;T.ox=-px.pelvis[0]*s;T.sketch=false;
   ORDER.forEach(j=>{S.p[j]=[px[j][0]*s+T.ox,T.oy-px[j][1]*s];});
   ORDER.forEach(j=>{if(PARENT[j]){S.p[j]=clampTo(j);const dd=d.depth&&d.depth[j];S.s[j]=dd==='back'?-1:1;}});
   markPreset(null);redraw();return true;
@@ -385,7 +459,7 @@ function applyDetection(d){
 const c3=document.getElementById('c3');
 const renderer=new THREE.WebGLRenderer({canvas:c3,antialias:true});
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;renderer.outputEncoding=THREE.sRGBEncoding;
-const scene=new THREE.Scene();scene.background=new THREE.Color(0xdfe3e7);
+const scene=new THREE.Scene();scene.background=new THREE.Color(0xf1eee8);
 const camera=new THREE.PerspectiveCamera(30,1,.05,60);
 const hemi=new THREE.HemisphereLight(0xffffff,0x6e7680,.35);scene.add(hemi);
 const sun=new THREE.DirectionalLight(0xfff4e0,1.6);sun.castShadow=true;
@@ -393,7 +467,7 @@ sun.shadow.mapSize.set(1024,1024);Object.assign(sun.shadow.camera,{left:-2,right
 sun.shadow.bias=-.0006;sun.shadow.normalBias=.02;scene.add(sun,sun.target);
 const floor=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.ShadowMaterial({opacity:.22}));
 floor.rotation.x=-Math.PI/2;floor.receiveShadow=true;scene.add(floor);
-const grid=new THREE.GridHelper(4,16,0xb7bec6,0xc9cfd5);scene.add(grid);
+const grid=new THREE.GridHelper(4,16,0xbdb6aa,0xd6d0c5);scene.add(grid);
 
 const std=c=>new THREE.MeshStandardMaterial({color:c,roughness:.7,metalness:0});
 const mat=std(0xb9b2a8),matL=std(0x8fb3d4),matDark=std(0x4a4f56),matHair=std(0x5b4a3b),matStick=std(0xc8452f);
@@ -493,7 +567,7 @@ let rot=null;
 c3.addEventListener('pointerdown',e=>{c3.setPointerCapture(e.pointerId);rot={x:e.clientX,y:e.clientY,yaw:S.yaw,pitch:S.pitch};});
 c3.addEventListener('pointermove',e=>{if(!rot)return;
   S.yaw=((rot.yaw-(e.clientX-rot.x)*.45)%360+360)%360;S.pitch=Math.max(-35,Math.min(85,rot.pitch+(e.clientY-rot.y)*.3));
-  setSlider('yaw',S.yaw);setSlider('pitch',S.pitch);needs3=true;});
+  setSlider('yaw',S.yaw);setSlider('pitch',S.pitch);markView();needs3=true;});
 c3.addEventListener('pointerup',()=>rot=null);c3.addEventListener('pointercancel',()=>rot=null);
 
 /* ---------- kontroller ---------- */
@@ -502,31 +576,36 @@ const CTL={yaw:['yaw','o-yaw',v=>Math.round(v)+'°'],pitch:['pitch','o-pitch',v=
   thin:['thin','o-thin',v=>Math.round(v*100)],limb:['limb','o-limb',v=>v.toFixed(2)+'×']};
 function setSlider(id,val){const c=CTL[id],el=document.getElementById(id);
   el.value=(id==='thin'||id==='limb')?Math.round(val*100):Math.round(val);document.getElementById(c[1]).textContent=c[2](val);}
+function markView(){document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('on',+b.dataset.view===Math.round(S.yaw)&&S.pitch<30));}
 Object.keys(CTL).forEach(id=>{
   const el=document.getElementById(id),c=CTL[id];
   el.addEventListener('input',()=>{
     let val=+el.value;if(id==='thin'||id==='limb')val/=100;
     document.getElementById(c[1]).textContent=c[2](val);
-    if(id==='limb'){setLimb(val);redraw();return;}
-    S[c[0]]=val;if(id==='yaw'||id==='pitch')needs3=true;else update3D();
+    if(id==='limb'){setLimb(val);markStyle(null);redraw();return;}
+    if(id==='thin'||id==='slouch')markStyle(null);
+    S[c[0]]=val;if(id==='yaw'||id==='pitch'){markView();needs3=true;}else update3D();
   });
 });
-document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{S.yaw=+b.dataset.view;S.pitch=8;setSlider('yaw',S.yaw);setSlider('pitch',8);needs3=true;}));
-document.getElementById('top').addEventListener('click',()=>{S.pitch=70;setSlider('pitch',70);needs3=true;});
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>{S.yaw=+b.dataset.view;S.pitch=8;setSlider('yaw',S.yaw);setSlider('pitch',8);markView();needs3=true;}));
+document.getElementById('top').addEventListener('click',()=>{S.pitch=70;setSlider('pitch',70);markView();needs3=true;});
 document.querySelectorAll('[data-preset]').forEach(b=>b.addEventListener('click',()=>applyPreset(b.dataset.preset)));
-function setBody(b){S.body=b;document.querySelectorAll('[data-body]').forEach(x=>x.classList.toggle('on',x.dataset.body===b));update3D();}
+function setBody(b){S.body=b;document.querySelectorAll('[data-body]').forEach(x=>x.classList.toggle('off',x.dataset.body!==b));update3D();}
 document.querySelectorAll('[data-body]').forEach(b=>b.addEventListener('click',()=>setBody(b.dataset.body)));
+const nBtn=document.getElementById('normal'),sBtn=document.getElementById('myStyle');
+function markStyle(w){nBtn.classList.toggle('off',w!=='normal');sBtn.classList.toggle('off',w!=='suat');}
 function setProps(limb,thin,slouch){
   S.thin=thin;S.slouch=slouch;setSlider('thin',thin);setSlider('slouch',slouch);setSlider('limb',limb);setLimb(limb);redraw();
 }
-document.getElementById('myStyle').addEventListener('click',()=>setProps(1.38,.62,22));
-document.getElementById('normal').addEventListener('click',()=>setProps(1,1,0));
+sBtn.addEventListener('click',()=>{setProps(1.38,.62,22);markStyle('suat');});
+nBtn.addEventListener('click',()=>{setProps(1,1,0);markStyle('normal');});
 
 function redraw(){draw2D();update3D();}
 const ro=new ResizeObserver(()=>{size2();size3();redraw();});
 ro.observe(c2);ro.observe(c3);
-size2();size3();setBody('kadin');applyPreset('ayakta');
+size2();size3();setBody('kadin');markStyle('normal');applyPreset('ayakta');markView();
 })();
 </script>
+<script src="../../ortak.js?v=2611200430"></script>
 </body>
 </html>
