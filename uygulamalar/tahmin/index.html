@@ -7,7 +7,7 @@
 <meta name="description" content="Aklından bir eşya tut, evet-hayır sorularıyla bulayım.">
 <link rel="icon" href="../../img/icon-192.png">
 <link rel="apple-touch-icon" href="../../img/apple-touch-icon.png">
-<link rel="stylesheet" href="../../ortak.css?v=2611241530">
+<link rel="stylesheet" href="../../ortak.css?v=2611241540">
 <style>
 :root{--ink:#111}
 *{box-sizing:border-box}
@@ -94,8 +94,8 @@ h1{font-family:"suat-skinny",sans-serif;font-weight:400;font-size:12cqw;line-hei
   <a class="alt-geri" href="../index.html" aria-label="Geri"><img src="../../img/ui/geri-tabela.png" alt="Geri" width="800" height="536"></a>
 </main>
 
-<script src="../../ortak.js?v=2611241530"></script>
-<script src="veri.js?v=2611241530"></script>
+<script src="../../ortak.js?v=2611241540"></script>
+<script src="veri.js?v=2611241540"></script>
 <script>
 (()=>{
 const $=id=>document.getElementById(id);
@@ -111,6 +111,7 @@ const L=(cevap,v)=>{
 };
 const H=w=>{let s=0,t=w.reduce((a,b)=>a+b,0);for(const x of w)if(x>0){const p=x/t;s-=p*Math.log2(p)}return s};
 
+const mi=a=>{if(/(ampul|tuval|saat|kalp|rol)$/i.test(a))return a.match(/ampul$/i)?'mü':'mi';const v=(a.toLocaleLowerCase('tr').match(/[aıoueiöü]/g)||['i']).pop();return {a:'mı',ı:'mı',o:'mu',u:'mu',e:'mi',i:'mi',ö:'mü',ü:'mü'}[v]};
 let w,sorulan,gecmis,elenen,tahminSay,simdiki,mod;
 
 function sifirla(){
@@ -148,7 +149,7 @@ function tahminEt(i){
   tahminSay++;simdiki=i;
   $('sayac').textContent=tahminSay===1?'BULDUM GALİBA…':'BİR DAHA DENİYORUM…';
   $('emo').textContent=E[i].emo;$('emo').hidden=false;
-  $('soru').textContent=E[i].ad+' mi?';
+  $('soru').textContent=E[i].ad+' '+mi(E[i].ad)+'?';
   goster('tahmin');
 }
 function pesEt(){
