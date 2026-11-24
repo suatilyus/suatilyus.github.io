@@ -7,43 +7,47 @@
 <meta name="description" content="Aklından bir eşya tut, evet-hayır sorularıyla bulayım.">
 <link rel="icon" href="../../img/icon-192.png">
 <link rel="apple-touch-icon" href="../../img/apple-touch-icon.png">
-<link rel="stylesheet" href="../../ortak.css?v=2611241540">
+<link rel="stylesheet" href="../../ortak.css?v=2611240835">
 <style>
 :root{--ink:#111}
 *{box-sizing:border-box}
 html,body{margin:0;background:#fff;color:var(--ink)}
 body{font-family:"suat-long","Patrick Hand",system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
-.page{width:min(100%,520px);margin:0 auto;container-type:inline-size;padding:calc(env(safe-area-inset-top) + min(6vw,31px)) min(5vw,26px) min(16vw,83px);display:flex;flex-direction:column;align-items:center}
+.page{width:min(100%,520px);margin:0 auto;container-type:inline-size;padding:calc(env(safe-area-inset-top) + min(6vw,31px)) min(4vw,21px) min(16vw,83px);display:flex;flex-direction:column;align-items:center}
 .nav{display:flex;align-items:center;justify-content:space-between;width:100%}
 .nav .geri{width:21cqw}.nav .geri img{display:block;width:100%;height:auto}
 .nav .home{width:29cqw}
-h1{font-family:"suat-skinny",sans-serif;font-weight:400;font-size:12cqw;line-height:.95;letter-spacing:.02em;text-align:center;margin:7cqw 0 1cqw}
-.alt{font-size:4.2cqw;color:#555;text-align:center;margin:0 0 6cqw}
-/* character + speech bubble */
-.sahne{position:relative;width:100%;display:flex;flex-direction:column;align-items:center}
-.balon{position:relative;width:100%;min-height:30cqw;border:.9cqw solid var(--ink);border-radius:6cqw;background:#fff;padding:5cqw 5cqw;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:1.4cqw 1.4cqw 0 var(--ink)}
-.balon::after{content:"";position:absolute;left:44%;bottom:-6.2cqw;width:7cqw;height:7cqw;background:#fff;border-right:.9cqw solid var(--ink);border-bottom:.9cqw solid var(--ink);transform:skew(25deg) rotate(45deg)}
-.sayac{font-family:"suat-skinny",sans-serif;font-size:4.4cqw;color:#888;letter-spacing:.06em;margin-bottom:2cqw}
-.soru{font-family:"suat-skinny",sans-serif;font-size:8.4cqw;line-height:1.08;letter-spacing:.02em}
-.emo{font-size:20cqw;line-height:1;margin:1cqw 0 2cqw}
-.kafa{width:56cqw;margin-top:8cqw}
-.kafa.dusun{animation:dusun 1s ease-in-out infinite alternate}
-@keyframes dusun{from{transform:rotate(-2deg)}to{transform:rotate(2deg)}}
-/* answers */
-.cevap{display:grid;grid-template-columns:1fr 1fr;gap:3.4cqw;width:100%;margin-top:6cqw}
-.cevap button,.tek-b{font-family:"suat-skinny",sans-serif;font-size:7.4cqw;letter-spacing:.04em;line-height:1;border:.9cqw solid var(--ink);border-radius:99px;padding:3.4cqw 2cqw;background:#fff;color:var(--ink);box-shadow:1.1cqw 1.1cqw 0 var(--ink);cursor:pointer;transition:transform .08s}
-.cevap button:active,.tek-b:active{transform:translate(.8cqw,.8cqw);box-shadow:.3cqw .3cqw 0 var(--ink)}
-.b-evet{background:#479f48!important;color:#fff!important}
-.b-hayir{background:#e93e5e!important;color:#fff!important}
-.b-belki{background:#f3ad3d!important}
-.b-bilmem{background:#eee!important}
-.tek-b{display:block;margin:6cqw auto 0;padding:3.4cqw 9cqw;background:#3880c8;color:#fff}
-.geri-al{margin-top:4cqw;font-family:"suat-hand",sans-serif;font-size:4cqw;background:none;border:0;color:#666;text-decoration:underline;cursor:pointer}
-.geri-al[hidden],[hidden]{display:none!important}
-.neydi{display:flex;gap:2cqw;width:100%;margin-top:5cqw}
-.neydi input{flex:1;font:inherit;font-size:5cqw;border:0;border-bottom:.7cqw solid var(--ink);padding:1.5cqw 1cqw;outline:0;background:transparent}
-.kucuk{font-size:3.8cqw;color:#666;text-align:center;margin-top:5cqw;line-height:1.4}
+img{display:block;max-width:100%;height:auto}
+.baslik{width:74cqw;margin:8cqw auto 3cqw}
+.sayac{display:flex;align-items:flex-end;justify-content:center;gap:1.4cqw;height:7.5cqw;margin:0 0 1.5cqw}
+.sayac b{font-family:"suat-skinny",sans-serif;font-weight:400;font-size:7.6cqw;line-height:1}
+.sayac img{width:14.5cqw}
+.sayac.bos{visibility:hidden}
+.sahne{position:relative;width:100%}
+.sahne>img{width:100%}
+.balon{position:absolute;left:6%;right:9%;top:5%;height:54%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff}
+.soru{font-family:"suat-skinny",sans-serif;font-size:8.6cqw;line-height:1.05;letter-spacing:.02em}
+.soru.uzun{font-size:7cqw}
+.emo{font-size:13cqw;line-height:1;margin-bottom:1.5cqw}
+.cevap{display:grid;grid-template-columns:1fr 1fr;gap:4cqw 9cqw;width:78cqw;margin:6cqw auto 0}
+.cevap button,.tek{position:relative;appearance:none;border:0;padding:0;background:none;cursor:pointer;transition:transform .08s}
+.cevap button img,.tek img{width:100%}
+.cevap button span,.tek span{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding-bottom:.6cqw;color:#fff;font-family:"suat-skinny",sans-serif;font-size:6.2cqw;letter-spacing:.04em;line-height:1}
+.cevap button span.k{font-size:5cqw}
+.cevap button:active,.tek:active{transform:scale(.94) rotate(-1deg)}
+.tek{display:block;width:36cqw;margin:6cqw auto 0}
+.geri-al{margin-top:5cqw;font-family:"suat-hand",sans-serif;font-size:4cqw;background:none;border:0;color:#666;text-decoration:underline;cursor:pointer}
+.sonuc{width:100%;margin-top:8cqw;animation:gel .45s cubic-bezier(.3,1.5,.5,1)}
+.sonuc.bildi img{width:86cqw;margin:0 auto}
+.sonuc.yok img{width:100%}
+@keyframes gel{from{transform:scale(.6) rotate(-4deg);opacity:0}to{transform:none;opacity:1}}
+.tekrar{display:block;width:52cqw;margin:5cqw auto 0;background:none;border:0;padding:0;cursor:pointer;transition:transform .08s}
+.tekrar:active{transform:scale(.94)}
+.neydi{display:flex;width:86%;margin:4cqw auto 0}
+.neydi input{flex:1;font:inherit;font-size:5cqw;border:0;border-bottom:.7cqw solid var(--ink);padding:1.5cqw 1cqw;outline:0;background:transparent;text-align:center}
+.kucuk{font-size:3.8cqw;color:#666;text-align:center;margin:3cqw 0 0;line-height:1.4}
 .kucuk a{color:inherit}
+[hidden]{display:none!important}
 .alt-geri{display:block;width:min(30%,160px);margin:12cqw auto 0}.alt-geri img{display:block;width:100%;height:auto}
 </style>
 </head>
@@ -54,48 +58,49 @@ h1{font-family:"suat-skinny",sans-serif;font-weight:400;font-size:12cqw;line-hei
     <a class="home cz lit" href="../../index.html" aria-label="Ana sayfa"><img class="c" src="../../img/ui/anasayfa-c.png" alt=""><img src="../../img/ui/anasayfa.png" alt="Ana sayfa" width="370" height="105"></a>
   </nav>
 
-  <h1>AKLINDAN TUT MORUK</h1>
-  <p class="alt">bir eşya tut, evet-hayırla bulayım</p>
+  <img class="baslik" src="../../img/ui/tahmin-baslik.png" alt="Aklından bir eşya tut! Sorulara doğru cevap ver!" width="780" height="200">
+  <div class="sayac bos" id="sayac"><b id="no">1.</b><img src="../../img/ui/tahmin-soru.png" alt="soru" width="160" height="70"></div>
 
   <div class="sahne">
+    <img src="../../img/ui/tahmin-sahne.png" alt="" width="1000" height="702">
     <div class="balon" aria-live="polite">
-      <div class="sayac" id="sayac"></div>
       <div class="emo" id="emo" hidden></div>
-      <div class="soru" id="soru">Aklından bir eşya tut. Evdeki, mutfaktaki, sokaktaki… ne olursa.</div>
+      <div class="soru" id="soru">Bir eşya tut, tuttuysan başla!</div>
     </div>
-    <div class="kafa cz" id="kafa"><img class="c" src="../../img/portrait-c.png" alt=""><img src="../../img/portrait.png" alt="N'aber moruk" width="778" height="633"></div>
   </div>
 
   <!-- start -->
-  <button class="tek-b" id="basla" type="button">TUTTUM, BAŞLA</button>
+  <button class="tek" id="basla" type="button"><img src="../../img/ui/tahmin-btn-turuncu.png" alt="" width="368" height="150"><span>BAŞLA</span></button>
 
   <!-- question answers -->
   <div class="cevap" id="cevap" hidden>
-    <button class="b-evet" data-c="1" type="button">EVET</button>
-    <button class="b-hayir" data-c="0" type="button">HAYIR</button>
-    <button class="b-belki" data-c="0.5" type="button">KISMEN</button>
-    <button class="b-bilmem" data-c="-1" type="button">BİLMİYORUM</button>
+    <button data-c="1" type="button"><img src="../../img/ui/tahmin-btn-turuncu.png" alt="" width="368" height="150"><span>EVET</span></button>
+    <button data-c="0" type="button"><img src="../../img/ui/tahmin-btn-mavi.png" alt="" width="376" height="152"><span>HAYIR</span></button>
+    <button data-c="0.5" type="button"><img src="../../img/ui/tahmin-btn-kirmizi.png" alt="" width="368" height="150"><span>KISMEN</span></button>
+    <button data-c="-1" type="button"><img src="../../img/ui/tahmin-btn-mor.png" alt="" width="376" height="152"><span class="k">BİLMİYORUM</span></button>
   </div>
   <button class="geri-al" id="gerial" type="button" hidden>bir önceki cevabı geri al</button>
 
   <!-- guess -->
   <div class="cevap" id="tahmin" hidden>
-    <button class="b-evet" id="dogru" type="button">EVET, BU!</button>
-    <button class="b-hayir" id="yanlis" type="button">HAYIR</button>
+    <button id="dogru" type="button"><img src="../../img/ui/tahmin-btn-turuncu.png" alt="" width="368" height="150"><span>EVET!</span></button>
+    <button id="yanlis" type="button"><img src="../../img/ui/tahmin-btn-mavi.png" alt="" width="376" height="152"><span>HAYIR</span></button>
   </div>
 
-  <!-- gave up -->
-  <div id="pes" hidden style="width:100%">
-    <form class="neydi" id="neydiForm"><input id="neydi" placeholder="neydi? yaz bakalım" autocomplete="off" maxlength="40"></form>
-    <p class="kucuk">Listemde olmayan bir şey tuttuysan <a href="../../index.html#note">ana sayfadaki panoya</a> yaz, oyuna eklerim.</p>
+  <!-- results -->
+  <div class="sonuc bildi" id="bildi" hidden><img src="../../img/ui/tahmin-bildi.png" alt="Yine bildi mi moruk?" width="900" height="534"></div>
+  <div class="sonuc yok" id="pes" hidden>
+    <img src="../../img/ui/tahmin-bulamadi.png" alt="Neeee bulamadı mı? Kesicem onu!" width="1000" height="827">
+    <form class="neydi" id="neydiForm"><input id="neydi" placeholder="neydi? yaz bakalım" autocomplete="off" maxlength="40" enterkeyhint="done"></form>
+    <p class="kucuk">Listemde yoksa <a href="../../index.html#note">ana sayfadaki panoya</a> yaz, eklerim.</p>
   </div>
-  <button class="tek-b" id="tekrar" type="button" hidden>BİR DAHA</button>
+  <button class="tekrar" id="tekrar" type="button" hidden><img src="../../img/ui/tahmin-tekrar.png" alt="Tekrar dene" width="575" height="296"></button>
 
   <a class="alt-geri" href="../index.html" aria-label="Geri"><img src="../../img/ui/geri-tabela.png" alt="Geri" width="800" height="536"></a>
 </main>
 
-<script src="../../ortak.js?v=2611241540"></script>
-<script src="veri.js?v=2611241540"></script>
+<script src="../../ortak.js?v=2611240835"></script>
+<script src="veri.js?v=2611240835"></script>
 <script>
 (()=>{
 const $=id=>document.getElementById(id);
@@ -114,6 +119,7 @@ const H=w=>{let s=0,t=w.reduce((a,b)=>a+b,0);for(const x of w)if(x>0){const p=x/
 const mi=a=>{if(/(ampul|tuval|saat|kalp|rol)$/i.test(a))return a.match(/ampul$/i)?'mü':'mi';const v=(a.toLocaleLowerCase('tr').match(/[aıoueiöü]/g)||['i']).pop();return {a:'mı',ı:'mı',o:'mu',u:'mu',e:'mi',i:'mi',ö:'mü',ü:'mü'}[v]};
 let w,sorulan,gecmis,elenen,tahminSay,simdiki,mod;
 
+function yaz(t,emo){$('soru').textContent=t;$('soru').classList.toggle('uzun',t.length>30);$('emo').hidden=!emo;$('emo').textContent=emo||'';$('no').textContent=sorulan.size+'.';}
 function sifirla(){
   w=E.map(()=>1);sorulan=new Set();gecmis=[];elenen=new Set();tahminSay=0;simdiki=null;
 }
@@ -133,32 +139,28 @@ function lider(){let bi=-1,bw=-1,t=0;w.forEach((x,i)=>{t+=x;if(x>bw){bw=x;bi=i}}
 function goster(m){
   mod=m;
   $('basla').hidden=m!=='bas';$('cevap').hidden=m!=='soru';$('tahmin').hidden=m!=='tahmin';
-  $('pes').hidden=m!=='pes';$('tekrar').hidden=!(m==='kazandim'||m==='pes');
+  $('pes').hidden=m!=='pes';$('bildi').hidden=m!=='kazandim';$('tekrar').hidden=!(m==='kazandim'||m==='pes');
+  $('sayac').classList.toggle('bos',!(m==='soru'));
   $('gerial').hidden=!(m==='soru'&&gecmis.length);
-  $('kafa').classList.toggle('dusun',m==='soru');
 }
 function sonraki(){
   const l=lider(),k=enIyiSoru();
   if((l.p>=.72&&sorulan.size>=4)||!k||sorulan.size>=22) return tahminEt(l.i);
   simdiki=k;sorulan.add(k);
-  $('sayac').textContent=sorulan.size+'. SORU';$('emo').hidden=true;$('soru').textContent=SORULAR[k];
-  goster('soru');
+  yaz(SORULAR[k]);goster('soru');
 }
 function tahminEt(i){
   if(i<0||w[i]<=0||tahminSay>=3) return pesEt();
   tahminSay++;simdiki=i;
-  $('sayac').textContent=tahminSay===1?'BULDUM GALİBA…':'BİR DAHA DENİYORUM…';
-  $('emo').textContent=E[i].emo;$('emo').hidden=false;
-  $('soru').textContent=E[i].ad+' '+mi(E[i].ad)+'?';
+  yaz((tahminSay===1?'':'O zaman… ')+E[i].ad+' '+mi(E[i].ad)+'?',E[i].emo);
   goster('tahmin');
 }
 function pesEt(){
-  $('sayac').textContent='';$('emo').textContent='🏳️';$('emo').hidden=false;
-  $('soru').textContent='Pes ettim moruk. Neydi?';goster('pes');
+  yaz('Pes ettim moruk. Neydi?');goster('pes');
 }
 
 $('basla').onclick=()=>{sifirla();sonraki();};
-$('tekrar').onclick=()=>{sifirla();$('neydi').value='';sonraki();};
+$('tekrar').onclick=()=>{sifirla();$('neydi').value='';sonraki();scrollTo({top:0,behavior:'smooth'});};
 $('cevap').addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;const c=+b.dataset.c;
   gecmis.push({k:simdiki,w:w.slice()});
@@ -166,22 +168,20 @@ $('cevap').addEventListener('click',e=>{
   sonraki();
 });
 $('gerial').onclick=()=>{const g=gecmis.pop();if(!g)return;w=g.w;sorulan.delete(simdiki);sorulan.delete(g.k);
-  simdiki=g.k;sorulan.add(g.k);$('sayac').textContent=sorulan.size+'. SORU';$('emo').hidden=true;$('soru').textContent=SORULAR[g.k];goster('soru');};
+  simdiki=g.k;sorulan.add(g.k);yaz(SORULAR[g.k]);goster('soru');};
 $('dogru').onclick=()=>{
-  $('sayac').textContent=sorulan.size+' soruda buldum';
-  $('soru').textContent='Buldum moruk! '+E[simdiki].ad+'.';goster('kazandim');
+  yaz(sorulan.size+' soruda buldum: '+E[simdiki].ad+'!',E[simdiki].emo);goster('kazandim');
 };
 $('yanlis').onclick=()=>{w[simdiki]=0;elenen.add(simdiki);
   if(tahminSay>=3)return pesEt();
   // keep asking a little more before the next guess
   const l=lider();if(l.p>=.72&&sorulan.size>=Q.length-1)return tahminEt(l.i);
   const k=enIyiSoru();if(!k)return tahminEt(l.i);
-  simdiki=k;sorulan.add(k);$('sayac').textContent=sorulan.size+'. SORU';$('emo').hidden=true;$('soru').textContent=SORULAR[k];goster('soru');
+  simdiki=k;sorulan.add(k);yaz(SORULAR[k]);goster('soru');
 };
 $('neydiForm').onsubmit=e=>{e.preventDefault();const v=$('neydi').value.trim();if(!v)return;
   const bul=E.find(x=>x.ad.toLocaleLowerCase('tr')===v.toLocaleLowerCase('tr'));
-  $('soru').textContent=bul?`${bul.ad} listemdeydi ama cevaplar başka yere götürdü. Bir dahakine!`:`${v}… Bunu bilmiyordum. Panoya yazarsan eklerim.`;
-  $('emo').textContent=bul?bul.emo:'🤔';
+  yaz(bul?`${bul.ad} listemdeydi ama cevaplar başka yere götürdü!`:`${v}… Bunu bilmiyordum!`,bul?bul.emo:'🤔');
 };
 goster('bas');
 })();
