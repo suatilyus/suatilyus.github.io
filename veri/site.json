@@ -40,6 +40,13 @@
       "link": "https://ig.me/m/suatilyus",
       "gorsel": "img/btn-teklif-ver.png",
       "renk": "img/btn-teklif-ver-c.png"
+    },
+    {
+      "ad": "tahmin oyunu",
+      "link": "",
+      "gizli": false,
+      "gorsel": "img/buton/tahmin-oyunu-mwul7f76.png",
+      "id": "tahmin-oyunu-mwul7f79"
     }
   ],
   "illustrasyon": [
